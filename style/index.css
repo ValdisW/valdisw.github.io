@@ -12,6 +12,7 @@ body{
   height: 100px;
   width: 100%;
   position: fixed;
+  z-index: 10;
 }
 
 #nav{
@@ -26,7 +27,7 @@ body{
   line-height: 80px;
   margin: 10px;
   float: left;
-  transition: 0.5s;
+  transition: 0.3s;
 }
 
 #nav li:hover{
@@ -38,4 +39,14 @@ body{
   font-size: 20px;
   text-decoration: none;
   color: #fff;
+}
+
+/*body*/
+#blackblock{
+  height: 500px;
+  width: 80%;
+  margin: 0 auto;
+  position: relative;
+  top: 150px;
+  background-color: rgba(0, 0, 0, 0.8);
 }
