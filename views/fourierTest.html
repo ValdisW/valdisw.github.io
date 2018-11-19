@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Fourier</title>
+    <link rel="stylesheet" href="../style/style.css">
+</head>
+<body>
+<div id="block1"></div>         <!-- 原函数 -->
+<div id="block2"></div>         <!-- 傅里叶展开 -->
+<div id="block3"></div>         <!-- 幅度谱 -->
+<div id="block4"></div>         <!-- 相位谱 -->
+<div id="block5"></div>
+<div id="controlpane">
+    <div id="paneTitle">参数设置</div>
+    <div id="patternBlock">
+        <input type="radio" id="continuousPattern" name="pattern" value="continuous" checked="checked"><span>连续</span>
+        <input type="radio" id="discretePattern" name="pattern" value="discrete"><span>离散</span>
+    </div>
+    <div id="sigBlock">
+        <span>信号选择：</span>
+        <select name="signals" id="signalsSelect">
+            <option value=0>三角波</option>
+            <option value=1>锯齿波</option>
+            <option value=2>方波</option>
+        </select>
+    </div>
+    <div id="funcParaBlock">
+        <span>周期：</span><input type="text" value=2 id="period" class="textInput">
+
+    </div>
+    <div id="rangeBlock">
+        <span>下限：</span><input type="text" class="textInput" id="min" value="-15">
+        <span>上限：</span><input type="text" class="textInput" id="max" value="15">
+    </div>
+    <div id="termsBlock">
+        <span>展开项数：</span><input type="text" class="textInput" id="terms" value=50>
+    </div>
+    <div id="samplesBlock">
+        <span>采样点数：</span><input type="text" class="textInput" id="samples" value=20>
+    </div>
+    <input type="button" id="done" value="确定">
+</div>
+
+<script src="../script/jquery-3.3.1.min.js"></script>
+<script src="../script/echarts.js"></script>
+<script src="../script/mathUtils.js"></script>
+<script src="../script/functions.js"></script>
+<script src="../script/myCharts.js"></script>
+<script src="../script/update.js"></script>
+<script>
+    $(document).keydown(function (event) {
+        if (event.key === 'Enter') done.click();
+    });
+
+    $('#continuousPattern').change(function() {
+        $('#termsBlock').css('display', 'block');
+        $('#samplesBlock').css('display', 'none');
+        isContinuousPattern = true;
+        done.click();
+    });
+    $('#discretePattern').change(function() {
+        $('#termsBlock').css('display', 'none');
+        $('#samplesBlock').css('display', 'block');
+        isContinuousPattern = false;
+        done.click();
+    });
+</script>
+</body>
+</html>
