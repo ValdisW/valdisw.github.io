@@ -1,0 +1,60 @@
+*{margin: 0; padding: 0; color: #DDD}
+body{background-color: #000}
+ul{list-style-type: none}
+.fileInputButton{display: none;}
+button{
+    outline: none;
+    width: 80px; height: 30px;
+    border: 1px solid #FFF; border-radius: 15px;
+    background-color: transparent;
+    cursor: pointer;
+    transition: 0.2s;
+    position: relative;
+    top: 15px;
+    margin: 0 80px;
+}
+button:hover{
+    background-color: #FFF;
+    color: #000;
+}
+#nav{
+    width: 100%; height: 60px;
+    background-color: #222;
+}
+#nav > *{float: left}
+#nav ul{
+    overflow: hidden;
+    display: inline;
+}
+#nav li{
+    height: 60px; width: 100px;
+    text-align: center; line-height: 60px;
+    float: right;
+    margin: 0 20px;
+    transition: 0.2s;
+}
+#nav li:hover {
+    color: #000;
+    background-color: #CCC;
+}
+#mainFrame{
+    width: 75%; min-height: 660px;
+    position: relative;
+    top: 18px; left: 26px;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+#currentImg{width: 256px}
+#currentImgCanvas{
+    border: 1px solid #666;
+}
+
+#controlPanel{
+    color: #DDD;
+    position: fixed;
+    top: 78px; right: 26px;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    width: 20%; height: 660px;
+    font-size: 12px;
+}

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>OpenCV_LAB</title>
+    <link rel="stylesheet" href="../style/opencvJS_style.css">
+</head>
+<body>
+<div id="nav">
+    <button onclick="document.getElementById('srcImgInputButton').click()">
+        选择图片
+        <input type="file" class="fileInputButton" id="srcImgInputButton" accept="image/*">
+    </button>
+    <ul>
+        <li>
+            傅里叶变换
+        </li>
+        <li>
+            灰度变换
+        </li>
+        <li>
+            直方图
+        </li>
+    </ul>
+</div>
+
+<div id="mainFrame">
+    <p>原图像：</p>
+    <img id="currentImg" alt="当前未选择图片">
+    <canvas id="currentImgCanvas"></canvas>
+</div>
+
+<div id="controlPanel">
+
+</div>
+<script async src="../js/opencv.js"></script>
+<script src="../script/opencv_script.js"></script>
+</body>
+</html>
