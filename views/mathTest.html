@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>互动媒体技术_王瑞</title>
+    <style>
+        *{margin: 0; padding: 0}
+        html, body{height: 100%; width: 100%}
+        #canvas{background-color: #000}
+    </style>
+</head>
+<body style="overflow: -Scroll; overflow-y: hidden" >
+<canvas id="canvas"></canvas>
+
+<script>
+    let canvas = document.getElementById('canvas');
+    let cxt = canvas.getContext('2d');
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+
+    let origin_y = window.innerHeight / 2,
+        origin_x = window.innerWidth / 2;
+
+    cxt.strokeStyle = '#FFF';
+    cxt.lineWidth = 3;
+    cxt.shadowBlur = 30;
+    cxt.shadowColor = '#FFF';
+    cxt.fillStyle = '#FFF';
+
+    const drawCircle = function (context, x, y, radius, beginArc, endArc) {
+        context.beginPath();
+        context.arc(x, y, radius, beginArc, endArc);
+        context.stroke();
+        context.closePath();
+    };
+
+    let theta = 0;
+    let circleNum = 6;
+    let render = function () {          // 动画
+        let handle = requestAnimationFrame(render);
+        cxt.clearRect(0, 0, origin_x * 2, origin_y * 2);
+
+        cxt.lineWidth = 1;
+        cxt.shadowBlur = 0;
+
+        let vertex_num = 8;
+        let polygon_num = 5;
+        let polygon_radius = 280;
+        for (let j = 0; j < polygon_num; j++) {
+            cxt.beginPath();
+            for (let i = 0; i < vertex_num; i++) {
+                cxt.moveTo(origin_x + polygon_radius * Math.cos(theta + j*2*Math.PI / polygon_num + (i + 1) * 2 * Math.PI / vertex_num), origin_y + polygon_radius * Math.sin(theta + j*2*Math.PI / polygon_num + (i + 1) * 2 * Math.PI / vertex_num));
+                cxt.lineTo(origin_x + polygon_radius * Math.cos(theta + j*2*Math.PI / polygon_num + i * 2 * Math.PI / vertex_num), origin_y + polygon_radius * Math.sin(theta + j*2*Math.PI / polygon_num + i * 2 * Math.PI / vertex_num));
+            }
+            cxt.stroke();
+        }
+
+        let dotNum = 80;
+        let dotCircleNum = 3;
+        for (let j = 0; j < dotCircleNum; j++)
+            for (let i = 0; i < dotNum; i++) {
+                drawCircle(cxt, origin_x+(200+j*15)*Math.cos((j%2*2-1)*(theta+i*2*Math.PI/dotNum)*3), origin_y+(200+j*15)*Math.sin((j%2*2-1)*(theta+i*2*Math.PI/dotNum)*3), 5, 0, Math.PI*2);
+            }
+
+        cxt.lineWidth = 1;
+        cxt.shadowBlur = 0;
+        cxt.lineWidth = 1.2+Math.sin(theta*3);
+        for (let i = 0; i < 8; i++)
+            drawCircle(cxt, origin_x, origin_y, 160, i * 2*Math.PI/8 + theta, (i+1) * 2*Math.PI/8 - Math.PI/8 + theta);
+        for (let i = 0; i < 8; i++)
+            drawCircle(cxt, origin_x, origin_y, 170, i * 2*Math.PI/8 - theta, (i+1) * 2*Math.PI/8 - Math.PI/8 - theta);
+
+        cxt.shadowBlur = 30;
+        cxt.lineWidth = 2.2+2*Math.sin(theta*6);
+        for (let i = 0; i < circleNum; i ++)
+            drawCircle(cxt, origin_x, origin_y, i*10+50+50*Math.sin(theta*4), i*2*Math.PI/circleNum + theta*4, i*2*Math.PI/circleNum - theta*4);
+
+        theta += Math.PI / 180;
+    };
+    render();
+</script>
+</body>
+</html>
