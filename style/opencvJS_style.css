@@ -10,7 +10,7 @@ button{
     cursor: pointer;
     transition: 0.2s;
     position: relative;
-    top: 15px;
+    top: 10px;
     margin: 0 80px;
 }
 button:hover{
@@ -18,7 +18,7 @@ button:hover{
     color: #000;
 }
 #nav{
-    width: 100%; height: 60px;
+    width: 100%; height: 50px;
     background-color: #222;
 }
 #nav > *{float: left}
@@ -27,11 +27,12 @@ button:hover{
     display: inline;
 }
 #nav li{
-    height: 60px; width: 100px;
-    text-align: center; line-height: 60px;
+    height: 50px; width: 100px;
+    text-align: center; line-height: 50px;
     float: right;
     margin: 0 20px;
     transition: 0.2s;
+    font-size: 14px;
 }
 #nav li:hover {
     color: #000;
@@ -41,18 +42,17 @@ button:hover{
     width: 75%; min-height: 660px;
     position: relative;
     top: 18px; left: 26px;
-    border-radius: 20px;
-    background-color: rgba(255, 255, 255, 0.1);
-}
-#currentImg{width: 256px}
-#currentImgCanvas{
     border: 1px solid #666;
+}
+#srcImg{display: none}
+#currentImgCanvas{
+
 }
 
 #controlPanel{
     color: #DDD;
     position: fixed;
-    top: 78px; right: 26px;
+    top: 68px; right: 26px;
     border-radius: 20px;
     background-color: rgba(255, 255, 255, 0.1);
     width: 20%; height: 660px;

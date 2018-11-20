@@ -28,14 +28,25 @@
 </div>
 
 <div id="mainFrame">
-    <p>原图像：</p>
-    <img id="currentImg" alt="当前未选择图片">
+    <img id="srcImg" alt="当前未选择图片">
     <canvas id="currentImgCanvas"></canvas>
 </div>
 
 <div id="controlPanel">
-
+    <p id="img_size_label">
+        尺寸:&nbsp;<span id="img_size"></span>
+    </p>
+    <p id="img_channels_label">
+        通道数:&nbsp;<span id="img_channels"></span>
+    </p>
+    <p id="img_depth_label">
+        图像深度:&nbsp;<span id="img_depth"></span>
+    </p>
+    <p id="img_type_label">
+        类型:&nbsp;<span id="img_type"></span>
+    </p>
 </div>
+
 <script async src="../js/opencv.js"></script>
 <script src="../script/opencv_script.js"></script>
 </body>
