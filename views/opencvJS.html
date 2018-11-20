@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="../style/opencvJS_style.css">
 </head>
 <body>
+<div id="black"><div id="waiting">请稍等，OpenCV.js加载中...</div></div>
+
+
 <div id="nav">
     <button onclick="document.getElementById('srcImgInputButton').click()">
         选择图片
@@ -28,7 +31,7 @@
 </div>
 
 <div id="mainFrame">
-    <img id="srcImg" alt="当前未选择图片">
+    <img id="srcImg" alt="">
     <canvas id="currentImgCanvas"></canvas>
 </div>
 
@@ -47,7 +50,8 @@
     </p>
 </div>
 
-<script async src="../js/opencv.js"></script>
+<script src="../js/jquery-3.3.1.min.js"></script>
+<script async src="../js/opencv.js" onload="onOpenCvReady()"></script>
 <script src="../script/opencv_script.js"></script>
 </body>
 </html>
