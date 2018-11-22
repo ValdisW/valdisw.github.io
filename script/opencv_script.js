@@ -1,4 +1,6 @@
+const colorArr = ['#F77', '#7F7', '#77F'];
 let currentMat = void 0;
+
 
 function onOpenCvReady() {
     $('#black, #waiting').fadeOut(300);
@@ -60,7 +62,7 @@ srcImg.onload = function () {
         preLeft = void 0;
     currentImgCanvas.css({
         'display': 'inline-block',
-        'cursor': 'pointer',
+        'cursor': 'move',
         'position': 'fixed',
         'top': '80px',
         'left': '80px',
@@ -115,9 +117,9 @@ $('#grayPanel button').click(function () {
 $('#histogramTransButton').click(function () {
     if (!currentMat) alert('请先选择一张图片！');
     else {
-        $('#histogramPanel, #black').css('display', 'block');
-        let histogramData = getHistogramData(currentMat, 0);
-        let histogramData_2 = new Array(getHistogramData.length);
+        $('#histogramPanel, #black').css('display', 'block');       // 弹出窗口
+        let histogramData = getHistogramData(currentMat, 0);        // 获取直方图数据
+        let histogramData_2 = new Array(getHistogramData.length);   // 转化成二维数组用于echarts绘制
         for (let i = 0; i < histogramData.length; i++) {
             histogramData_2[i] = new Array(2);
             histogramData_2[i][0] = i;
@@ -129,31 +131,59 @@ $('#histogramTransButton').click(function () {
             'height': '300px'
         })[0];
         let histogramChart = echarts.init(histogramChartBlock);
-        console.log(histogramChart);
         let histogramOption = {
+            tooltip: {
+                formatter: function (params){
+                    return params[0].value[1];
+                },
+                trigger: 'axis',
+                axisPointer: {},
+            },
             xAxis: {
                 name: 'x',
                 type: 'value',
+                max: 255,
                 axisTick: {show: false},
                 axisLine: {lineStyle: {color: '#333'}},
-                splitLine: {lineStyle: {color: '#333'}}
+                axisLabel: {color: '#DDD'},
+                splitLine: {lineStyle: {color: '#555'}}
             },
             yAxis: {
                 name: 'y',
                 axisTick: {show: false},
                 axisLine: {lineStyle: {color: '#333'}},
-                splitLine: {lineStyle: {color: '#333'}}
+                axisLabel: {color: '#DDD'},
+                splitLine: {lineStyle: {color: '#555'}}
             },
             series: {
                 type: 'bar',
                 data: histogramData_2,
                 barMaxWidth: 7,
-                itemStyle: {color: '#FFF'},
+                itemStyle: {color: colorArr[0]},
             }
         };
         histogramChart.setOption(histogramOption);
+
+        let channelInputs = $('.channelInput');
+        for (let channelInput = 0; channelInput < channelInputs.length; channelInput++) {
+            channelInputs[channelInput].onclick = function () {
+                histogramData = getHistogramData(currentMat, channelInput);        // 获取直方图数据
+                histogramData_2 = new Array(getHistogramData.length);   // 转化成二维数组用于echarts绘制
+                for (let i = 0; i < histogramData.length; i++) {
+                    histogramData_2[i] = new Array(2);
+                    histogramData_2[i][0] = i;
+                    histogramData_2[i][1] = histogramData[i];
+                }
+                histogramOption.series.data = histogramData_2;
+                histogramOption.series.itemStyle.color = colorArr[channelInput];
+                histogramChart.setOption(histogramOption);
+            }
+        }
     }
 });
+
+
+
 $('#histogramPanel button').click(function () {
     $('#histogramPanel, #black').css('display', 'none');
 });
