@@ -1,7 +1,6 @@
 const colorArr = ['#F77', '#7F7', '#77F'];
 let currentMat = void 0;
 
-
 function onOpenCvReady() {
     $('#black, #waiting').fadeOut(300);
 }
@@ -89,23 +88,41 @@ $('#linearGrayTransButton').click(function () {
     if (!currentMat) alert('请先选择一张图片！');
     else{
         $('#grayPanel, #black').css('display', 'block');
-        let grayChart = $('#grayChart')[0];
-        grayChart.height = grayChart.width = 300;
-        let ctx = grayChart.getContext('2d');
-        ctx.strokeStyle = '#666';
-        ctx.fillStyle = '#222'
-        ctx.lineWidth = 2;
-
-        ctx.fillRect(0, 0, grayChart.width, grayChart.height);
-        ctx.beginPath();
-        ctx.lineWidth = 1;
-        for (let i = 0; i <= 17; i++) {
-            ctx.moveTo(30, 30+(grayChart.height-60)/17*i);
-            ctx.lineTo(grayChart.width - 30, 30+(grayChart.height-60)/17*i)
-            ctx.moveTo(30+(grayChart.height-60)/17*i, 30);
-            ctx.lineTo(30+(grayChart.height-60)/17*i, grayChart.height - 30)
-        }
-        ctx.stroke();
+        let grayChartBlock = $('#grayChart').css({
+            'width': '300px',
+            'height': '300px'
+        })[0];
+        let grayChart = echarts.init(grayChartBlock);
+        let grayOption = {
+            xAxis: {
+                type: 'value',
+                max: 255,
+                splitNumber: 3,
+                axisTick: {show: false},
+                axisLine: {lineStyle: {color: '#555'}},
+                axisLabel: {color: '#DDD'},
+                splitLine: {lineStyle: {color: '#555'}}
+            },
+            yAxis: {
+                max: 255,
+                splitNumber: 3,
+                axisTick: {show: false},
+                axisLine: {lineStyle: {color: '#555'}},
+                axisLabel: {color: '#DDD'},
+                splitLine: {lineStyle: {color: '#555'}}
+            },
+            series: {
+                type: 'line',
+                symbol: 'none',
+                lineStyle: {
+                    color: '#FFF',
+                    width: 1
+                },
+                data: [[0, 0], [255, 255]]
+            },
+            animation: false
+        };
+        grayChart.setOption(grayOption);
     }
 });
 $('#grayPanel button').click(function () {
@@ -144,14 +161,14 @@ $('#histogramTransButton').click(function () {
                 type: 'value',
                 max: 255,
                 axisTick: {show: false},
-                axisLine: {lineStyle: {color: '#333'}},
+                axisLine: {lineStyle: {color: '#555'}},
                 axisLabel: {color: '#DDD'},
                 splitLine: {lineStyle: {color: '#555'}}
             },
             yAxis: {
                 name: 'y',
                 axisTick: {show: false},
-                axisLine: {lineStyle: {color: '#333'}},
+                axisLine: {lineStyle: {color: '#555'}},
                 axisLabel: {color: '#DDD'},
                 splitLine: {lineStyle: {color: '#555'}}
             },
@@ -181,9 +198,6 @@ $('#histogramTransButton').click(function () {
         }
     }
 });
-
-
-
 $('#histogramPanel button').click(function () {
     $('#histogramPanel, #black').css('display', 'none');
 });
