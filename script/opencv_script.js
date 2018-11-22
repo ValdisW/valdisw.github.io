@@ -84,11 +84,76 @@ srcImg.onload = function () {
 
 // 灰度变换
 $('#linearGrayTransButton').click(function () {
-    if (currentMat) $('#grayPanel, #black').css('display', 'block');
-    else alert('请先选择一张图片！');
+    if (!currentMat) alert('请先选择一张图片！');
+    else{
+        $('#grayPanel, #black').css('display', 'block');
+        let grayChart = $('#grayChart')[0];
+        grayChart.height = grayChart.width = 300;
+        let ctx = grayChart.getContext('2d');
+        ctx.strokeStyle = '#666';
+        ctx.fillStyle = '#222'
+        ctx.lineWidth = 2;
+
+        ctx.fillRect(0, 0, grayChart.width, grayChart.height);
+        ctx.beginPath();
+        ctx.lineWidth = 1;
+        for (let i = 0; i <= 17; i++) {
+            ctx.moveTo(30, 30+(grayChart.height-60)/17*i);
+            ctx.lineTo(grayChart.width - 30, 30+(grayChart.height-60)/17*i)
+            ctx.moveTo(30+(grayChart.height-60)/17*i, 30);
+            ctx.lineTo(30+(grayChart.height-60)/17*i, grayChart.height - 30)
+        }
+        ctx.stroke();
+    }
 });
 $('#grayPanel button').click(function () {
     linearGrayTrans(currentMat, 0, 128, 0, 32);
     $('#grayPanel, #black').css('display', 'none');
+});
 
+// 直方图变换
+$('#histogramTransButton').click(function () {
+    if (!currentMat) alert('请先选择一张图片！');
+    else {
+        $('#histogramPanel, #black').css('display', 'block');
+        let histogramData = getHistogramData(currentMat, 0);
+        let histogramData_2 = new Array(getHistogramData.length);
+        for (let i = 0; i < histogramData.length; i++) {
+            histogramData_2[i] = new Array(2);
+            histogramData_2[i][0] = i;
+            histogramData_2[i][1] = histogramData[i];
+        }
+
+        let histogramChartBlock = $('#histogramChart').css({
+            'width': '500px',
+            'height': '300px'
+        })[0];
+        let histogramChart = echarts.init(histogramChartBlock);
+        console.log(histogramChart);
+        let histogramOption = {
+            xAxis: {
+                name: 'x',
+                type: 'value',
+                axisTick: {show: false},
+                axisLine: {lineStyle: {color: '#333'}},
+                splitLine: {lineStyle: {color: '#333'}}
+            },
+            yAxis: {
+                name: 'y',
+                axisTick: {show: false},
+                axisLine: {lineStyle: {color: '#333'}},
+                splitLine: {lineStyle: {color: '#333'}}
+            },
+            series: {
+                type: 'bar',
+                data: histogramData_2,
+                barMaxWidth: 7,
+                itemStyle: {color: '#FFF'},
+            }
+        };
+        histogramChart.setOption(histogramOption);
+    }
+});
+$('#histogramPanel button').click(function () {
+    $('#histogramPanel, #black').css('display', 'none');
 });

@@ -59,6 +59,7 @@ button:hover{
     background-color: #CCC;
 }
 
+/* 灰度变换 */
 #grayPanel {
     display: none;
     position: fixed;
@@ -75,7 +76,24 @@ button:hover{
     height: 30px;
 }
 #grayChart {
-    border: 1px solid #DDD;
+
+}
+
+/* 直方图变换 */
+#histogramPanel{
+    display: none;
+    position: fixed;
+    top: 100px; left: 100px;
+    height: 500px; width: 800px;
+    background-color: #666;
+    border-radius: 30px;
+    z-index: 10;
+}
+#histogramPanel > p {
+    font-weight: bold;
+    text-align: center; line-height: 30px;
+    background-color: #222;
+    height: 30px;
 }
 
 /* 显示图片的界面 */
