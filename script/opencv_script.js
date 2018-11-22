@@ -1,7 +1,7 @@
 let currentMat = void 0;
 
 function onOpenCvReady() {
-    $('#black').fadeOut(300);
+    $('#black, #waiting').fadeOut(300);
 }
 
 // 获取某通道的直方图数据
@@ -82,7 +82,13 @@ srcImg.onload = function () {
     //srcMat.delete();
 };
 
+// 灰度变换
 $('#linearGrayTransButton').click(function () {
+    if (currentMat) $('#grayPanel, #black').css('display', 'block');
+    else alert('请先选择一张图片！');
+});
+$('#grayPanel button').click(function () {
     linearGrayTrans(currentMat, 0, 128, 0, 32);
-    console.log('23333333');
+    $('#grayPanel, #black').css('display', 'none');
+
 });

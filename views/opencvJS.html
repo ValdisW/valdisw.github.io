@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="../style/opencvJS_style.css">
 </head>
 <body>
-<div id="black"><div id="waiting">请稍等，OpenCV.js加载中...</div></div>
-
+<div id="black"></div>
+<div id="waiting">请稍等，OpenCV.js加载中...</div>
 
 <div id="nav">
     <button onclick="document.getElementById('srcImgInputButton').click()">
@@ -53,6 +53,13 @@
     </p>
 </div>
 
+<div id="grayPanel">
+    <p>灰度变换</p>
+    <canvas id="grayChart"></canvas>
+    <button>确定</button>
+</div>
+
+<!-- 脚本区 -->
 <script src="../js/jquery-3.3.1.min.js"></script>
 <script async src="../js/opencv.js" onload="onOpenCvReady()"></script>
 <script src="../script/opencv_script.js"></script>
