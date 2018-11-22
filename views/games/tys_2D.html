@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>贪吔蛇</title>
+    <style>
+        *{margin: 0; padding:0}
+        body{background-color: #000}
+        #canvas{background-color: #222}
+    </style>
+</head>
+<body>
+    <canvas id="canvas" height="600px" width="600px" style="border: 1px solid #666"></canvas>
+    <script>
+        // initialize
+        const canvas = document.getElementById('canvas');
+        const cxt = canvas.getContext('2d');
+
+        const Snake = function () {
+            this.body = [{x: 30, y: 30}, {x: 30, y: 31}];               // 初始位置
+            this.direction = 'ArrowDown';                               // 初始方向
+        };
+         snake = new Snake();           // 生成蛇
+        let food = {x: Math.floor(Math.random() * 60), y: Math.floor(Math.random() * 60)};          // 生成食物
+        let poison = {x: Math.floor(Math.random() * 60), y: Math.floor(Math.random() * 60)};      // 生成毒药
+
+        // 画笔设置
+        cxt.shadowBlur = 0;
+        cxt.shadowColor = '#FFF';
+
+        const render = function(){            // 每帧的内容
+            let handle = requestAnimationFrame(render);
+            // 清空画布
+            cxt.clearRect(0, 0, 600, 600);
+
+            // -----------------绘制-----------------
+            // 生成食物
+            cxt.fillStyle = '#F00'; cxt.shadowColor = '#F00';
+            cxt.fillRect(food.x * 10, food.y * 10, 10, 10);
+            cxt.fillStyle = '#0F0'; cxt.shadowColor = '#0F0';
+            cxt.fillRect(poison.x * 10, poison.y * 10, 10, 10);
+            cxt.fillStyle = '#FFF'; cxt.shadowColor = '#FFF';
+
+            // 根据数组绘制蛇
+            for (let i = 0; i < snake.body.length; i++)
+                cxt.fillRect(snake.body[i].x * 10, snake.body[i].y * 10, 10, 10);
+
+            // -----------------数据更新-----------------
+            // 更新蛇的前进方向
+            document.onkeydown = function(event){
+                if (snake.direction === 'ArrowUp' || snake.direction === 'ArrowDown')
+                    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') snake.direction = event.key;
+                if (snake.direction === 'ArrowLeft' || snake.direction === 'ArrowRight')
+                    if (event.key === 'ArrowUp' || event.key === 'ArrowDown') snake.direction = event.key;
+            };
+
+            // 蛇前进一格
+            if (snake.direction === 'ArrowUp') snake.body.unshift({x: snake.body[0].x, y: snake.body[0].y - 1});
+            if (snake.direction === 'ArrowDown') snake.body.unshift({x: snake.body[0].x, y: snake.body[0].y + 1});
+            if (snake.direction === 'ArrowLeft') snake.body.unshift({x: snake.body[0].x - 1, y: snake.body[0].y});
+            if (snake.direction === 'ArrowRight') snake.body.unshift({x: snake.body[0].x + 1, y: snake.body[0].y});
+            snake.body.pop();
+
+            // 游戏结束
+            if (snake.body[0].x < 0 || snake.body[0].x > 59 || snake.body[0].y < 0 || snake.body[0].y > 59 || snake.body.length <= 0){
+                cancelAnimationFrame(handle);
+            }
+
+            // 进化
+            if (snake.body[0].x === food.x && snake.body[0].y === food.y){
+                snake.body.push({x: snake.body[snake.body.length - 1].x, y: snake.body[snake.body.length - 1].y});
+                food.x = Math.floor(Math.random() * 60);
+                food.y = Math.floor(Math.random() * 60);
+            }
+
+            // 中毒
+            if (snake.body[0].x === poison.x && snake.body[0].y === poison.y){
+                snake.body.pop();
+                poison.x = Math.floor(Math.random() * 60);
+                poison.y = Math.floor(Math.random() * 60);
+            }
+        };
+        render();
+    </script>
+</body>
+</html>

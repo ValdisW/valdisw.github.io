@@ -1,0 +1,190 @@
+ <!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>飞机！</title>
+    <style>
+        *{margin: 0; padding: 0}
+        #canvas{border: 1px solid #666;}
+        #intro{
+            position: fixed;
+            right: 10px; top: 50%;
+            height: 300px;
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" height="700px" width="1200px"></canvas>
+<div id="intro"></div>
+<script>
+    const canvas = document.getElementById('canvas');
+    const cxt = canvas.getContext('2d');
+    const gameHeight = 700, gameWidth = 1200;
+    const player_ammo = [];
+    const enemies = [];
+
+    var startTime = new Date();
+    var up = false, down = false, left = false, right = false, fire = false;
+    var speed = 6;
+    var score = 0;
+
+    var PlayerAirplane = function () {
+        this.position = {x: 585, y: 600};
+        this.height = 50;
+        this.width = 30;
+    }
+
+    var PlayerAmmo = function (x, y) {
+        this.position = {x: x, y: y};
+        this.height = 5;
+        this.width = 5;
+    }
+
+    var Enemy = function(x, y){
+        this.position = {x: x, y: y};
+        this.height = 40; this.width = 40;
+    }
+
+    PlayerAirplane.prototype.fire = function(){
+        ammo = new PlayerAmmo(this.position.x + 12.5, this.position.y);
+        player_ammo.push(ammo);
+    }
+
+    player = new PlayerAirplane();
+
+    cxt.shadowBlur = 20;
+
+    function render(){
+        var handle = requestAnimationFrame(render);
+        var now = new Date();
+        var minisec = now.getTime() - startTime.getTime();      // 游戏运行秒数
+
+        cxt.clearRect(0, 0, gameWidth, gameHeight);
+        cxt.fillStyle = '#000';
+        cxt.fillRect(0, 0, gameWidth, gameHeight);
+
+        cxt.fillStyle = '#fff'; cxt.shadowColor = '#fff';
+        cxt.font = "bold 20px Arial";
+        cxt.fillText('Score: ' + score, 50, 50);
+
+        // 更新玩家飞船
+        cxt.fillStyle = '#fff'; cxt.shadowColor = '#fff';
+        cxt.fillRect(player.position.x + 14, player.position.y, 2, 4);
+        cxt.fillRect(player.position.x + 11, player.position.y + 4, 8, 12);
+        cxt.fillRect(player.position.x + 8, player.position.y + 16, 14, 12);
+        cxt.fillRect(player.position.x + 5, player.position.y + 25, 8, 8);
+        cxt.fillRect(player.position.x + 17, player.position.y + 25, 8, 8);
+        cxt.fillRect(player.position.x + 2, player.position.y + 30, 8, 10);
+        cxt.fillRect(player.position.x + 20, player.position.y + 30, 8, 10);
+        cxt.fillStyle = '#0cc'; cxt.shadowColor = '#0cc';
+        cxt.fillRect(player.position.x + 11, player.position.y + 19, 8, 5);
+        cxt.fillStyle = '#f00'; cxt.shadowColor = '#f00';
+        cxt.fillRect(player.position.x + 11, player.position.y + 32, 8, 16);
+        cxt.fillStyle = '#ff0'; cxt.shadowColor = '#ff0';
+        cxt.fillRect(player.position.x + 13, player.position.y + 34, 4, 8);
+        cxt.fillStyle = '#fff'; cxt.shadowColor = '#fff';
+
+        // 子弹
+        cxt.fillStyle = '#0f0'; cxt.shadowColor = '#0f0';
+        for (var i = 0; i < player_ammo.length; i++){
+            player_ammo[i].position.y -= 6;
+            cxt.fillRect(player_ammo[i].position.x, player_ammo[i].position.y, 5, 5);
+        }
+        var ammo_sum = 0;               // 子弹数量
+        for (var i = 0; i < player_ammo.length; i++) if (player_ammo[i].position.y <= 0) ammo_sum++;
+        player_ammo.splice(0, ammo_sum);                // 删除屏外的子弹
+        for (var i = 0; i < player_ammo.length; i++){           // 子弹击中检测(碰撞检测)
+            for (var j = 0; j < enemies.length; j++){
+                if (player_ammo[i].position.x < enemies[j].position.x + enemies[j].width &&
+                    player_ammo[i].position.x + player_ammo[i].width > enemies[j].position.x &&
+                    player_ammo[i].position.y < enemies[j].position.y + enemies[j].height &&
+                    player_ammo[i].height + player_ammo[i].position.y > enemies[j].position.y) {
+                    player_ammo.splice(i, 1);
+                    enemies.splice(j, 1);
+                    score += 5;
+                }
+            }
+        }
+
+        // Enemy
+        cxt.fillStyle = '#ff0'; cxt.shadowColor = '#ff0';
+        for (var i = 0; i < enemies.length; i++){
+            enemies[i].position.y += 5;
+            cxt.fillRect(enemies[i].position.x, enemies[i].position.y, enemies[i].width, enemies[i].height);
+        }
+        if (minisec % 1000 < 80){
+            enemyPosition_x = Math.ceil(Math.random() * gameWidth);
+            enemyPosition_y = 20;
+            newEnemy = new Enemy(enemyPosition_x, enemyPosition_y);
+            enemies.push(newEnemy);
+        }
+        for (var j = 0; j < enemies.length; j++){
+            if (player.position.x < enemies[j].position.x + enemies[j].width &&
+                player.position.x + player.width > enemies[j].position.x &&
+                player.position.y < enemies[j].position.y + enemies[j].height &&
+                player.height + player.position.y > enemies[j].position.y) {
+                enemies.splice(j, 1);
+                cxt.fillStyle = '#f00'; cxt.shadowColor = '#f00';
+                cxt.font = "bold 30px Arial";
+                cxt.fillText('Game Over!! Press F5 to restart.', 400, 350);
+                cancelAnimationFrame(handle);
+            }
+        }
+
+        // 键盘事件响应
+        if (up){
+             if (player.position.y > 0) player.position.y -= speed;
+        } else if (down) {
+            if (player.position.y + 50 < gameHeight) player.position.y += speed;
+        } else if (left) {
+            if (player.position.x > 0) player.position.x -= speed;
+        } else if (right) {
+            if (player.position.x + 30 < gameWidth) player.position.x += speed;
+        }
+
+        document.onkeydown = function (event) {
+            switch (event.key){
+                case 'ArrowUp':
+                    up = true;
+                    break;
+                case 'ArrowDown':
+                    down = true;
+                    break;
+                case 'ArrowLeft':
+                    left = true;
+                    break;
+                case 'ArrowRight':
+                    right = true;
+                    break;
+                case ' ':
+                    player.fire();
+                    break;
+            }
+        };
+        document.onkeyup = function (event) {
+            switch (event.key){
+                case 'ArrowUp':
+                    up = false;
+                    break;
+                case 'ArrowDown':
+                    down = false;
+                    break;
+                case 'ArrowLeft':
+                    left = false;
+                    break;
+                case 'ArrowRight':
+                    right = false;
+                    break;
+                case ' ':
+                    player.fire();
+                    break;
+            }
+        }
+    }
+    render();
+</script>
+</body>
+</html>

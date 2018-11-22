@@ -1,50 +1,62 @@
-*{margin: 0; padding: 0}
+*{margin: 0; padding: 0; color: #DDD}
 ul{list-style-type: none}
+a{text-decoration: none;}
 body{
-  /*
-  background-image: url(../pics/fall0.jpg);
-  background-attachment: fixed;
-  height: 2000px;
-  */
-  background-color: #000;
+    /*
+    background-image: url(../pics/fall0.jpg);
+    background-attachment: fixed;
+    height: 2000px;
+    */
+    background-color: #000;
 }
 
 /*header*/
 #header{
-  height: 60px; width: 100%;
-  position: fixed;
-  z-index: 10;
-  background-color: #666;
+    height: 60px; width: 100%;
+    position: fixed;
+    z-index: 10;
+    background-color: #222;
 }
 
 #nav{
-  float: right;
+    float: right;
 }
 
 #nav li{
-  height: 60px; width: 100px;
-  text-align: center; line-height: 60px;
-  margin: 0 10px;
-  float: left;
-  transition: 0.3s;
+    height: 60px; width: 100px;
+    text-align: center; line-height: 60px;
+    margin: 0 10px;
+    float: left;
+    transition: 0.3s;
 }
 
-#nav li:hover{
-  background-color: rgba(255, 255, 255, 0.5);
+#nav li:hover {
+    background-color: rgba(255, 255, 255, 0.5);
 }
 
-#nav a{
-  font-size: 16px;
-  text-decoration: none;
-  color: #fff;
+#nav a {
+    font-size: 16px;
+    text-decoration: none;
+    color: #fff;
 }
 
 /*body*/
-#blackblock{
-  height: 500px;
-  width: 80%;
-  margin: 0 auto;
-  position: relative;
-  top: 150px;
-  background-color: rgba(0, 0, 0, 0.8);
+#blackblock {
+    height: 500px;
+    width: 90%;
+    margin: 0 auto;
+    position: relative;
+    top: 150px;
+    background-color: rgba(0, 0, 0, 0.8);
 }
+.blockAreas {
+    color: #DDD;
+    border: 1px dashed #666; border-radius: 30px;
+    width: 30%;
+}
+.blockTitle {
+    background-color: #666;
+    font-weight: bold;
+    text-align: center;
+}
+/* footer */
