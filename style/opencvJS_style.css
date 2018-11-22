@@ -63,7 +63,6 @@ button:hover{
     width: 75%; min-height: 660px;
     position: relative;
     top: 18px; left: 26px;
-    border: 1px solid #666;
 }
 #srcImg{display: none}
 #currentImgCanvas{}

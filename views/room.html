@@ -399,17 +399,17 @@
     }
 
     function render () {
-        var date = new Date();
-        var hours = date.getHours() % 12;
-        var minutes = date.getMinutes();
-        var seconds = date.getSeconds();
+        let date = new Date();
+        let hours = date.getHours() % 12;
+        let minutes = date.getMinutes();
+        let seconds = date.getSeconds();
         shelf1.children[8].rotation.z = -2 * Math.PI * (hours + minutes / 60) / 12;
         shelf1.children[7].rotation.z = -2 * Math.PI * (minutes + seconds / 60) / 60;
         shelf1.children[9].rotation.z = -2 * Math.PI * seconds / 60;
         document.onkeydown = function(event){
             if (event.key == 'q') controls.enabled = (controls.enabled == true)?false:true;
             if (event.key == 'e') wallLight.lightSwitch();
-        }
+        };
         renderer.render(scene, camera);
     }
 </script>
