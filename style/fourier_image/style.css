@@ -1,0 +1,44 @@
+*{margin: 0; padding: 0;color: #FFF}
+body{background-color: #000}
+html, body{height: 100%}
+#images {
+    overflow: hidden;
+}
+#originPoint, #outputPoint{
+    width: 400px; height: 400px;
+    float: left;
+}
+#controlpane{
+    color: #DDD;
+    position: fixed;
+    top: 1vh; right: 1vh;
+    background-color: rgba(255, 255, 255, 0.1);
+    width: 20%; height: 98vh;
+    font-size: 12px;
+}
+#paneTitle{
+    height: 40px; width: 100%;
+    background-color: #DDD;
+    line-height: 40px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    color: #333;
+}
+#dftAmplitude {
+    width: 1000px; height: 300px;
+}
+#dftPhase {
+    width: 1000px; height: 300px;
+}
+#controlpane input{
+    color: #DDD;
+    border: 1px solid #444;
+    width: 50px;
+    background-color: transparent;
+    outline: none;
+}
+#expand{
+    position: relative;
+    top: 30px; left: 30px;
+}

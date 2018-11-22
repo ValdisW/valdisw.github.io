@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ROOM</title>
+    <style>
+        *{margin: 0; padding: 0}
+        #controlPanel{}
+    </style>
+</head>
+<body style="overflow:-Scroll; overflow-y:hidden" >
+<div id = 'controlPanel'></div>
+<script src="../js/three/three.js"></script>
+<script src="../js/three/lib/stats.min.js"></script>
+<script src="../js/three/OrbitControls.js"></script>
+<script>
+    // Global variables
+    var scene, camera, renderer;
+    var controls;
+    var stats;
+    var tableLamp1, tableLamp2, tableLamp3, wallLight;
+    var table1, table2, table3;
+    var bench1, bench2, bench3;
+    var sculpture;
+    var book1, book2, book3;
+    var paint1;
+    var shelf1;
+
+    init();
+    animate();
+
+    function Shelf(x, y, z){
+        var local = new THREE.Object3D();
+        var board1 = new THREE.Mesh(new THREE.CylinderGeometry(50, 50, 12, 6), new THREE.MeshLambertMaterial({color: 0xccFFFF}));
+        board1.rotation.x = Math.PI / 2;
+        board1.position.set(0, 0, 6);
+        local.add(board1);
+        var board2 = new THREE.Mesh(new THREE.CylinderGeometry(50, 50, 12, 6), new THREE.MeshLambertMaterial({color: 0xBBFFFF}));
+        board2.rotation.x = Math.PI / 2;
+        board2.position.set(100, 0, 6);
+        local.add(board2);
+        var board3 = new THREE.Mesh(new THREE.CylinderGeometry(50, 50, 12, 6), new THREE.MeshLambertMaterial({color: 0xBBFFFF}));
+        board3.rotation.x = Math.PI / 2;
+        board3.position.set(-100, 0, 6);
+        local.add(board3);
+        var board4 = new THREE.Mesh(new THREE.CylinderGeometry(50, 50, 12, 6), new THREE.MeshLambertMaterial({color: 0xBBFFFF}));
+        board4.rotation.x = Math.PI / 2;
+        board4.position.set(-50, 83, 6);
+        local.add(board4);
+        var board5 = new THREE.Mesh(new THREE.CylinderGeometry(50, 50, 12, 6), new THREE.MeshLambertMaterial({color: 0xBBFFFF}));
+        board5.rotation.x = Math.PI / 2;
+        board5.position.set(50, 83, 6);
+        local.add(board5);
+        var board6 = new THREE.Mesh(new THREE.CylinderGeometry(50, 50, 12, 6), new THREE.MeshLambertMaterial({color: 0xBBFFFF}));
+        board6.rotation.x = Math.PI / 2;
+        board6.position.set(50, -83, 6);
+        local.add(board6);
+        var board7 = new THREE.Mesh(new THREE.CylinderGeometry(50, 50, 12, 6), new THREE.MeshLambertMaterial({color: 0xBBFFFF}));
+        board7.rotation.x = Math.PI / 2;
+        board7.position.set(-50, -83, 6);
+        local.add(board7);
+        this.needle11 = new THREE.Object3D();
+        this.needle1 = new THREE.Mesh(new THREE.CylinderGeometry(1, 1, 36, 4), new THREE.MeshLambertMaterial({color: 0x000000}));
+        this.needle1.position.set(0, 18, 15);
+        this.needle11.add(this.needle1);
+        this.needle11.position.set(0, 0, 0);
+        this.needle11.rotation.z = -1* Math.PI;
+        local.add(this.needle11);
+        this.needle22 = new THREE.Object3D();
+        this.needle2 = new THREE.Mesh(new THREE.CylinderGeometry(1, 1, 20, 4), new THREE.MeshLambertMaterial({color: 0x000000}));
+        this.needle2.position.set(0, 10, 15);
+        this.needle22.position.set(0, 0, 0);
+        this.needle22.rotation.z = -1 * Math.PI;
+        this.needle22.add(this.needle2);
+        local.add(this.needle22);
+        this.needle33 = new THREE.Object3D();
+        this.needle3 = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 26, 4), new THREE.MeshLambertMaterial({color: 0x000000}));
+        this.needle3.position.set(0, 13, 15);
+        this.needle33.position.set(0, 0, 0);
+        this.needle33.rotation.z = -1 * Math.PI;
+        this.needle33.add(this.needle3);
+        local.add(this.needle33);
+        local.position.set(x, y, z);
+        return local;
+    }
+
+    function Paint(x, y, z, cover) {
+        var paintTexture =  new THREE.TextureLoader().load(cover);
+        var local = new THREE.Object3D();
+        this.paint = new THREE.Mesh(new THREE.PlaneGeometry(120, 100), new THREE.MeshLambertMaterial({map: paintTexture}));
+        this.paint.rotation.x = Math.PI / (-2);
+        local.add(this.paint);
+        local.position.set(x, y, z);
+        return local;
+    }
+
+    function  Bench(x, y, z) {
+        var dodec = new THREE.Mesh(new THREE.DodecahedronGeometry(40), new THREE.MeshLambertMaterial({color: 0xFFFFFF}));
+        dodec.position.set(x, y, z);
+        dodec.rotation.x = Math.PI / 180 * 36;
+        dodec.castShadow = true;
+        scene.add(dodec);
+    }
+
+    function Book(x, y, z, cover){
+
+        var bookTexture1 =  new THREE.TextureLoader().load(cover);
+        var bookTexture2 = new THREE.TextureLoader().load('../../texture/wood2.jpg');
+        var local = new THREE.Object3D();
+        //this.bookMaterial = [bookTexture1, bookTexture1, bookTexture1, bookTexture1, bookTexture1, bookTexture1];
+        //this.box = new THREE.Mesh(new THREE.BoxGeometry(300, 70, 200), new THREE.MeshFaceMaterial(this.bookMaterial));
+
+        this.box = new THREE.Mesh(new THREE.BoxGeometry(35, 3, 55), new THREE.MeshPhongMaterial({map: bookTexture1}));
+        //this.box.castShadow = true;
+        local.add(this.box);
+        local.position.set(x, y, z);
+        return local;
+    }
+
+    function Sculpture(x, y, z){
+        var local= new THREE.Object3D();
+        var cone = new THREE.Mesh(new THREE.ConeGeometry(30, 80, 50, 1), new THREE.MeshPhongMaterial({color: 0xFFFFFF}));
+        cone.position.y = 40;
+        cone.castShadow = true;
+        var cylinder = new THREE.Mesh(new THREE.CylinderGeometry(10, 10, 60, 50), new THREE.MeshPhongMaterial({color: 0xFFFFFF}));
+        cylinder.rotation.x = Math.PI / 2;
+        cylinder.position.y = 40;
+        cylinder.castShadow= true;
+        local.add(cone);
+        local.add(cylinder);
+        local.position.set(x, y, z);
+        return local;
+    }
+
+    function WallLight(x, y, z) {
+        this.lightIsOn = true;
+        // 发光体
+        this.main = new THREE.Mesh(new THREE.CylinderGeometry(16, 16, 60, 100), new THREE.MeshPhongMaterial({emissive: 0xAADDDD}));
+        this.main.position.set(x, y, z);
+        // 照射目标
+        this.lightTarget = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.1, 0.1), new THREE.MeshPhongMaterial());
+        this.lightTarget.position.set(x + 1, y, z);
+        // 灯
+        this.light = new THREE.SpotLight(0xFFFFFF, 2, 100000, Math.PI / 180 * 180, 0, 200);
+        this.light.position.set(x, y, z);
+        this.light.castShadow = true;
+        this.light.target = this.lightTarget;
+        //修饰
+        this.head1 = new THREE.Mesh(new THREE.CylinderGeometry(19, 19, 4, 100), new THREE.MeshPhongMaterial());
+        this.head1.position.set(x, y + 30, z);
+        this.head2 = new THREE.Mesh(new THREE.CylinderGeometry(2, 16, 24, 100), new THREE.MeshPhongMaterial());
+        this.head2.position.set(x, y + 38, z);
+        this.head3 = new THREE.Mesh(new THREE.CylinderGeometry(19, 19, 4, 100), new THREE.MeshPhongMaterial());
+        this.head3.position.set(x, y - 30, z);
+        this.head4 = new THREE.Mesh(new THREE.SphereGeometry(4, 50, 50), new THREE.MeshPhongMaterial());
+        this.head4.position.set(x, y + 54, z);
+        this.head5 = new THREE.Mesh(new THREE.CylinderGeometry(1, 1, 60, 100), new THREE.MeshPhongMaterial());
+        this.head5.position.set(x - 20, y + 54, z);
+        this.head5.rotation.z = Math.PI / 2;
+        scene.add(this.main);
+        scene.add(this.lightTarget);
+        scene.add(this.light);
+        scene.add(this.head1);
+        scene.add(this.head2);
+        scene.add(this.head3);
+        scene.add(this.head4);
+        scene.add(this.head5);
+    }
+
+    WallLight.prototype.lightSwitch = function () {
+        if (this.lightIsOn)  {
+            scene.remove(this.light);
+            this.lightIsOn = false;
+        }
+        else {
+            scene.add(this.light);
+            this.lightIsOn = true;
+        }
+    }
+
+    function Table1(x, y, z) {
+        // 桌面
+        var faceTexture = new THREE.TextureLoader().load('../../texture/wood2.jpg');
+        this.face = new THREE.Mesh(new THREE.BoxGeometry(180, 8, 250), new THREE.MeshLambertMaterial({color: 0xFFFFFF}));
+        this.face.position.set(x, y + 108, z);
+        this.face.castShadow = true;
+        this.face.receiveShadow = true;
+        // 桌腿
+        this.leg1 = new THREE.Mesh(new THREE.CylinderGeometry(6, 6, 110, 100), new THREE.MeshPhongMaterial({color: 0x000000}));
+        this.leg1.rotation.x = Math.PI / 180 * 15;
+        this.leg1.rotation.z = Math.PI / 180 * 15;
+        this.leg1.position.set(x + 80, y + 58, z - 120);
+        this.leg1.castShadow = true;
+        this.leg2 = new THREE.Mesh(new THREE.CylinderGeometry(6, 6, 110, 100), new THREE.MeshPhongMaterial({color: 0x000000}));
+        this.leg2.rotation.x = Math.PI / 180 * 15;
+        this.leg2.rotation.z = Math.PI / 180 * (-15);
+        this.leg2.position.set(x - 80, y + 58, z - 120);
+        this.leg2.castShadow = true;
+        this.leg3 = new THREE.Mesh(new THREE.CylinderGeometry(6, 6, 110, 100), new THREE.MeshPhongMaterial({color: 0x000000}));
+        this.leg3.rotation.x = Math.PI / 180 * (-15);
+        this.leg3.rotation.z = Math.PI / 180 * 15;
+        this.leg3.position.set(x + 80, y + 58, z + 120);
+        this.leg3.castShadow = true;
+        this.leg4 = new THREE.Mesh(new THREE.CylinderGeometry(6, 6, 110, 100), new THREE.MeshPhongMaterial({color: 0x000000}));
+        this.leg4.rotation.x = Math.PI / 180 * (-15);
+        this.leg4.rotation.z = Math.PI / 180 * (-15);
+        this.leg4.position.set(x - 80, y + 58, z + 120);
+        this.leg4.castShadow = true;
+        scene.add(this.face);
+        scene.add(this.leg1);
+        scene.add(this.leg2);
+        scene.add(this.leg3);
+        scene.add(this.leg4);
+    }
+
+    function Table2(x, y, z){
+        var faceTexture = new THREE.TextureLoader().load('../../texture/wood4.jpg');
+        this.face = new THREE.Mesh(new THREE.CylinderGeometry(60, 60, 5, 100), new THREE.MeshLambertMaterial({color: 0x222222}));
+        this.face.position.set(x, y + 104, z);
+        this.face.castShadow = true;
+
+        this.leg1 = new THREE.Mesh(new THREE.CylinderGeometry(4, 4, 120, 100), new THREE.MeshPhongMaterial({color: 0xECC294}));
+        this.leg1.position.set(x, y + 52, z);
+        this.leg1.rotation.z = Math.PI / 6;
+        this.leg1.castShadow = true;
+        this.leg2 = new THREE.Mesh(new THREE.CylinderGeometry(4, 4, 120, 100), new THREE.MeshPhongMaterial({color: 0xECC294}));
+        this.leg2.position.set(x, y + 52, z);
+        this.leg2.rotation.z = Math.PI / 6;
+        this.leg2.rotation.y = Math.PI / 3 *  2;
+        this.leg2.castShadow = true;
+        this.leg3 = new THREE.Mesh(new THREE.CylinderGeometry(4, 4, 120, 100), new THREE.MeshPhongMaterial({color: 0xECC294}));
+        this.leg3.position.set(x, y + 52, z);
+        this.leg3.rotation.z = Math.PI / 6;
+        this.leg3.rotation.y = Math.PI / 3 *  (-2);
+        this.leg3.castShadow = true;
+        scene.add(this.face);
+        scene.add(this.leg1);
+        scene.add(this.leg2);
+        scene.add(this.leg3);
+    }
+
+     function TableLamp(x, y, z) {
+         this.local = new THREE.Object3D();
+         this.lightIsOn = true;
+         // 灯罩
+         this.mainMateial = new THREE.MeshPhongMaterial({color: 0x666666});
+         this.shellPoints = [];
+         for ( var i = 0; i < 10; i ++ ) {
+             this.shellPoints.push( new THREE.Vector2( Math.sin( i * 0.2 ) * 10 + 5, ( i - 5 ) * 2 ) );
+         }
+         this.shell = new THREE.Mesh(new THREE.LatheGeometry(this.shellPoints, 100), new THREE.MeshPhongMaterial( { color: 0x666666, side: THREE.DoubleSide} ));
+         this.shell.rotation.z = Math.PI / 180 * 150;
+         this.shell.position.set(-40, 74, 0);
+         // 灯泡
+         this.bulb = new THREE.Mesh(new THREE.SphereGeometry(6, 32, 32), new THREE.MeshLambertMaterial({emissive: 0xFFFFFF}));
+         this.bulb.position.set(-40, 74, 0);
+         this.bulbLight = new THREE.SpotLight(0xFFFFFF, 2, 5000, Math.PI / 3);
+         this.bulbLight.position.set(-35, 84, 0);
+         this.bulbLight.target = this.bulb;
+         this.bulbLight.penumbra= 1;
+         this.bulbLight.castShadow = true;
+         // 灯臂
+         this.arm1 = new THREE.Mesh(new THREE.CylinderGeometry(6, 4, 7, 50), this.mainMateial);
+         this.arm1.rotation.z = Math.PI / 180 * 150;
+         this.arm1.position.set(-34, 84, 0);
+         this.arm2 = new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.6, 12, 32), this.mainMateial);
+         this.arm2.rotation.z = Math.PI / 180 * 150;
+         this.arm2.position.set(-30.5, 90, 0);
+         this.arm3 = new THREE.Mesh(new THREE.CylinderGeometry(3, 3, 4, 32), this.mainMateial);
+         this.arm3.rotation.x = Math.PI / 2;
+         this.arm3.position.set(-30, 91, 0);
+         this.arm4 = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 0.8, 52, 32), this.mainMateial);
+         this.arm4.rotation.z = Math.PI / 180 * 50;
+         this.arm4.position.set(-8, 72, 0);
+         this.arm5 = new THREE.Mesh(new THREE.CylinderGeometry(3, 3, 4, 32), this.mainMateial);
+         this.arm5.rotation.x = Math.PI / 2;
+         this.arm5.position.set(0, 65.5, 0);
+         this.arm6 = new THREE.Mesh(new THREE.CylinderGeometry(1.5, 1.5, 60, 32), this.mainMateial);
+         this.arm6.position.set(0, 36, 0);
+         // 灯座
+         this.base1 = new THREE.Mesh(new THREE.CylinderGeometry(2.5, 3.5, 3, 32), this.mainMateial);
+         this.base1.position.set(0, 7, 0);
+         this.base2 = new THREE.Mesh(new THREE.CylinderGeometry(5, 6, 2, 32), this.mainMateial);
+         this.base2.position.set(0, 5, 0);
+         this.base3 = new THREE.Mesh(new THREE.CylinderGeometry(8, 10, 1.5, 32), this.mainMateial);
+         this.base3.position.set(0, 3.5, 0);
+         this.base4 = new THREE.Mesh(new THREE.CylinderGeometry(15, 16, 3, 32), this.mainMateial);
+         this.base4.position.set(0, 1.5, 0);
+         this.local.add(this.shell);
+         this.local.add(this.bulb);
+         this.local.add(this.bulbLight);
+         this.local.add(this.arm1);
+         this.local.add(this.arm2);
+         this.local.add(this.arm3);
+         this.local.add(this.arm4);
+         this.local.add(this.arm5);
+         this.local.add(this.arm6);
+         this.local.add(this.base1);
+         this.local.add(this.base2);
+         this.local.add(this.base3);
+         this.local.add(this.base4);
+         this.local.position.set(x, y, z);
+         return this.local;
+    }
+
+    TableLamp.prototype.lightSwitch = function () {
+        if (this.lightIsOn)  {
+            scene.remove(this.bulbLight);
+            this.lightIsOn = false;
+        }
+        else  {
+            scene.add(this.bulbLight);
+            this.lightIsOn = true;
+        }
+    }
+
+    function init(){
+        // Basic Initialize
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 10000);
+        camera.position.set(750, 450, 650);
+        scene = new THREE.Scene();
+        renderer = new THREE.WebGLRenderer({antialias: true});
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMapEnabled = true;
+        document.body.appendChild(renderer.domElement);
+
+        // Orbit Control
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.minDistance = 100;
+        controls.maxDistance = 5000;
+        controls.maxPolarAngle = Math.PI * 2;
+        controls.minPolarAngle = 0;
+        controls.enabled = false;
+
+        // Wall
+        var wallTexture = new THREE.TextureLoader().load('../texture/wall.jpg');
+        var space = new THREE.Mesh(new THREE.CubeGeometry(800, 800, 800), new THREE.MeshPhongMaterial({map: wallTexture, side: THREE.BackSide}));
+        space.position.set(400, 400, 400);
+        space.receiveShadow = true;
+        scene.add(space);
+
+        // Floor
+        var floorTexture = new THREE.TextureLoader().load('../texture/wood3.jpg');
+        floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
+        floorTexture.repeat.set(16, 16);
+        var floor = new THREE.Mesh(new THREE.CubeGeometry(800, 10, 800), new THREE.MeshLambertMaterial({map: floorTexture}));
+        floor.position.set(400, 5, 400);
+        floor.receiveShadow = true;
+        scene.add(floor);
+
+        // FPS monitor
+        stats = new Stats();
+        document.body.appendChild(stats.domElement);
+
+        // add components
+        tableLamp1 = new TableLamp(540, 107, 120);
+        tableLamp2 = new TableLamp(150, 112, 170);
+        tableLamp2.rotation.y = Math.PI / 3 * 2;
+        tableLamp3 = new TableLamp(200, 112, 680);
+        tableLamp3.rotation.y = Math.PI / (-2);
+        table1 = new Table1(200, 0, 200);
+        table2 = new Table2(500, 0, 120);
+        table3 = new Table1(200, 0, 600);
+        table4 = new Table2(700, 0, 130);
+        wallLight = new WallLight(50, 400, 400);
+        bench1 = new Bench(400, 40, 350);
+        bench2 = new Bench(550, 40, 225);
+        bench3 = new Bench(350, 40, 625);
+        sculpture = new Sculpture(180, 112, 520);
+        sculpture.rotation.y = Math.PI / (-3);
+        book1 = new Book(500, 108.5, 160,  '../texture/cover.jpg');
+        book2 = new Book(250, 114, 230 , '../texture/cover0.jpg');
+        book3 = new Book(260, 117, 230 , '../texture/cover1.jpg');
+        book2.rotation.y = Math.PI / 3;
+        book3.rotation.y = Math.PI / 6;
+        book3.rotation.y = Math.PI / 6;
+        paint1 = new Paint(230, 112.3, 580 , '../texture/cover00.jpg');
+        paint1.rotation.y = Math.PI / 2;
+        shelf1 = new Shelf(400, 400, 0);
+
+        scene.add(tableLamp1);
+        scene.add(tableLamp2);
+        scene.add(tableLamp3);
+        scene.add(sculpture);
+        scene.add(book1);
+        scene.add(book2);
+        scene.add(book3);
+        scene.add(paint1);
+        scene.add(shelf1);
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+        render();
+        stats.update();
+    }
+
+    function render () {
+        var date = new Date();
+        var hours = date.getHours() % 12;
+        var minutes = date.getMinutes();
+        var seconds = date.getSeconds();
+        shelf1.children[8].rotation.z = -2 * Math.PI * (hours + minutes / 60) / 12;
+        shelf1.children[7].rotation.z = -2 * Math.PI * (minutes + seconds / 60) / 60;
+        shelf1.children[9].rotation.z = -2 * Math.PI * seconds / 60;
+        document.onkeydown = function(event){
+            if (event.key == 'q') controls.enabled = (controls.enabled == true)?false:true;
+            if (event.key == 'e') wallLight.lightSwitch();
+        }
+        renderer.render(scene, camera);
+    }
+</script>
+</body>
+</html>

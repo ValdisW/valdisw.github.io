@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>互动媒体技术_王瑞</title>
+    <style>
+        *{margin: 0; padding: 0}
+        html, body{height: 100%; width: 100%}
+        #canvas{background-color: #000}
+    </style>
+</head>
+<body style="overflow: -Scroll; overflow-y: hidden" >
+<canvas id="canvas"></canvas>
+
+<script src="../script/mathUtils.js"></script>
+<script>
+    let canvas = document.getElementById('canvas');
+    let cxt = canvas.getContext('2d');
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+
+    let origin_y = window.innerHeight / 2,
+        origin_x = window.innerWidth / 2;
+
+    cxt.strokeStyle = '#FFF';
+    cxt.lineWidth = 1;
+    cxt.shadowBlur = 30;
+    cxt.shadowColor = '#FFF';
+    cxt.fillStyle = '#FFF';
+
+    const pointNum = 500;
+    let randomPoints = [];
+    for (let i = 0; i < pointNum; i++) randomPoints.push(new Complex(origin_x+(origin_x-100)*Math.cos(2*Math.PI/pointNum*i)+Math.round((Math.random()-1)*50), origin_y+(origin_y-100)*Math.sin(2*Math.PI/pointNum*i)+Math.round((Math.random()-1)*50)));
+
+    let fourierPoints = dft(randomPoints);
+    let newRandomPoints = idft(fourierPoints);
+
+    cxt.beginPath();
+    cxt.moveTo(newRandomPoints[0].real, newRandomPoints[0].imaginary);
+    for (let i = 1; i < pointNum; i++) cxt.lineTo(newRandomPoints[i].real, newRandomPoints[i].imaginary);
+    cxt.stroke();
+
+    let num = 1;
+    let render = function () {
+        let handle = requestAnimationFrame(render);
+        cxt.clearRect(0, 0, origin_x * 2, origin_y * 2);
+
+        let partOfFourierPoints = fourierPoints.slice(0, num);
+        let partOfRandomPoints = idft(partOfFourierPoints);
+
+        cxt.beginPath();
+        cxt.moveTo(partOfRandomPoints[0].real, partOfRandomPoints[0].imaginary);
+        for (let i = 1; i < num; i++) cxt.lineTo(partOfRandomPoints[i].real, partOfRandomPoints[i].imaginary);
+        cxt.stroke();
+
+        num = (num + 1) % pointNum + 1;
+    };
+    render();
+</script>
+</body>
+</html>

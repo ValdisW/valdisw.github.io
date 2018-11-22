@@ -40,6 +40,31 @@ Complex.prototype.scaling = function (real) {
     return new Complex(this.real * real, this.imaginary * real);
 };
 
+// 从复数数组中获取有最大模的复数及下标
+const getMaxComplex = function (complexArr) {
+    let max = 0, index = 0;
+    for (let i = 0; i < complexArr.length; i++) {
+        let currentVal = complexArr[i].getLength();
+        if (currentVal >max) {
+            max = currentVal;
+            index = i;
+        }
+    }
+    return [max, index];
+}
+
+// 从复数数组中获取有最小模的复数及下标
+const getMinComplex = function (complexArr) {
+    let min = 0, index = 0;
+    for (let i = 0; i < complexArr.length; i++) {
+        let currentVal = complexArr[i].getLength();
+        if (currentVal >min) {
+            min = currentVal;
+            index = i;
+        }
+    }
+    return [min, index];
+}
 //-----------------------以上规定复数-------------------------------
 // 注意, f(x) 都是复数
 
