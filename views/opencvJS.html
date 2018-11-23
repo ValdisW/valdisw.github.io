@@ -18,8 +18,8 @@
         <input type="file" class="fileInputButton" id="srcImgInputButton" accept="image/*">
     </button>
     <ul>
-        <li id="fourierTransButton">
-            傅里叶变换
+        <li id="plusOrMinusButton">
+            图像加减
         </li>
         <li id="linearGrayTransButton">
             灰度变换
@@ -66,7 +66,16 @@
     <input class="channelInput" type="radio" value=0 name="channel" checked>红
     <input class="channelInput" type="radio" value=1 name="channel">绿
     <input class="channelInput" type="radio" value=2 name="channel">蓝
-    <input id="ifEqualize" type="checkbox">均衡化
+    <button id="ifEqualize" type="checkbox">均衡化</button>
+    <button>确定</button>
+</div>
+
+<div id="plusOrMinusPanel">
+    <p>图像加减</p>
+    <button onclick="document.getElementById('plusOrMinusInputButton').click()">
+        选择图片
+        <input type="file" class="fileInputButton" id="plusOrMinusInputButton" accept="image/*">
+    </button>
     <button>确定</button>
 </div>
 

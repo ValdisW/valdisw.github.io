@@ -148,13 +148,31 @@ $('#linearGrayTransButton').click(function () {
                     color: '#FFF',
                     width: 1
                 },
-                data: [[0, 0], [255, 255]]
+                data: [[0, 0], [0, 0], [255, 255], [255, 255]]
             },
             animation: false
         };
         grayChart.setOption(grayOption);
+
+        $('#from_min').change(function () {
+            grayOption.series.data[1][0] = parseInt($('#from_min').val());
+            grayChart.setOption(grayOption);
+        });
+        $('#from_max').change(function () {
+            grayOption.series.data[2][0] = parseInt($('#from_max').val());
+            grayChart.setOption(grayOption);
+        });
+        $('#to_min').change(function () {
+            grayOption.series.data[1][1] = parseInt($('#to_min').val());
+            grayChart.setOption(grayOption);
+        });
+        $('#to_max').change(function () {
+            grayOption.series.data[2][1] = parseInt($('#to_max').val());
+            grayChart.setOption(grayOption);
+        });
     }
 });
+
 $('#grayPanel button').click(function () {
     linearGrayTrans(currentMat,
         parseInt($('#from_min').val()),
@@ -221,8 +239,10 @@ $('#histogramTransButton').click(function () {
         histogramChart.setOption(histogramOption);
 
         let channelInputs = $('.channelInput');
+        let currentChannel = 0;
         for (let channelInput = 0; channelInput < channelInputs.length; channelInput++) {
             channelInputs[channelInput].onchange = function () {
+                currentChannel = channelInput;
                 histogramData = getHistogramData(currentMat, channelInput);        // 获取直方图数据
                 histogramData_2 = new Array(getHistogramData.length);   // 转化成二维数组用于echarts绘制
                 for (let i = 0; i < histogramData.length; i++) {
@@ -234,23 +254,32 @@ $('#histogramTransButton').click(function () {
                 histogramOption.series.itemStyle.color = colorArr[channelInput];
                 histogramChart.setOption(histogramOption);
             }
-            $('#ifEqualize').change(function () {
-                if (this.checked) {             // checkbox被选中
-                    histogramData = histogramEqualize(currentMat, getHistogramData(currentMat, channelInput), channelInput);
-                    histogramData_2 = new Array(getHistogramData.length);   // 转化成二维数组用于echarts绘制
-                    for (let i = 0; i < histogramData.length; i++) {
-                        histogramData_2[i] = new Array(2);
-                        histogramData_2[i][0] = i;
-                        histogramData_2[i][1] = histogramData[i];
-                    }
-                    histogramOption.series.data = histogramData_2;
-                    histogramOption.series.itemStyle.color = colorArr[channelInput];
-                    histogramChart.setOption(histogramOption);
+            $('#ifEqualize').click(function () {
+                histogramData = histogramEqualize(currentMat, getHistogramData(currentMat, currentChannel), currentChannel);
+                histogramData_2 = new Array(getHistogramData.length);   // 转化成二维数组用于echarts绘制
+                for (let i = 0; i < histogramData.length; i++) {
+                    histogramData_2[i] = new Array(2);
+                    histogramData_2[i][0] = i;
+                    histogramData_2[i][1] = histogramData[i];
                 }
+                histogramOption.series.data = histogramData_2;
+                histogramOption.series.itemStyle.color = colorArr[currentChannel];
+                histogramChart.setOption(histogramOption);
             });
         }
     }
 });
-$('#histogramPanel button').click(function () {
+$('#histogramPanel button:last').click(function () {
     $('#histogramPanel, #black').css('display', 'none');
+});
+
+// 直方图变换
+$('#plusOrMinusButton').click(function () {
+    if (!currentMat) alert('请先选择一张图片！');
+    else {
+        $('#plusOrMinusPanel, #black').css('display', 'block');       // 弹出窗口
+    }
+});
+$('#plusOrMinusPanel button:last').click(function () {
+    $('#plusOrMinusPanel, #black').css('display', 'none');
 });
