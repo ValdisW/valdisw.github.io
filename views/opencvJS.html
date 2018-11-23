@@ -52,6 +52,10 @@
 <div id="grayPanel">
     <p>灰度变换</p>
     <div id="grayChart"></div>
+    原灰度范围:最小值:<input id="from_min" type="text" value=0>
+    最大值:<input id="from_max" type="text" value=255><br>
+    变换后灰度范围:最小值<input id="to_min" type="text" value=0>
+    最大值:<input id="to_max" type="text" value=255>
     <button>确定</button>
 </div>
 
@@ -62,6 +66,7 @@
     <input class="channelInput" type="radio" value=0 name="channel" checked>红
     <input class="channelInput" type="radio" value=1 name="channel">绿
     <input class="channelInput" type="radio" value=2 name="channel">蓝
+    <input id="ifEqualize" type="checkbox">均衡化
     <button>确定</button>
 </div>
 

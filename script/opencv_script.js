@@ -5,20 +5,6 @@ function onOpenCvReady() {
     $('#black, #waiting').fadeOut(300);
 }
 
-// 获取某通道的直方图数据
-const getHistogramData = function (img, channel) {          // 0->R, 1->G, 2->B, 3->A
-    let histogramData = new Array(256);
-    for (let i = 0; i < 256; i++) histogramData[i] = 0;         // initialize
-    // 逐行扫描
-    for (let i = 0; i < img.rows; i++)
-        for (let j = 0; j < img.cols; j++) {
-            let pixelData = img.ucharPtr(i, j);
-            let valueData = pixelData[channel];
-            histogramData[valueData]++;
-        }
-    return histogramData;
-}
-
 // 线性灰度变换
 const linearGrayTrans = function (img, f1, f2, t1, t2) {
     let k = (t2 - t1) / (f2 - f1),
@@ -34,7 +20,51 @@ const linearGrayTrans = function (img, f1, f2, t1, t2) {
             }
         }
     }
-    cv.imshow('currentImgCanvas', currentMat);      // 显示
+    cv.imshow('currentImgCanvas', img);      // 显示
+}
+
+// 获取某通道的直方图数据
+const getHistogramData = function (img, channel) {          // 0->R, 1->G, 2->B, 3->A
+    let histogramData = new Array(256);
+    for (let i = 0; i < 256; i++) histogramData[i] = 0;         // initialize
+    // 逐行扫描
+    for (let i = 0; i < img.rows; i++)
+        for (let j = 0; j < img.cols; j++) {
+            let pixelData = img.ucharPtr(i, j);
+            let valueData = pixelData[channel];
+            histogramData[valueData]++;
+        }
+    return histogramData;
+}
+
+// 直方图均衡化
+const histogramEqualize = function (image, originHistogram, channel) {
+    let distribution = new Array(originHistogram.length);       // 计算概率分布函数
+    let pixels = image.cols * image.rows;
+    for (let i = 0; i < distribution.length; i++) {
+        distribution[i] = 0;
+        for (let j = 0; j <= i; j++) distribution[i] += originHistogram[j];
+        distribution[i] /= pixels;
+        distribution[i] = Math.round(distribution[i]*255);
+    }
+
+    // 均衡化后的直方图
+    let newHistogram = new Array(originHistogram.length);
+    for (let i = 0; i < newHistogram.length; i++) newHistogram[i] = 0;
+    for (let i = 0; i < newHistogram.length; i++) {
+        let index = distribution[i];
+        newHistogram[index] += originHistogram[i];
+    }
+
+    // 应用到图像
+    for (let i = 0; i < image.rows; i++) {
+        for (let j = 0; j < image.cols; j++) {
+            let pixelData = image.ucharPtr(i, j);
+            pixelData[channel] = distribution[pixelData[channel]];
+        }
+    }
+    cv.imshow('currentImgCanvas', image);
+    return newHistogram;
 }
 
 // 读取图片
@@ -135,7 +165,11 @@ $('#histogramTransButton').click(function () {
     if (!currentMat) alert('请先选择一张图片！');
     else {
         $('#histogramPanel, #black').css('display', 'block');       // 弹出窗口
-        let histogramData = getHistogramData(currentMat, 0);        // 获取直方图数据
+
+        let channelMode = 0;
+
+        // initialize
+        let histogramData = getHistogramData(currentMat, channelMode);        // 获取直方图数据
         let histogramData_2 = new Array(getHistogramData.length);   // 转化成二维数组用于echarts绘制
         for (let i = 0; i < histogramData.length; i++) {
             histogramData_2[i] = new Array(2);
@@ -183,7 +217,7 @@ $('#histogramTransButton').click(function () {
 
         let channelInputs = $('.channelInput');
         for (let channelInput = 0; channelInput < channelInputs.length; channelInput++) {
-            channelInputs[channelInput].onclick = function () {
+            channelInputs[channelInput].onchange = function () {
                 histogramData = getHistogramData(currentMat, channelInput);        // 获取直方图数据
                 histogramData_2 = new Array(getHistogramData.length);   // 转化成二维数组用于echarts绘制
                 for (let i = 0; i < histogramData.length; i++) {
@@ -195,6 +229,20 @@ $('#histogramTransButton').click(function () {
                 histogramOption.series.itemStyle.color = colorArr[channelInput];
                 histogramChart.setOption(histogramOption);
             }
+            $('#ifEqualize').change(function () {
+                if (this.checked) {             // checkbox被选中
+                    histogramData = histogramEqualize(currentMat, getHistogramData(currentMat, channelInput), channelInput);
+                    histogramData_2 = new Array(getHistogramData.length);   // 转化成二维数组用于echarts绘制
+                    for (let i = 0; i < histogramData.length; i++) {
+                        histogramData_2[i] = new Array(2);
+                        histogramData_2[i][0] = i;
+                        histogramData_2[i][1] = histogramData[i];
+                    }
+                    histogramOption.series.data = histogramData_2;
+                    histogramOption.series.itemStyle.color = colorArr[channelInput];
+                    histogramChart.setOption(histogramOption);
+                }
+            });
         }
     }
 });
