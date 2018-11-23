@@ -52,6 +52,8 @@
 <div id="grayPanel">
     <p>灰度变换</p>
     <div id="grayChart"></div>
+    <input class="grayModeInput" type="radio" value=0 name="grayMode" checked>线性
+    <input class="grayModeInput" type="radio" value=1 name="grayMode">对数
     原灰度范围:最小值:<input id="from_min" type="text" value=0>
     最大值:<input id="from_max" type="text" value=255><br>
     变换后灰度范围:最小值<input id="to_min" type="text" value=0>
@@ -76,12 +78,15 @@
         选择图片
         <input type="file" class="fileInputButton" id="plusOrMinusInputButton" accept="image/*">
     </button>
+    <input class="plusOrMinus" type="radio" value=0 name="plusOrMinus" checked>加法
+    <input class="plusOrMinus" type="radio" value=1 name="plusOrMinus">减法
     <button>确定</button>
 </div>
 
 <!-- 脚本 -->
 <script src="../js/jquery-3.3.1.min.js"></script>
 <script src="../js/echarts.js"></script>
+<script src="../script/opencvUtils.js"></script>
 <script src="../script/opencv_script.js"></script>
 <script async src="../js/opencv.js" onload="onOpenCvReady()"></script>
 </body>

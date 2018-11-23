@@ -6,7 +6,7 @@ ul{list-style-type: none}
 #black{
     position: fixed;
     height: 100vh; width: 100vw;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.3);
     z-index: 10;
 }
 #waiting{
@@ -79,6 +79,7 @@ button:hover{
     background-color: transparent;
     border: 1px solid #666;
     outline: none;
+    width: 60px;
 }
 #grayChart {
 
