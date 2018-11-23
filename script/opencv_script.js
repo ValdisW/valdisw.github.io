@@ -156,7 +156,12 @@ $('#linearGrayTransButton').click(function () {
     }
 });
 $('#grayPanel button').click(function () {
-    linearGrayTrans(currentMat, 0, 128, 0, 32);
+    linearGrayTrans(currentMat,
+        parseInt($('#from_min').val()),
+        parseInt($('#from_max').val()),
+        parseInt($('#to_min').val()),
+        parseInt($('#to_max').val())
+    );
     $('#grayPanel, #black').css('display', 'none');
 });
 
