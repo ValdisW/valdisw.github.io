@@ -83,10 +83,12 @@ $('#linearGrayTransButton').click(function () {
 
         $('.grayModeInput:first, .grayModeInput:last').click(function () {
             if ($('.grayModeInput:first')[0].checked) {
-
+                $('#linearPart').css('display', 'block');
+                $('#expPart').css('display', 'none');
             }
             if ($('.grayModeInput:last')[0].checked) {
-
+                $('#linearPart').css('display', 'none');
+                $('#expPart').css('display', 'block');
             }
         })
 
@@ -128,19 +130,20 @@ $('#histogramTransButton').click(function () {
         let channelMode = 0;
 
         // initialize
+        $('.channelInput:first')[0].checked = true;         // 默认通道选红色
         let histogramData = getHistogramData(currentMat, channelMode);        // 获取直方图数据
-        let histogramData_2 = new Array(getHistogramData.length);   // 转化成二维数组用于echarts绘制
+        let histogramData_2 = new Array(getHistogramData.length);                   // 转化成二维数组，用于echarts绘制
         for (let i = 0; i < histogramData.length; i++) {
             histogramData_2[i] = new Array(2);
             histogramData_2[i][0] = i;
             histogramData_2[i][1] = histogramData[i];
         }
 
-        let histogramChartBlock = $('#histogramChart').css({
+        let histogramChartBlock = $('#histogramChart').css({            // 获取并设置直方图图表大小
             'width': '500px',
             'height': '300px'
         })[0];
-        let histogramChart = echarts.init(histogramChartBlock);
+        let histogramChart = echarts.init(histogramChartBlock);     // 初始绘图
         let histogramOption = {
             tooltip: {
                 formatter: function (params){
@@ -175,34 +178,36 @@ $('#histogramTransButton').click(function () {
         histogramChart.setOption(histogramOption);
 
         let channelInputs = $('.channelInput');
-        let currentChannel = 0;
-        for (let channelInput = 0; channelInput < channelInputs.length; channelInput++) {
-            channelInputs[channelInput].onchange = function () {
-                currentChannel = channelInput;
-                histogramData = getHistogramData(currentMat, channelInput);        // 获取直方图数据
-                histogramData_2 = new Array(getHistogramData.length);   // 转化成二维数组用于echarts绘制
-                for (let i = 0; i < histogramData.length; i++) {
-                    histogramData_2[i] = new Array(2);
-                    histogramData_2[i][0] = i;
-                    histogramData_2[i][1] = histogramData[i];
-                }
-                histogramOption.series.data = histogramData_2;
-                histogramOption.series.itemStyle.color = colorArr[channelInput];
-                histogramChart.setOption(histogramOption);
+        let currentChannel = 0;             // 当前通道
+
+        
+        channelInputs[channelInput].onchange = function () {
+            currentChannel = channelInput;
+            histogramData = getHistogramData(currentMat, channelInput);        // 获取直方图数据
+            histogramData_2 = new Array(getHistogramData.length);   // 转化成二维数组用于echarts绘制
+            for (let i = 0; i < histogramData.length; i++) {
+                histogramData_2[i] = new Array(2);
+                histogramData_2[i][0] = i;
+                histogramData_2[i][1] = histogramData[i];
             }
-            $('#ifEqualize').click(function () {
-                histogramData = histogramEqualize(currentMat, getHistogramData(currentMat, currentChannel), currentChannel);
-                histogramData_2 = new Array(getHistogramData.length);   // 转化成二维数组用于echarts绘制
-                for (let i = 0; i < histogramData.length; i++) {
-                    histogramData_2[i] = new Array(2);
-                    histogramData_2[i][0] = i;
-                    histogramData_2[i][1] = histogramData[i];
-                }
-                histogramOption.series.data = histogramData_2;
-                histogramOption.series.itemStyle.color = colorArr[currentChannel];
-                histogramChart.setOption(histogramOption);
-            });
+            histogramOption.series.data = histogramData_2;
+            histogramOption.series.itemStyle.color = colorArr[channelInput];
+            histogramChart.setOption(histogramOption);
         }
+        $('#ifEqualize').click(function () {
+            histogramData = histogramEqualize(currentMat, getHistogramData(currentMat, currentChannel), currentChannel);
+            histogramData_2 = new Array(getHistogramData.length);   // 转化成二维数组用于echarts绘制
+            for (let i = 0; i < histogramData.length; i++) {
+                histogramData_2[i] = new Array(2);
+                histogramData_2[i][0] = i;
+                histogramData_2[i][1] = histogramData[i];
+            }
+            histogramOption.series.data = histogramData_2;
+            histogramOption.series.itemStyle.color = colorArr[currentChannel];
+            histogramChart.setOption(histogramOption);
+        });
+
+
     }
 });
 $('#histogramPanel button:last').click(function () {

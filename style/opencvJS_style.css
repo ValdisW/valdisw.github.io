@@ -84,6 +84,9 @@ button:hover{
 #grayChart {
 
 }
+#expPart {
+    display: none;
+}
 
 /* 直方图变换 */
 #histogramPanel{

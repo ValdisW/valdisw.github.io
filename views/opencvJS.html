@@ -54,10 +54,17 @@
     <div id="grayChart"></div>
     <input class="grayModeInput" type="radio" value=0 name="grayMode" checked>线性
     <input class="grayModeInput" type="radio" value=1 name="grayMode">对数
-    原灰度范围:最小值:<input id="from_min" type="text" value=0>
-    最大值:<input id="from_max" type="text" value=255><br>
-    变换后灰度范围:最小值<input id="to_min" type="text" value=0>
-    最大值:<input id="to_max" type="text" value=255>
+    <div id="linearPart">
+        原灰度范围:最小值:<input id="from_min" type="text" value=0>
+        最大值:<input id="from_max" type="text" value=255><br>
+        变换后灰度范围:最小值<input id="to_min" type="text" value=0>
+        最大值:<input id="to_max" type="text" value=255>
+    </div>
+    <div id="expPart">
+        参数a:<input id="para_a" type="text" value=0>
+        参数b:<input id="para_b" type="text" value=0>
+        参数c:<input id="para_c" type="text" value=0>
+    </div>
     <button>确定</button>
 </div>
 
@@ -65,7 +72,7 @@
     <p>直方图变换</p>
     <div id="histogramChart"></div>
     <span>通道:&nbsp;</span>
-    <input class="channelInput" type="radio" value=0 name="channel" checked>红
+    <input class="channelInput" type="radio" value=0 name="channel">红
     <input class="channelInput" type="radio" value=1 name="channel">绿
     <input class="channelInput" type="radio" value=2 name="channel">蓝
     <button id="ifEqualize" type="checkbox">均衡化</button>
