@@ -180,7 +180,7 @@ $('#histogramTransButton').click(function () {
         let channelInputs = $('.channelInput');
         let currentChannel = 0;             // 当前通道
 
-        
+
         channelInputs[channelInput].onchange = function () {
             currentChannel = channelInput;
             histogramData = getHistogramData(currentMat, channelInput);        // 获取直方图数据
