@@ -118,6 +118,7 @@ $('#grayPanel button').click(function () {
         parseInt($('#to_min').val()),
         parseInt($('#to_max').val())
     );
+    cv.imshow('currentImgCanvas', currentMat);      // 显示
     $('#grayPanel, #black').css('display', 'none');
 });
 
@@ -224,14 +225,25 @@ $('#plusOrMinusPanel button:last').click(function () {
     $('#plusOrMinusPanel, #black').css('display', 'none');
 });
 
-// 空域平滑
+// 空域平滑滤波
 $('#spatialSmoothButton').click(function () {
     if (!currentMat) alert('请先选择一张图片！');
     else {
         $('#spacialSmoothPanel, #black').css('display', 'block');       // 弹出窗口
         setMoveable('spacialSmoothPanel', 100, 100);
+        let filterMode = 0;             // 默认为均值滤波
+        $('.filterModes:eq(0), .filterModes:eq(1)').change(function () {        // 更改模式
+            filterMode = this.value;
+        });
+
+        $('#spacialSmoothPanel button:last').click(function () {
+            if (!filterMode)                  // 应用均值滤波
+                for (let c = 0; c < 3; c++) averageSmooth(currentMat, c, parseInt($('#templetSize').val()));
+            else                                    // 应用中值滤波
+                for (let c = 0; c < 3; c++) midValueSmooth(currentMat, c, parseInt($('#templetSize').val()));
+            cv.imshow('currentImgCanvas', currentMat);      // 显示
+            $('#spacialSmoothPanel, #black').css('display', 'none');
+        });
+
     }
-});
-$('#spacialSmoothPanel button:last').click(function () {
-    $('#spacialSmoothPanel, #black').css('display', 'none');
 });

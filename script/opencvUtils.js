@@ -2,18 +2,15 @@
 const linearGrayTrans = function (img, f1, f2, t1, t2) {
     let k = (t2 - t1) / (f2 - f1),
         b = (f1 * t2 - f2 * t1) / (f1 - f2);
-    for (let i = 0; i < img.rows; i++) {
+    for (let i = 0; i < img.rows; i++)
         for (let j = 0; j < img.cols; j++) {
             let pixelData = img.ucharPtr(i, j);
-            for (let c = 0; c < 3; c++) {
+            for (let c = 0; c < 3; c++)
                 if (pixelData[c] >= f1 && pixelData[c] <= f2) {
                     let a = Math.round(k * pixelData[c]);
                     pixelData[c] = a + b;
                 }
-            }
         }
-    }
-    cv.imshow('currentImgCanvas', img);      // 显示
 }
 
 // 获取某通道的直方图数据
@@ -62,23 +59,55 @@ const histogramEqualize = function (image, originHistogram, channel) {
 
 // 均值滤波
 const averageSmooth = function (img, channel, templeteSize) {
+    // 计算各像素点的新值
+    let ouputImg = new Array(img.rows - templeteSize);
+    for (let i = 0; i < ouputImg.length; i++) {
+        ouputImg[i] = new Array(img.cols - templeteSize);
+        for (let j = 0; j < img.cols - templeteSize; j++) {
+            let averageValue = 0;   // 计算均值
+            for (let m = 0; m < templeteSize; m++)
+                for (let n = 0; n < templeteSize; n++)
+                    averageValue += img.ucharPtr(i + m, j + n)[channel];
+            averageValue = Math.round(averageValue / (templeteSize * templeteSize));
+            ouputImg[i][j] = averageValue;
+        }
+    }
+
+    // 应用到图像
+    for (let i = 0; i < img.rows; i++)
+        for (let j = 0; j < img.cols; j++)
+            img.ucharPtr(i, j)[channel] = 0;
+
     for (let i = 0; i < img.rows - templeteSize; i++)
         for (let j = 0; j < img.cols - templeteSize; j++)
-            for (let channel = 0; channel < 3; channel++){
-                let pixelData = img.ucharPtr(i, j);
-                let valueData = pixelData[channel];
-                histogramData[valueData]++;
-            }}
+            img.ucharPtr(i + Math.round(templeteSize / 2), j + Math.round(templeteSize / 2))[channel] = ouputImg[i][j];
+}
 
 // 中值滤波
 const midValueSmooth = function (img, channel, templeteSize) {
+    // 计算各像素点的新值
+    let ouputImg = new Array(img.rows - templeteSize);
+    for (let i = 0; i < ouputImg.length; i++) {
+        ouputImg[i] = new Array(img.cols - templeteSize);
+        for (let j = 0; j < img.cols - templeteSize; j++) {
+            let tempArr = [];
+            for (let m = 0; m < templeteSize; m++)
+                for (let n = 0; n < templeteSize; n++)
+                    tempArr.push(img.ucharPtr(i + m, j + n)[channel]);
+            tempArr.sort(function(a, b) {return a - b;});
+            let middleValue = tempArr[Math.ceil(tempArr.length / 2)];
+            ouputImg[i][j] = middleValue;
+        }
+    }
+
+    // 应用到图像
+    for (let i = 0; i < img.rows; i++)
+        for (let j = 0; j < img.cols; j++)
+            img.ucharPtr(i, j)[channel] = 0;
+
     for (let i = 0; i < img.rows - templeteSize; i++)
         for (let j = 0; j < img.cols - templeteSize; j++)
-            for (let channel = 0; channel < 3; channel++){
-                let pixelData = img.ucharPtr(i, j);
-                let valueData = pixelData[channel];
-                histogramData[valueData]++;
-            }
+            img.ucharPtr(i + Math.round(templeteSize / 2), j + Math.round(templeteSize / 2))[channel] = ouputImg[i][j];
 }
 
 // 设置为可拖动
