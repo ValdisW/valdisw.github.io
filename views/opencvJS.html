@@ -18,6 +18,9 @@
         <input type="file" class="fileInputButton" id="srcImgInputButton" accept="image/*">
     </button>
     <ul>
+        <li id="spatialSmoothButton">
+            空域平滑
+        </li>
         <li id="plusOrMinusButton">
             图像加减
         </li>
@@ -87,6 +90,17 @@
     </button>
     <input class="plusOrMinus" type="radio" value=0 name="plusOrMinus" checked>加法
     <input class="plusOrMinus" type="radio" value=1 name="plusOrMinus">减法
+    <button>确定</button>
+</div>
+
+<div id="spacialSmoothPanel">
+    <p>空域平滑</p>
+    <div id="chooseFilterMode">
+        <input class="filterModes" type="radio" value=0 name="filterMode" checked>均值滤波
+        <input class="filterModes" type="radio" value=1 name="filterMode">中值滤波
+    </div>
+    模板大小: <input id="templetSize" type="text" value=0>
+
     <button>确定</button>
 </div>
 

@@ -181,22 +181,10 @@ $('#histogramTransButton').click(function () {
         let currentChannel = 0;             // 当前通道
 
 
-        channelInputs[channelInput].onchange = function () {
-            currentChannel = channelInput;
-            histogramData = getHistogramData(currentMat, channelInput);        // 获取直方图数据
-            histogramData_2 = new Array(getHistogramData.length);   // 转化成二维数组用于echarts绘制
-            for (let i = 0; i < histogramData.length; i++) {
-                histogramData_2[i] = new Array(2);
-                histogramData_2[i][0] = i;
-                histogramData_2[i][1] = histogramData[i];
-            }
-            histogramOption.series.data = histogramData_2;
-            histogramOption.series.itemStyle.color = colorArr[channelInput];
-            histogramChart.setOption(histogramOption);
-        }
-        $('#ifEqualize').click(function () {
-            histogramData = histogramEqualize(currentMat, getHistogramData(currentMat, currentChannel), currentChannel);
-            histogramData_2 = new Array(getHistogramData.length);   // 转化成二维数组用于echarts绘制
+        $('.channelInput:eq(0), .channelInput:eq(1), .channelInput:eq(2)').change(function () {         // 选择通道
+            currentChannel = this.value;                                                                          // 调整当前通道
+            histogramData = getHistogramData(currentMat, currentChannel);        // 获取直方图数据
+            histogramData_2 = new Array(getHistogramData.length);                      // 转化成二维数组用于echarts绘制
             for (let i = 0; i < histogramData.length; i++) {
                 histogramData_2[i] = new Array(2);
                 histogramData_2[i][0] = i;
@@ -206,8 +194,18 @@ $('#histogramTransButton').click(function () {
             histogramOption.series.itemStyle.color = colorArr[currentChannel];
             histogramChart.setOption(histogramOption);
         });
-
-
+        $('#ifEqualize').click(function () {                // 单击“均衡化”
+            histogramData = histogramEqualize(currentMat, getHistogramData(currentMat, currentChannel), currentChannel);
+            histogramData_2 = new Array(getHistogramData.length);               // 转化成二维数组用于echarts绘制
+            for (let i = 0; i < histogramData.length; i++) {
+                histogramData_2[i] = new Array(2);
+                histogramData_2[i][0] = i;
+                histogramData_2[i][1] = histogramData[i];
+            }
+            histogramOption.series.data = histogramData_2;
+            histogramOption.series.itemStyle.color = colorArr[currentChannel];
+            histogramChart.setOption(histogramOption);
+        });
     }
 });
 $('#histogramPanel button:last').click(function () {
@@ -224,4 +222,16 @@ $('#plusOrMinusButton').click(function () {
 });
 $('#plusOrMinusPanel button:last').click(function () {
     $('#plusOrMinusPanel, #black').css('display', 'none');
+});
+
+// 空域平滑
+$('#spatialSmoothButton').click(function () {
+    if (!currentMat) alert('请先选择一张图片！');
+    else {
+        $('#spacialSmoothPanel, #black').css('display', 'block');       // 弹出窗口
+        setMoveable('spacialSmoothPanel', 100, 100);
+    }
+});
+$('#spacialSmoothPanel button:last').click(function () {
+    $('#spacialSmoothPanel, #black').css('display', 'none');
 });

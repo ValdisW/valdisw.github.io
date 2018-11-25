@@ -60,7 +60,29 @@ const histogramEqualize = function (image, originHistogram, channel) {
     return newHistogram;
 }
 
-const setMoveable = function (id, top, left) {                 // 该元素最好是fixed
+// 均值滤波
+const averageSmooth = function (img, channel, templeteSize) {
+    for (let i = 0; i < img.rows - templeteSize; i++)
+        for (let j = 0; j < img.cols - templeteSize; j++)
+            for (let channel = 0; channel < 3; channel++){
+                let pixelData = img.ucharPtr(i, j);
+                let valueData = pixelData[channel];
+                histogramData[valueData]++;
+            }}
+
+// 中值滤波
+const midValueSmooth = function (img, channel, templeteSize) {
+    for (let i = 0; i < img.rows - templeteSize; i++)
+        for (let j = 0; j < img.cols - templeteSize; j++)
+            for (let channel = 0; channel < 3; channel++){
+                let pixelData = img.ucharPtr(i, j);
+                let valueData = pixelData[channel];
+                histogramData[valueData]++;
+            }
+}
+
+// 设置为可拖动
+const setMoveable = function (id, top, left) {
     let ele = $('#'+id);
     let mouseDown = false,              // 判断拖动
         mouseX = void 0,                    // 按下时鼠标坐标
