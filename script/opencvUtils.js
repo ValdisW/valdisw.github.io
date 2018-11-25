@@ -57,6 +57,40 @@ const histogramEqualize = function (image, originHistogram, channel) {
     return newHistogram;
 }
 
+// 图像加法
+const imgAddition = function (img1, img2) {
+    
+}
+
+// 图像减法
+const imgSubduction = function (img1, img2) {
+    
+}
+
+// 椒盐噪声
+const addSaltAndPepperNoise = function (img, quantity) {
+    let imgHeight = img.rows;
+    let imgWidth = img.cols;
+    for (let i = 0; i < quantity; i++) {
+        let noiseX = Math.round(Math.random() * imgWidth);
+        let noiseY = Math.round(Math.random() * imgHeight);
+        let colorValue = Math.round(Math.random()) * 255;
+        for (let c = 0; c < 3; c++) img.ucharPtr(noiseY, noiseX)[c] = colorValue;
+    }
+}
+
+// 高斯噪声（伪）
+const addGaussianNoise = function (img, quantity) {
+    let imgHeight = img.rows;
+    let imgWidth = img.cols;
+    for (let i = 0; i < quantity; i++) {
+        let noiseX = Math.round(Math.random() * imgWidth);
+        let noiseY = Math.round(Math.random() * imgHeight);
+        let colorValue = (Math.round(Math.random()) * 2 - 1) * Math.round(Math.random() * 255);
+        for (let c = 0; c < 3; c++) img.ucharPtr(noiseY, noiseX)[c] += colorValue;
+    }
+}
+
 // 均值滤波
 const averageSmooth = function (img, channel, templeteSize) {
     // 计算各像素点的新值
@@ -72,7 +106,6 @@ const averageSmooth = function (img, channel, templeteSize) {
             ouputImg[i][j] = averageValue;
         }
     }
-
     // 应用到图像
     for (let i = 0; i < img.rows; i++)
         for (let j = 0; j < img.cols; j++)
@@ -99,7 +132,6 @@ const midValueSmooth = function (img, channel, templeteSize) {
             ouputImg[i][j] = middleValue;
         }
     }
-
     // 应用到图像
     for (let i = 0; i < img.rows; i++)
         for (let j = 0; j < img.cols; j++)

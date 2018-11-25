@@ -1,4 +1,4 @@
-const colorArr = ['#F77', '#7F7', '#77F'];
+const colorbarArr = ['#F77', '#7F7', '#77F'];
 let currentMat = void 0;
 
 function onOpenCvReady() {
@@ -173,7 +173,7 @@ $('#histogramTransButton').click(function () {
                 type: 'bar',
                 data: histogramData_2,
                 barMaxWidth: 7,
-                itemStyle: {color: colorArr[0]},
+                itemStyle: {color: colorbarArr[0]},
             }
         };
         histogramChart.setOption(histogramOption);
@@ -192,7 +192,7 @@ $('#histogramTransButton').click(function () {
                 histogramData_2[i][1] = histogramData[i];
             }
             histogramOption.series.data = histogramData_2;
-            histogramOption.series.itemStyle.color = colorArr[currentChannel];
+            histogramOption.series.itemStyle.color = colorbarArr[currentChannel];
             histogramChart.setOption(histogramOption);
         });
         $('#ifEqualize').click(function () {                // 单击“均衡化”
@@ -204,7 +204,7 @@ $('#histogramTransButton').click(function () {
                 histogramData_2[i][1] = histogramData[i];
             }
             histogramOption.series.data = histogramData_2;
-            histogramOption.series.itemStyle.color = colorArr[currentChannel];
+            histogramOption.series.itemStyle.color = colorbarArr[currentChannel];
             histogramChart.setOption(histogramOption);
         });
     }
@@ -219,10 +219,10 @@ $('#plusOrMinusButton').click(function () {
     else {
         $('#plusOrMinusPanel, #black').css('display', 'block');       // 弹出窗口
         setMoveable('plusOrMinusPanel', 100, 100);
-    }
-});
-$('#plusOrMinusPanel button:last').click(function () {
-    $('#plusOrMinusPanel, #black').css('display', 'none');
+
+        $('#plusOrMinusPanel button:last').click(function () {
+            $('#plusOrMinusPanel, #black').css('display', 'none');
+        }); }
 });
 
 // 空域平滑滤波
@@ -244,6 +244,29 @@ $('#spatialSmoothButton').click(function () {
             cv.imshow('currentImgCanvas', currentMat);      // 显示
             $('#spacialSmoothPanel, #black').css('display', 'none');
         });
+    }
+});
 
+// 添加噪声
+$('#addNoiseButton').click(function () {
+    if (!currentMat) alert('请先选择一张图片！');
+    else {
+        $('#addNoisePanel, #black').css('display', 'block');       // 弹出窗口
+        setMoveable('addNoisePanel', 100, 100);
+
+        let noiseIntensity = $("#noiseIntensity").val() / 100 * currentMat.cols * currentMat.rows;
+        let noiseType = 0;
+        $('#noiseTypeSelect').change(function () {
+            noiseType = parseInt($('#noiseTypeSelect').val());
+        });
+
+        $('#addNoisePanel button:last').click(function () {
+            if (!noiseType)
+                addSaltAndPepperNoise(currentMat, noiseIntensity);
+            else
+                addGaussianNoise(currentMat, noiseIntensity);
+            cv.imshow('currentImgCanvas', currentMat);      // 显示
+            $('#addNoisePanel, #black').css('display', 'none');
+        });
     }
 });

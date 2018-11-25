@@ -21,6 +21,9 @@
         <li id="spatialSmoothButton">
             空域平滑
         </li>
+        <li id="addNoiseButton">
+            添加噪声
+        </li>
         <li id="plusOrMinusButton">
             图像加减
         </li>
@@ -100,7 +103,17 @@
         <input class="filterModes" type="radio" value=1 name="filterMode">中值滤波
     </div>
     模板大小: <input id="templetSize" type="text" value=1>
+    <button>确定</button>
+</div>
 
+<div id="addNoisePanel">
+    <p>添加噪声</p>
+    <span>噪声类型: </span>
+    <select name="noiseType" id="noiseTypeSelect">
+        <option value=0>椒盐噪声</option>
+        <option value=1>高斯噪声</option>
+    </select>
+    强度: <input id="noiseIntensity" type="range" min="0" max="20" step="1">
     <button>确定</button>
 </div>
 
