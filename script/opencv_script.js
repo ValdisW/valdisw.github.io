@@ -226,47 +226,46 @@ $('#plusOrMinusButton').click(function () {
 });
 
 // 空域平滑滤波
+let filterMode;
 $('#spatialSmoothButton').click(function () {
     if (!currentMat) alert('请先选择一张图片！');
     else {
         $('#spacialSmoothPanel, #black').css('display', 'block');       // 弹出窗口
         setMoveable('spacialSmoothPanel', 100, 100);
-        let filterMode = 0;             // 默认为均值滤波
-        $('.filterModes:eq(0), .filterModes:eq(1)').change(function () {        // 更改模式
-            filterMode = this.value;
-        });
-
-        $('#spacialSmoothPanel button:last').click(function () {
-            if (!filterMode)                  // 应用均值滤波
-                for (let c = 0; c < 3; c++) averageSmooth(currentMat, c, parseInt($('#templetSize').val()));
-            else                                    // 应用中值滤波
-                for (let c = 0; c < 3; c++) midValueSmooth(currentMat, c, parseInt($('#templetSize').val()));
-            cv.imshow('currentImgCanvas', currentMat);      // 显示
-            $('#spacialSmoothPanel, #black').css('display', 'none');
-        });
+        filterMode = 0;             // 默认为均值滤波
     }
 });
 
+$('.filterModes:eq(0), .filterModes:eq(1)').change(function () {        // 更改模式
+    filterMode = this.value;
+});
+
+$('#spacialSmoothPanel button:last').click(function () {
+    if (!filterMode) for (let c = 0; c < 3; c++) averageSmooth(currentMat, c, parseInt($('#templetSize').val()));
+    else for (let c = 0; c < 3; c++) midValueSmooth(currentMat, c, parseInt($('#templetSize').val()));
+    cv.imshow('currentImgCanvas', currentMat);      // 显示
+    $('#spacialSmoothPanel, #black').css('display', 'none');
+});
+
 // 添加噪声
+let noiseIntensity, noiseType;
 $('#addNoiseButton').click(function () {
     if (!currentMat) alert('请先选择一张图片！');
     else {
         $('#addNoisePanel, #black').css('display', 'block');       // 弹出窗口
         setMoveable('addNoisePanel', 100, 100);
-
-        let noiseIntensity = $("#noiseIntensity").val() / 100 * currentMat.cols * currentMat.rows;
-        let noiseType = 0;
-        $('#noiseTypeSelect').change(function () {
-            noiseType = parseInt($('#noiseTypeSelect').val());
-        });
-
-        $('#addNoisePanel button:last').click(function () {
-            if (!noiseType)
-                addSaltAndPepperNoise(currentMat, noiseIntensity);
-            else
-                addGaussianNoise(currentMat, noiseIntensity);
-            cv.imshow('currentImgCanvas', currentMat);      // 显示
-            $('#addNoisePanel, #black').css('display', 'none');
-        });
+        noiseIntensity = $("#noiseIntensity").val() / 100 * currentMat.cols * currentMat.rows;
+        noiseType = 0;
     }
+});
+
+$('#noiseTypeSelect').change(function () {
+    noiseType = parseInt($('#noiseTypeSelect').val());
+});
+
+$('#addNoisePanel button:last').click(function () {
+    if (!noiseType) addSaltAndPepperNoise(currentMat, Math.round(noiseIntensity));
+    else addGaussianNoise(currentMat, Math.round(noiseIntensity));
+    cv.imshow('currentImgCanvas', currentMat);      // 显示
+    $('#addNoisePanel, #black').css('display', 'none');
 });
