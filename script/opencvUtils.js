@@ -1,4 +1,4 @@
-// 获取数组最小值
+// 获取数组最小值及下标
 const getMinValue = function (arr) {
     let min = arr[0],
         index = 0;
@@ -31,7 +31,7 @@ const logGrayTrans = function (img, a, b ,c) {
     for (let i = 0; i < img.rows; i++)
         for (let j = 0; j < img.cols; j++) {
             let pixelData = img.ucharPtr(i, j);
-            for (let channel = 0; channel < 3; channel++) pixelData[channel] = (Math.log(pixelData[channel]+1))/(b*Math.log(c))+a+0.5;
+            for (let channel = 0; channel < 3; channel++) pixelData[channel] = Math.log(pixelData[channel] + 1) / (b * Math.log(c)) + a + 0.5;
         }
 }
 
@@ -210,9 +210,9 @@ const shannonFanoCoding = function (img, channel) {
     for (let i = 0; i < histogramData.length; i++)
         if (histogramData[i]) {         // 该灰度值有对应的像素点
             sfArr.push({
-                gray: i,                                                                   // 灰度
+                gray: i,                                                                             // 灰度
                 originProbability: histogramData[i] / imgSize,          // 概率
-                sfCode: ''                                                              // 编码序列
+                sfCode: ''                                                                        // 编码序列
             })
         }
     sfArr.sort(function (a, b) {return b.originProbability - a.originProbability});        // 按概率降序排序

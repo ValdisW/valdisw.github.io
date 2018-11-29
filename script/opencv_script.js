@@ -15,10 +15,12 @@ $('#srcImgInputButton').change(function(e) {
 srcImg.onload = function () {
     let srcMat = cv.imread(srcImg);
     currentMat = srcMat;
+/*
     $('#img_size').html(currentMat.size().width + '×' + currentMat.size().height);
     $('#img_channels').html(currentMat.channels());
     $('#img_depth').html(currentMat.depth());
     $('#img_type').html(currentMat.type());
+*/
 
     // 添加canvas元素用于显示打开的图像，并附加于div窗口上
     let imageCanvas = $('<canvas id="currentImgCanvas"></canvas>');

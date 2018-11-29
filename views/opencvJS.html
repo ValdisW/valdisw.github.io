@@ -43,7 +43,7 @@
     <img src="" id="srcImg" alt="">
 </div>
 
-<div id="controlPanel">
+<!--<div id="controlPanel">
     <p id="img_size_label">
         尺寸:&nbsp;<span id="img_size"></span>
     </p>
@@ -56,7 +56,7 @@
     <p id="img_type_label">
         类型:&nbsp;<span id="img_type"></span>
     </p>
-</div>
+</div>-->
 
 <div id="grayPanel">
     <p>灰度变换</p>
@@ -70,9 +70,9 @@
         最大值:<input id="to_max" type="text" value=255>
     </div>
     <div id="expPart">
-        参数a:<input id="para_a" type="text" value=0>
-        参数b:<input id="para_b" type="text" value=0>
-        参数c:<input id="para_c" type="text" value=0>
+        <label for="para_a">参数a:</label><input id="para_a" type="text" value=0>
+        <label for="para_b">参数b:</label><input id="para_b" type="text" value=0>
+        <label for="para_c">参数c:</label><input id="para_c" type="text" value=0>
     </div>
     <button>确定</button>
 </div>
@@ -105,31 +105,33 @@
         <input class="filterModes" type="radio" value=0 name="filterMode" checked>均值滤波
         <input class="filterModes" type="radio" value=1 name="filterMode">中值滤波
     </div>
-    模板大小: <input id="templetSize" type="text" value=1>
+    <label for="templetSize">模板大小: </label>
+    <input id="templetSize" type="text" value=1>
     <button>确定</button>
 </div>
 
 <div id="addNoisePanel">
     <p>添加噪声</p>
-    <span>噪声类型: </span>
+    <label for="noiseTypeSelect">噪声类型: </label>
     <select name="noiseType" id="noiseTypeSelect">
         <option value=0>椒盐噪声</option>
         <option value=1>高斯噪声</option>
     </select>
-    强度: <input id="noiseIntensity" type="range" min="0" max="1" step="0.05">
+    <label for="noiseIntensity">强度: </label>
+    <input id="noiseIntensity" type="range" min="0" max="1" step="0.05">
     <button>确定</button>
 </div>
 
 <div id="codingAndDecodingPanel">
     <p>编/解码</p>
-    <span>编码方式: </span>
+    <label for="codingAlgoSelect">编码方式: </label>
     <select name="codingAlgo" id="codingAlgoSelect">
         <option value=0>Huffman编码</option>
         <option value=1>Shannon-Fano编码</option>
         <option value=2>算术编码</option>
     </select>
 
-    <span>通道: </span>
+    <label  for="codingChannelSelect">通道: </label>
     <select name="codingChannel" id="codingChannelSelect">
         <option value=0>红</option>
         <option value=1>绿</option>

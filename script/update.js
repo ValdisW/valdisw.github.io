@@ -117,10 +117,17 @@ done.click(function () {                // 单击确定，更新内容
         // 获取离散相位谱的采样点
         option4_discrete.series.data = getDftPhase(userSamples_complex);
         chart4.setOption(option4_discrete);
+
+        // 将傅里叶系数画在复平面上
+        let dftValue_2D = new Array(dftValue.length);
+        for (let i = 0; i < dftValue.length; i++) {
+            dftValue_2D[i] = new Array(2);
+            dftValue_2D[i][0] = dftValue[i].real;
+            dftValue_2D[i][1] = dftValue[i].imaginary;
+        }
+        console.log(dftValue_2D);
+        option5.series.data = dftValue_2D;
+        chart5.setOption(option5);
     }
-
-
-
-    chart5.setOption(option5);
 });
 done.click();

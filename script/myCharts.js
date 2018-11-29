@@ -214,18 +214,11 @@ let option5 = {                     // 复平面
         splitLine: {lineStyle: {color: '#333'}}
     },
     animation: false,
-    series: [{
-        type: 'line',
-        data: circle,
-        symbol: 'none',
-        smooth: 'true',
-        lineStyle: {color: '#aaa',width: 1}
-    },{
+    series: {
         type: 'scatter',
-        data: [],
         symbolSize: 6,
         itemStyle: {color: '#FF0'}
-    }]
+    }
 };
 
 chart1.setOption(option1);
