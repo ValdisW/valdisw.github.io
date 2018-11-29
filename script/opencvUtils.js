@@ -1,19 +1,15 @@
-/*//  正态分布 by Tong Zeng
-const randomNormalDistribution = function () {
-    var u=0.0, v=0.0, w=0.0, c=0.0;
-    do{
-        //获得两个（-1,1）的独立随机变量
-        u=Math.random()*2-1.0;
-        v=Math.random()*2-1.0;
-        w=u*u+v*v;
-    }while(w==0.0||w>=1.0)
-    //这里就是 Box-Muller转换
-    c=Math.sqrt((-2*Math.log(w))/w);
-    //返回2个标准正态分布的随机数，封装进一个数组返回
-    //当然，因为这个函数运行较快，也可以扔掉一个
-    //return [u*c,v*c];
-    return u*c;
-};*/
+// 获取数组最小值
+const getMinValue = function (arr) {
+    let min = arr[0],
+        index = 0;
+    if (arr.length > 1)
+        for (let i = 1; i < arr.length; i++)
+            if (arr[i] < min) {
+                min = arr[i];
+                index = i;
+            }
+    return [min, index];
+}
 
 // 线性灰度变换
 const linearGrayTrans = function (img, f1, f2, t1, t2) {
@@ -27,6 +23,15 @@ const linearGrayTrans = function (img, f1, f2, t1, t2) {
                     let a = Math.round(k * pixelData[c]);
                     pixelData[c] = a + b;
                 }
+        }
+}
+
+// 对数变换
+const logGrayTrans = function (img, a, b ,c) {
+    for (let i = 0; i < img.rows; i++)
+        for (let j = 0; j < img.cols; j++) {
+            let pixelData = img.ucharPtr(i, j);
+            for (let channel = 0; channel < 3; channel++) pixelData[channel] = (Math.log(pixelData[channel]+1))/(b*Math.log(c))+a+0.5;
         }
 }
 
@@ -157,6 +162,78 @@ const midValueSmooth = function (img, channel, templeteSize) {
     for (let i = 0; i < img.rows - templeteSize; i++)
         for (let j = 0; j < img.cols - templeteSize; j++)
             img.ucharPtr(i + Math.round(templeteSize / 2), j + Math.round(templeteSize / 2))[channel] = ouputImg[i][j];
+}
+
+// Huffman编码
+const huffmanCoding = function (img, channel) {
+    let histogramData = getHistogramData(img, channel);
+    const imgSize = img.rows * img.cols;
+    let huffmanArr = [];
+    for (let i = 0; i < histogramData.length; i++)
+        if (histogramData[i]) {         // 该灰度值有对应的像素点
+            huffmanArr.push({
+                rank: 0,
+                gray: i,
+                originProbability: histogramData[i] / imgSize,
+                probability: histogramData[i] / imgSize,
+                huffmanCode: ''
+            })
+        }
+    huffmanArr.sort(function (a, b) {return a.probability - b.probability});        // 按概率升序排序
+    for (let i = 0; i < huffmanArr.length; i++) huffmanArr[i].rank = i;
+
+    for (let i = 0; i < huffmanArr.length - 1; i ++) {
+        for (let k = 0; k < huffmanArr.length; k++) {
+            if (huffmanArr[k].rank === huffmanArr[i].rank) huffmanArr[k].huffmanCode = '1' + huffmanArr[k].huffmanCode;
+            if (huffmanArr[k].rank === huffmanArr[i + 1].rank) huffmanArr[k].huffmanCode = '0' + huffmanArr[k].huffmanCode;
+        }
+
+        huffmanArr[i + 1].probability += huffmanArr[i].probability;
+
+        for (let k = 0; k < huffmanArr.length; k ++)
+            if (huffmanArr[k].rank === huffmanArr[i].rank) huffmanArr[k].rank = huffmanArr[i + 1].rank;
+
+        let newHuffmanArr = huffmanArr.slice(i + 1, huffmanArr.length);
+        newHuffmanArr.sort(function (a, b) {return a.probability - b.probability});
+        huffmanArr = huffmanArr.slice(0, i + 1).concat(newHuffmanArr);
+    }
+
+    huffmanArr.sort(function (a, b) {return a.gray - b.gray});        // 按灰度升序排序
+    return huffmanArr;
+}
+
+// Shannon-Fano编码
+const shannonFanoCoding = function (img, channel) {
+    let histogramData = getHistogramData(img, channel);
+    const imgSize = img.rows * img.cols;
+    let sfArr = [];
+    for (let i = 0; i < histogramData.length; i++)
+        if (histogramData[i]) {         // 该灰度值有对应的像素点
+            sfArr.push({
+                gray: i,                                                                   // 灰度
+                originProbability: histogramData[i] / imgSize,          // 概率
+                sfCode: ''                                                              // 编码序列
+            })
+        }
+    sfArr.sort(function (a, b) {return b.originProbability - a.originProbability});        // 按概率降序排序
+    const devideFunc = function (arr) {
+        let sum = 0;
+        for (let i = 0; i < arr.length; i++) sum += arr[i].originProbability;
+        let midValue = sum / 2;
+        let dValueArr = new Array(arr.length);
+        for (let i = 0; i < dValueArr.length; i++) dValueArr[i] = Math.abs(arr[i].originProbability - midValue);
+        let minIndex = getMinValue(dValueArr)[1];               // 获取分割点的下标
+        return [arr.slice(0, minIndex, arr.slice(minIndex, arr.length))];
+    }
+    
+    let biggerPart = devideFunc(sfArr)[0],
+        smallerPart = devideFunc(sfArr)[1];
+
+
+    for (let i = 0; i < sfArr; i++) {
+        sum += sfArr[i].originProbability;
+    }
+    return sfArr;
 }
 
 // 设置为可拖动

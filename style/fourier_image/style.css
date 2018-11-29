@@ -1,6 +1,26 @@
-*{margin: 0; padding: 0;color: #FFF}
+*{margin: 0; padding: 0;color: #DDD}
 body{background-color: #000}
 html, body{height: 100%}
+select{
+    background-color: #000;
+    outline: none;
+}
+button{
+    background-color: #000;
+    border: 1px solid #DDD;
+    outline: none;
+    transition: 0.1s;
+    cursor: pointer;
+    padding: 0 10px;
+}
+button:hover{
+    background-color: #DDD;
+    color: #000;
+}
+.controlPaneElements{
+    margin-bottom: 10px;
+}
+
 #images {
     overflow: hidden;
 }

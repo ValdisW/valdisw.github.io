@@ -53,20 +53,34 @@ const getMaxComplex = function (complexArr) {
     return [max, index];
 }
 
-// 从复数数组中获取有最小模的复数及下标
+// 从复序列中获取有最小模的复数及下标
 const getMinComplex = function (complexArr) {
-    let min = 0, index = 0;
+    let min = Number.POSITIVE_INFINITY  , index = 0;
     for (let i = 0; i < complexArr.length; i++) {
         let currentVal = complexArr[i].getLength();
-        if (currentVal >min) {
+        if (currentVal < min) {
             min = currentVal;
             index = i;
         }
     }
     return [min, index];
 }
+
+// 求实数向量模长
+const getRealLength = function (x) {
+    let sum = 0;
+    for (i in x) sum += i * i;
+    return Math.sqrt(sum);
+}
+
+// 求复序列模长
+const getComplexArrayLength = function (x) {
+    let lengthArr = new Array(x.length);            // 复数模长的实序列
+    for (let i = 0;  i < lengthArr.length; i++) lengthArr[i] = x[i].getLength();
+    return getRealLength(lengthArr);
+}
 //-----------------------以上规定复数-------------------------------
-// 注意, f(x) 都是复数
+// 注意f(x) 都是复数
 
 // 求定积分
 const integral = function(f, x1, x2, samples) {         // f 是复函数
@@ -221,3 +235,13 @@ const idft = function(X) {                 // X为复序列
     return newx;*/
     return x;
 };
+
+// 获取离散复序列的傅里叶描述子
+const getFourierDescriptor = function (x, terms) {         // x为复序列
+    let Sk = dft(x).slice(1, terms);
+    let S1 = Sk[0];
+
+    let Sk_norm = getComplexArrayLength(x);
+    let S1_norm = Math.sqrt(S1.real * S1.real + S1.imaginary * S1.imaginary);
+    return Sk_norm / S1_norm;
+}

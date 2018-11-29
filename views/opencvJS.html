@@ -18,6 +18,9 @@
         <input type="file" class="fileInputButton" id="srcImgInputButton" accept="image/*">
     </button>
     <ul>
+        <li id="codingAndDecodingButton">
+            编/解码
+        </li>
         <li id="spatialSmoothButton">
             空域平滑
         </li>
@@ -117,6 +120,26 @@
     <button>确定</button>
 </div>
 
+<div id="codingAndDecodingPanel">
+    <p>编/解码</p>
+    <span>编码方式: </span>
+    <select name="codingAlgo" id="codingAlgoSelect">
+        <option value=0>Huffman编码</option>
+        <option value=1>Shannon-Fano编码</option>
+        <option value=2>算术编码</option>
+    </select>
+
+    <span>通道: </span>
+    <select name="codingChannel" id="codingChannelSelect">
+        <option value=0>红</option>
+        <option value=1>绿</option>
+        <option value=2>蓝</option>
+    </select>
+    <div id="codingTable">
+        <table></table>
+    </div>
+    <button>关闭</button>
+</div>
 <!-- 脚本 -->
 <script src="../js/jquery-3.3.1.min.js"></script>
 <script src="../js/echarts.js"></script>

@@ -20,7 +20,26 @@
 <div id="controlpane">
     <div id="paneTitle">参数设置</div>
     <div id="expand">
-        <span>展开项数：</span><input id="expandNum" type="text" class="textInput">
+<!--        <div class="controlPaneElements">
+            <span>信号选择：</span>
+            <select name="signalTypes" id="signalTypes">
+                <option value='dog1'>狗1</option>
+                <option value='dog2'>狗2</option>
+                <option value='dog3'>狗3</option>
+                <option value='dog4'>狗4</option>
+                <option value='dog5'>狗5</option>
+                <option value='dog6'>狗6</option>
+            </select>
+        </div>-->
+        <div class="controlPaneElements">
+            <span>傅里叶描述子：</span>
+            <span id="fourierDescriptor"></span>
+        </div>
+        <div class="controlPaneElements">
+            <span>展开项数：</span><input id="expandNum" type="text" class="textInput">
+            <button id="reduceExpandNum">减小</button>
+            <button id="addExpandNum">增大</button>
+        </div>
     </div>
 
 </div>
@@ -32,42 +51,47 @@
 <script src="../script/fourier_image/borderData.js"></script>
 <script src="../script/fourier_image/imageChart.js"></script>          <!-- 配置图表样式 -->
 <script>
-    $('#expandNum').attr('value', dogData.length);                     // 输入框默认值
-    let dogComplexData= new Array(dogData.length);              // 原来的狗子的复数表示
-    for (let i = 0; i < dogData.length; i++)
-        dogComplexData[i] = new Complex(dogData[i][0], dogData[i][1]);
-    let dogComplexData_dft = dft(dogComplexData);               // 狗子的傅里叶（复数序列）
-    let dogComplexData_idft = idft(dogComplexData_dft);      // 狗子的傅里叶的反傅里叶（复数序列）
+    const originImageData = tree1;
+    $('#expandNum').attr('value', originImageData.length);                     // 输入框默认值
 
-    let newDogData = new Array(dogData.length);
-    for (let i = 0; i < dogData.length; i++) {
+    // 原信号转换成复信号
+    let dogComplexData= new Array(originImageData.length);
+    for (let i = 0; i < originImageData.length; i++)
+        dogComplexData[i] = new Complex(originImageData[i][0], originImageData[i][1]);
+
+    let dogComplexData_dft = dft(dogComplexData);               // 傅里叶（复数序列）
+    let dogComplexData_idft = idft(dogComplexData_dft);      // 傅里叶的反傅里叶（复数序列）
+
+    // 把反傅里叶转换回二维数组用于Echarts绘制图表
+    let newDogData = new Array(originImageData.length);
+    for (let i = 0; i < originImageData.length; i++) {
         newDogData[i] = new Array(2);
         newDogData[i][0] = dogComplexData_idft[i].real;
         newDogData[i][1] = dogComplexData_idft[i].imaginary;
     }
 
-    originPointOption.series.data=  dogData;
+    // Echarts
+    originPointOption.series.data=  originImageData;
     outputPointOption.series.data = newDogData;
     dftAmplitudeOption.series.data = getDftAmplitude(dogComplexData);
     dftPhaseOption.series.data = getDftPhase(dogComplexData);
-
     originPointChart.setOption(originPointOption);
     outputPointChart.setOption(outputPointOption);
     dftAmplitudeChart.setOption(dftAmplitudeOption);
     dftPhaseChart.setOption(dftPhaseOption);
-</script>
-<script>
+
+    $('#fourierDescriptor').html(getFourierDescriptor(dogComplexData, 10));
     const updateNewDog = function() {                   // 根据输入框的项数刷新各图像
         let expandNum = parseInt($('#expandNum').val());       //  获取输入框项数
 
         // --- 调整 ---
-        let removeNum = dogData.length - expandNum;         // 需要除去的项数
+        let removeNum = originImageData.length - expandNum;         // 需要除去的项数
         // 从大到小
         let partOfDogComplexData_dft = [].concat(dogComplexData_dft);          // 拷贝离散傅里叶频谱
         for (let i = 0; i < removeNum; i++) {
             partOfDogComplexData_dft.splice(getMinComplex(partOfDogComplexData_dft)[1], 1);
         }
-        //let partOfDogComplexData_dft = dogComplexData_dft.slice(0, expandNum);      // 截取前expandNum项傅里叶系数
+//let partOfDogComplexData_dft = dogComplexData_dft.slice(0, expandNum);      // 截取前expandNum项傅里叶系数
         // --- 调整结束 ---
 
         dogComplexData_idft = idft(partOfDogComplexData_dft);       // 根据截取到的信号进行反变换
@@ -82,22 +106,25 @@
     };
     $('#expandNum').change(updateNewDog);
 
-    $(document).keydown(function (event) {          // 上下键 控制
-        if (event.key === 'e') {
-            let temp = $('#expandNum').attr('value');
-            if (temp < dogData.length) {
-                temp++;
-                $('#expandNum').attr('value', temp);
-                updateNewDog();
-            }
+    $(document).keydown(function (event) {
+        if (event.key === 'e') {$('#addExpandNum').click();}
+        if (event.key === 'q') {$('#reduceExpandNum').click();}
+    });
+
+    $('#addExpandNum').click(function () {
+        let temp = $('#expandNum').val();
+        if (temp < originImageData.length) {
+            temp++;
+            $('#expandNum').val(temp);
+            updateNewDog();
         }
-        if (event.key === 'q') {
-            let temp = $('#expandNum').attr('value');
-            if (temp > 0) {
-                temp--;
-                $('#expandNum').attr('value', temp);
-                updateNewDog();
-                }
+    });
+    $('#reduceExpandNum').click(function () {
+        let temp = $('#expandNum').val();
+        if (temp > 0) {
+            temp--;
+            $('#expandNum').val(temp);
+            updateNewDog();
         }
     });
 

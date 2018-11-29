@@ -269,3 +269,54 @@ $('#addNoisePanel button:last').click(function () {
     cv.imshow('currentImgCanvas', currentMat);      // 显示
     $('#addNoisePanel, #black').css('display', 'none');
 });
+
+// 编/解码
+let codingAlgo, codingChannel;
+$('#codingAndDecodingButton').click(function () {
+    if (!currentMat) alert('请先选择一张图片！');
+    else {
+        $('#codingAndDecodingPanel, #black').css('display', 'block');       // 弹出窗口
+        setMoveable('codingAndDecodingPanel', 100, 100);
+        codingAlgo = 0;             // 默认为Huffman编码
+        codingChannel = 0;       // 默认通道为红色
+        $('#codingAlgoSelect').change();
+    }
+});
+
+$('#codingChannelSelect').change(function () {
+    codingChannel = parseInt($('#codingChannelSelect').val());
+    $('#codingAlgoSelect').change();
+});
+
+$('#codingAlgoSelect').change(function () {
+    codingAlgo = parseInt($('#codingAlgoSelect').val());
+    let codingResult = void 0;
+    switch (codingAlgo) {
+        case 0:                     // Huffman编码
+            codingResult = huffmanCoding(currentMat, codingChannel);
+            break;
+        case 1:                     // Shannon-Fano编码
+            codingResult = shannonFanoCoding(currentMat, codingChannel);
+            break;
+        case 2:                     // 算术编码
+            break;
+    }
+
+    // 更新表格
+    $('#codingTable table').empty();
+    $('#codingTable table').append($('<tr><th>灰度</th><th>概率</th><th>编码</th><th>码字长度</th></tr>'));
+    for (let i = 0; i < codingResult.length; i++) {
+        $('#codingTable table').append($('<tr>' + '<td>' + codingResult[i].gray + '</td>' + '<td>' + codingResult[i].originProbability + '</td>' + '<td>' + codingResult[i].huffmanCode + '</td>' + '<td>' + codingResult[i].huffmanCode.length + '</td>' + '</tr>'));
+    }
+});
+
+$('#codingAndDecodingPanel button:last').click(function () {
+    $('#codingAndDecodingPanel, #black').css('display', 'none');
+});
+
+
+/*
+$(document).keydown(function(){
+    logGrayTrans(currentMat, 20, 0.04, 2);
+    cv.imshow('currentImgCanvas', currentMat);      // 显示
+});*/
