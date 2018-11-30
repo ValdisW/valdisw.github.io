@@ -10,6 +10,10 @@ const getMinValue = function (arr) {
     return [min, index];
 }
 
+const logFunc = function (x, a, b, c) {
+    
+}
+
 // 线性灰度变换
 const linearGrayTrans = function (img, f1, f2, t1, t2) {
     let k = (t2 - t1) / (f2 - f1),

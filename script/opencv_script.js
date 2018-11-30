@@ -42,6 +42,8 @@ srcImg.onload = function () {
 };
 
 // 灰度变换
+let grayMode;
+let grayOption;
 $('#linearGrayTransButton').click(function () {
     if (!currentMat) alert('请先选择一张图片！');
     else{
@@ -52,7 +54,16 @@ $('#linearGrayTransButton').click(function () {
             'height': '300px'
         })[0];
         let grayChart = echarts.init(grayChartBlock);
-        let grayOption = {
+        grayMode = parseInt($('#grayModeSelect').val());
+
+        let data_gray = [[0, 0], [255, 255]];
+        let data_log = new Array(256);
+        for (let i = 0; i < data_log.length; i++) {
+            data_log[i] = new Array(2);
+            data_log[i][0] = i;
+            data_log[i][1] = Math.log(i + 1) / (parseFloat($('#para_b').val()) * Math.log(parseFloat($('#para_c').val()))) + parseFloat($('#para_a').val()) + 0.5;
+        }
+        grayOption = {
             xAxis: {
                 type: 'value',
                 max: 255,
@@ -77,49 +88,62 @@ $('#linearGrayTransButton').click(function () {
                     color: '#FFF',
                     width: 1
                 },
-                data: [[0, 0], [0, 0], [255, 255], [255, 255]]
+                data: data_gray
             },
             animation: false
         };
         grayChart.setOption(grayOption);
 
-        $('.grayModeInput:first, .grayModeInput:last').click(function () {
-            if ($('.grayModeInput:first')[0].checked) {
-                $('#linearPart').css('display', 'block');
-                $('#expPart').css('display', 'none');
-            }
-            if ($('.grayModeInput:last')[0].checked) {
+        $('#grayModeSelect').change(function () {
+            grayMode = parseInt($('#grayModeSelect').val());
+            // 面板切换
+            if (grayMode) {                     // 对数
                 $('#linearPart').css('display', 'none');
                 $('#expPart').css('display', 'block');
+                grayOption.series.data = data_log;
+            } else {                                     // 线性
+                $('#linearPart').css('display', 'block');
+                $('#expPart').css('display', 'none');
+                grayOption.series.data = data_gray;
             }
+            // 图像切换
+            grayChart.setOption(grayOption);
         })
 
-        $('#from_min').change(function () {
+        $('#para_a, #para_b, #para_c').change(function () {
+            let data_log = new Array(256);
+            for (let i = 0; i < data_log.length; i++) {
+                data_log[i] = new Array(2);
+                data_log[i][0] = i;
+                data_log[i][1] = Math.log(i + 1) / (parseFloat($('#para_b').val()) * Math.log(parseFloat($('#para_c').val()))) + parseFloat($('#para_a').val()) + 0.5;
+            }
+            grayOption.series.data = data_log;
+            grayChart.setOption(grayOption);
+        });
+
+        $('#from_min, #from_max, #to_min, #to_max').change(function () {
             grayOption.series.data[1][0] = parseInt($('#from_min').val());
-            grayChart.setOption(grayOption);
-        });
-        $('#from_max').change(function () {
-            grayOption.series.data[2][0] = parseInt($('#from_max').val());
-            grayChart.setOption(grayOption);
-        });
-        $('#to_min').change(function () {
-            grayOption.series.data[1][1] = parseInt($('#to_min').val());
-            grayChart.setOption(grayOption);
-        });
-        $('#to_max').change(function () {
-            grayOption.series.data[2][1] = parseInt($('#to_max').val());
+            grayOption.series.data = [[0, 0], [parseInt($('#from_min').val()), parseInt($('#from_min').val())], [parseInt($('#from_min').val()), parseInt($('#to_min').val())], [parseInt($('#from_max').val()), parseInt($('#to_max').val())], [parseInt($('#from_max').val()), parseInt($('#from_max').val())], [255, 255]];
             grayChart.setOption(grayOption);
         });
     }
 });
 
-$('#grayPanel button').click(function () {
-    linearGrayTrans(currentMat,
-        parseInt($('#from_min').val()),
-        parseInt($('#from_max').val()),
-        parseInt($('#to_min').val()),
-        parseInt($('#to_max').val())
-    );
+$('#grayPanel button').click(function () {      // 确定
+    if (grayMode) {                 // 对数
+        logGrayTrans(currentMat,
+            parseInt($('#para_a').val()),
+            parseInt($('#para_b').val()),
+            parseInt($('#para_c').val())
+        )
+    }else {
+        linearGrayTrans(currentMat,
+            parseInt($('#from_min').val()),
+            parseInt($('#from_max').val()),
+            parseInt($('#to_min').val()),
+            parseInt($('#to_max').val())
+        );
+    }
     cv.imshow('currentImgCanvas', currentMat);      // 显示
     $('#grayPanel, #black').css('display', 'none');
 });
