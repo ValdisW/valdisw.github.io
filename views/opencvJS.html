@@ -18,24 +18,12 @@
         <input type="file" class="fileInputButton" id="srcImgInputButton" accept="image/*">
     </button>
     <ul>
-        <li id="codingAndDecodingButton">
-            编/解码
-        </li>
-        <li id="spatialSmoothButton">
-            空域平滑
-        </li>
-        <li id="addNoiseButton">
-            添加噪声
-        </li>
-        <li id="plusOrMinusButton">
-            图像加减
-        </li>
-        <li id="linearGrayTransButton">
-            灰度变换
-        </li>
-        <li id="histogramTransButton">
-            直方图
-        </li>
+        <li id="codingAndDecodingButton">图像编码</li>
+        <li id="spatialSmoothButton">空域平滑</li>
+        <li id="addNoiseButton">添加噪声</li>
+        <li id="plusOrMinusButton">图像加减</li>
+        <li id="linearGrayTransButton">灰度变换</li>
+        <li id="histogramTransButton">直方图</li>
     </ul>
 </div>
 
@@ -85,7 +73,7 @@
     <input class="channelInput" type="radio" value=1 name="channel">绿
     <input class="channelInput" type="radio" value=2 name="channel">蓝
     <button id="ifEqualize" type="checkbox">均衡化</button>
-    <button>确定</button>
+    <button>关闭</button>
 </div>
 
 <div id="plusOrMinusPanel">
@@ -94,51 +82,71 @@
         选择图片
         <input type="file" class="fileInputButton" id="plusOrMinusInputButton" accept="image/*">
     </button>
-    <input class="plusOrMinus" type="radio" value=0 name="plusOrMinus" checked>加法
-    <input class="plusOrMinus" type="radio" value=1 name="plusOrMinus">减法
+    <label for="plusOrMinusSelect">运算类型: </label>
+    <select name="plusOrMinus" id="plusOrMinusSelect">
+        <option value=0>加法</option>
+        <option value=1>减法</option>
+    </select>
+    <img id="operationImg" alt="操作图片">
     <button>确定</button>
 </div>
 
 <div id="spacialSmoothPanel">
     <p>空域平滑</p>
-    <div id="chooseFilterMode">
-        <input class="filterModes" type="radio" value=0 name="filterMode" checked>均值滤波
-        <input class="filterModes" type="radio" value=1 name="filterMode">中值滤波
+    <div class="gadgetOpions">
+        <label for="filterModeSelect">滤波类型: </label>
+        <select name="filterMode" id="filterModeSelect">
+            <option value=0>均值滤波</option>
+            <option value=1>中值滤波</option>
+        </select><br>
     </div>
-    <label for="templetSize">模板大小: </label>
-    <input id="templetSize" type="text" value=1>
+    <div class="gadgetOpions">
+        <label for="templetSize">模板大小: </label>
+        <input id="templetSize" type="text" value=1>
+    </div>
     <button>确定</button>
 </div>
 
 <div id="addNoisePanel">
     <p>添加噪声</p>
-    <label for="noiseTypeSelect">噪声类型: </label>
-    <select name="noiseType" id="noiseTypeSelect">
-        <option value=0>椒盐噪声</option>
-        <option value=1>高斯噪声</option>
-    </select>
-    <label for="noiseIntensity">强度: </label>
-    <input id="noiseIntensity" type="range" min="0" max="1" step="0.05">
+    <div class="gadgetOpions">
+        <label for="noiseTypeSelect">噪声类型: </label>
+        <select name="noiseType" id="noiseTypeSelect">
+            <option value=0>椒盐噪声</option>
+            <option value=1>高斯噪声</option>
+        </select>
+    </div>
+    <div class="gadgetOpions">
+        <label for="noiseIntensity">强度: </label>
+        <input id="noiseIntensity" type="range" min="0" max="1" step="0.05">
+    </div>
     <button>确定</button>
 </div>
 
 <div id="codingAndDecodingPanel">
     <p>编/解码</p>
-    <label for="codingAlgoSelect">编码方式: </label>
-    <select name="codingAlgo" id="codingAlgoSelect">
-        <option value=0>Huffman编码</option>
-        <option value=1>Shannon-Fano编码</option>
-        <option value=2>算术编码</option>
-    </select>
+    <div id="codingControl">
+        <label for="codingAlgoSelect">编码方式: </label>
+        <select name="codingAlgo" id="codingAlgoSelect">
+            <option value=0>Huffman编码</option>
+            <option value=1>Shannon-Fano编码</option>
+            <!-- <option value=2>算术编码</option> -->
+        </select><br>
 
-    <label  for="codingChannelSelect">通道: </label>
-    <select name="codingChannel" id="codingChannelSelect">
-        <option value=0>红</option>
-        <option value=1>绿</option>
-        <option value=2>蓝</option>
-    </select>
+        <label  for="codingChannelSelect">通道: </label>
+        <select name="codingChannel" id="codingChannelSelect">
+            <option value=0>红</option>
+            <option value=1>绿</option>
+            <option value=2>蓝</option>
+        </select>
+    </div>
     <div id="codingTable">
         <table></table>
+    </div>
+    <div id="codingInfo">
+        <label for="entropy">图像信息熵:&nbsp;</label><input type="text" id="entropy" readonly><br>
+        <label for="averageCodeLength">平均码字长:&nbsp;</label><input type="text" id="averageCodeLength" readonly><br>
+        <label for="codingEfficiency">编码效率:&nbsp;</label><input type="text" id="codingEfficiency" readonly><br>
     </div>
     <button>关闭</button>
 </div>

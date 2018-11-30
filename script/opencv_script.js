@@ -143,8 +143,9 @@ $('#histogramTransButton').click(function () {
         }
 
         let histogramChartBlock = $('#histogramChart').css({            // 获取并设置直方图图表大小
-            'width': '500px',
-            'height': '300px'
+            'width': '100%',
+            'height': '300px',
+            'margin': '0 auto'
         })[0];
         let histogramChart = echarts.init(histogramChartBlock);     // 初始绘图
         let histogramOption = {
@@ -216,15 +217,44 @@ $('#histogramPanel button:last').click(function () {
 });
 
 // 图像加减
+let operationImg = $('#operationImg').get(0);
+let operationMat = void 0;
+let plusOrMinusMode;
 $('#plusOrMinusButton').click(function () {
     if (!currentMat) alert('请先选择一张图片！');
     else {
         $('#plusOrMinusPanel, #black').css('display', 'block');       // 弹出窗口
         setMoveable('plusOrMinusPanel', 100, 100);
+        plusOrMinusMode = 0;            // 默认为加法
+    }
+});
 
-        $('#plusOrMinusPanel button:last').click(function () {
-            $('#plusOrMinusPanel, #black').css('display', 'none');
-        }); }
+$('#plusOrMinusInputButton').change(function(e) {
+    operationImg.src = URL.createObjectURL(e.target.files[0]);
+});
+
+$('#plusOrMinusSelect').change(function () {        // 更改模式
+    plusOrMinusMode = parseInt($('#plusOrMinusSelect').val());
+});
+
+operationImg.onload = function () {
+    let srcMat = cv.imread(operationImg);
+    operationMat = srcMat;
+}
+
+$('#plusOrMinusPanel button:last').click(function () {
+    $('#plusOrMinusPanel, #black').css('display', 'none');
+    if (!operationMat) {
+        alert('请选择要操作的图片！');
+    }else{
+
+        if (!plusOrMinusMode) {          // 加法
+            imgAddition(currentMat, operationMat);
+        } else {                  // 减法
+            imgSubduction(currentMat, operationMat);
+        }
+        cv.imshow('currentImgCanvas', currentMat);      // 显示
+    }
 });
 
 // 空域平滑滤波
@@ -238,8 +268,8 @@ $('#spatialSmoothButton').click(function () {
     }
 });
 
-$('.filterModes:eq(0), .filterModes:eq(1)').change(function () {        // 更改模式
-    filterMode = this.value;
+$('#filterModeSelect').change(function () {        // 更改模式
+    filterMode = parseInt($('#filterModeSelect').val());
 });
 
 $('#spacialSmoothPanel button:last').click(function () {
@@ -273,7 +303,7 @@ $('#addNoisePanel button:last').click(function () {
 });
 
 // 编/解码
-let codingAlgo, codingChannel;
+let codingAlgo, codingChannel, codingResult, codingResults;
 $('#codingAndDecodingButton').click(function () {
     if (!currentMat) alert('请先选择一张图片！');
     else {
@@ -281,24 +311,30 @@ $('#codingAndDecodingButton').click(function () {
         setMoveable('codingAndDecodingPanel', 100, 100);
         codingAlgo = 0;             // 默认为Huffman编码
         codingChannel = 0;       // 默认通道为红色
-        $('#codingAlgoSelect').change();
+        $('#codingChannelSelect').change();
     }
 });
 
 $('#codingChannelSelect').change(function () {
     codingChannel = parseInt($('#codingChannelSelect').val());
+    $('#entropy').val(getEntropy(currentMat, codingChannel));
     $('#codingAlgoSelect').change();
 });
 
 $('#codingAlgoSelect').change(function () {
     codingAlgo = parseInt($('#codingAlgoSelect').val());
-    let codingResult = void 0;
     switch (codingAlgo) {
         case 0:                     // Huffman编码
-            codingResult = huffmanCoding(currentMat, codingChannel);
+            codingResults = huffmanCoding(currentMat, codingChannel);
+            codingResult = codingResults[0];
+            $('#averageCodeLength').val(codingResults[1]);
+            $('#codingEfficiency').val(getEntropy(currentMat, codingChannel) / codingResults[1] * 100 + '%');
             break;
         case 1:                     // Shannon-Fano编码
-            codingResult = shannonFanoCoding(currentMat, codingChannel);
+            codingResults = shannonFanoCoding(currentMat, codingChannel);
+            codingResult = codingResults[0];
+            $('#averageCodeLength').val(codingResults[1]);
+            $('#codingEfficiency').val(getEntropy(currentMat, codingChannel) / codingResults[1] * 100 + '%');
             break;
         case 2:                     // 算术编码
             break;
@@ -308,17 +344,10 @@ $('#codingAlgoSelect').change(function () {
     $('#codingTable table').empty();
     $('#codingTable table').append($('<tr><th>灰度</th><th>概率</th><th>编码</th><th>码字长度</th></tr>'));
     for (let i = 0; i < codingResult.length; i++) {
-        $('#codingTable table').append($('<tr>' + '<td>' + codingResult[i].gray + '</td>' + '<td>' + codingResult[i].originProbability + '</td>' + '<td>' + codingResult[i].huffmanCode + '</td>' + '<td>' + codingResult[i].huffmanCode.length + '</td>' + '</tr>'));
+        $('#codingTable table').append($('<tr>' + '<td>' + codingResult[i].gray + '</td>' + '<td>' + codingResult[i].originProbability + '</td>' + '<td>' + codingResult[i].code + '</td>' + '<td>' + codingResult[i].code.length + '</td>' + '</tr>'));
     }
 });
 
 $('#codingAndDecodingPanel button:last').click(function () {
     $('#codingAndDecodingPanel, #black').css('display', 'none');
 });
-
-
-/*
-$(document).keydown(function(){
-    logGrayTrans(currentMat, 20, 0.04, 2);
-    cv.imshow('currentImgCanvas', currentMat);      // 显示
-});*/

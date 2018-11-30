@@ -2,12 +2,11 @@
 const getMinValue = function (arr) {
     let min = arr[0],
         index = 0;
-    if (arr.length > 1)
-        for (let i = 1; i < arr.length; i++)
-            if (arr[i] < min) {
-                min = arr[i];
-                index = i;
-            }
+    for (let i = 1; i < arr.length; i++)
+        if (arr[i] < min) {
+            min = arr[i];
+            index = i;
+        }
     return [min, index];
 }
 
@@ -49,6 +48,24 @@ const getHistogramData = function (img, channel) {          // 0->R, 1->G, 2->B,
     return histogramData;
 }
 
+// 获取信息熵
+const getEntropy = function (img, channel) {
+    let histogramData = getHistogramData(img, channel);
+    const imgSize = img.rows * img.cols;
+    let grayArr = [];
+    for (let i = 0; i < histogramData.length; i++)
+        if (histogramData[i]) {         // 该灰度值有对应的像素点
+            grayArr.push({
+                gray: i,
+                probability: histogramData[i] / imgSize,
+            })
+        }
+    let sum = 0;
+    for (let i = 0; i < grayArr.length; i++) sum += Math.log2(grayArr[i].probability) * grayArr[i].probability
+    sum *= -1;
+    return sum;
+}
+
 // 直方图均衡化
 const histogramEqualize = function (image, originHistogram, channel) {
     let distribution = new Array(originHistogram.length);       // 计算概率分布函数
@@ -81,12 +98,36 @@ const histogramEqualize = function (image, originHistogram, channel) {
 
 // 图像加法
 const imgAddition = function (img1, img2) {
-    
+   // if (img1.rows === img2.rows && img1.cols === img2.cols) {;
+        for (let i = 0; i < img1.rows; i++) {
+            for (let j = 0; j < img1.cols; j++) {
+                let pixelData1 = img1.ucharPtr(i, j);
+                let pixelData2 = img2.ucharPtr(i, j);
+                if (pixelData2) {
+                    for (let c = 0; c < 3; c++) {
+                        pixelData1[c] = Math.round((pixelData1[c] + pixelData2[c]) / 2);
+                    }
+                }
+            }
+        }
+  //  }
 }
 
 // 图像减法
 const imgSubduction = function (img1, img2) {
-    
+  //  if (img1.rows === img2.rows && img1.cols === img2.cols) {
+        for (let i = 0; i < img1.rows; i++) {
+            for (let j = 0; j < img1.cols; j++) {
+                let pixelData1 = img1.ucharPtr(i, j);
+                let pixelData2 = img2.ucharPtr(i, j);
+                if (pixelData2) {
+                    for (let c = 0; c < 3; c++) {
+                        pixelData1[c] = Math.round(pixelData1[c] - pixelData2[c]);
+                    }
+                }
+            }
+        }
+ //   }
 }
 
 // 椒盐噪声
@@ -176,7 +217,7 @@ const huffmanCoding = function (img, channel) {
                 gray: i,
                 originProbability: histogramData[i] / imgSize,
                 probability: histogramData[i] / imgSize,
-                huffmanCode: ''
+                code: ''
             })
         }
     huffmanArr.sort(function (a, b) {return a.probability - b.probability});        // 按概率升序排序
@@ -184,8 +225,8 @@ const huffmanCoding = function (img, channel) {
 
     for (let i = 0; i < huffmanArr.length - 1; i ++) {
         for (let k = 0; k < huffmanArr.length; k++) {
-            if (huffmanArr[k].rank === huffmanArr[i].rank) huffmanArr[k].huffmanCode = '1' + huffmanArr[k].huffmanCode;
-            if (huffmanArr[k].rank === huffmanArr[i + 1].rank) huffmanArr[k].huffmanCode = '0' + huffmanArr[k].huffmanCode;
+            if (huffmanArr[k].rank === huffmanArr[i].rank) huffmanArr[k].code = '1' + huffmanArr[k].code;
+            if (huffmanArr[k].rank === huffmanArr[i + 1].rank) huffmanArr[k].code = '0' + huffmanArr[k].code;
         }
 
         huffmanArr[i + 1].probability += huffmanArr[i].probability;
@@ -199,7 +240,11 @@ const huffmanCoding = function (img, channel) {
     }
 
     huffmanArr.sort(function (a, b) {return a.gray - b.gray});        // 按灰度升序排序
-    return huffmanArr;
+
+    // 计算平均码字长度
+    let averageLength = 0;
+    for (let i = 0; i < huffmanArr.length; i++) averageLength += huffmanArr[i].originProbability * huffmanArr[i].code.length;
+    return [huffmanArr, averageLength];
 }
 
 // Shannon-Fano编码
@@ -212,28 +257,31 @@ const shannonFanoCoding = function (img, channel) {
             sfArr.push({
                 gray: i,                                                                             // 灰度
                 originProbability: histogramData[i] / imgSize,          // 概率
-                sfCode: ''                                                                        // 编码序列
+                code: ''                                                                        // 编码序列
             })
         }
     sfArr.sort(function (a, b) {return b.originProbability - a.originProbability});        // 按概率降序排序
-    const devideFunc = function (arr) {
-        let sum = 0;
-        for (let i = 0; i < arr.length; i++) sum += arr[i].originProbability;
-        let midValue = sum / 2;
-        let dValueArr = new Array(arr.length);
-        for (let i = 0; i < dValueArr.length; i++) dValueArr[i] = Math.abs(arr[i].originProbability - midValue);
-        let minIndex = getMinValue(dValueArr)[1];               // 获取分割点的下标
-        return [arr.slice(0, minIndex, arr.slice(minIndex, arr.length))];
-    }
-    
-    let biggerPart = devideFunc(sfArr)[0],
-        smallerPart = devideFunc(sfArr)[1];
 
-
-    for (let i = 0; i < sfArr; i++) {
-        sum += sfArr[i].originProbability;
+    const sfCoding = function (arr) {            // 递归函数
+        if (arr.length > 1) {
+            let tempArr = new Array(arr.length);
+            for (let i = 0 ; i < tempArr.length; i++) {
+                tempArr[i] = 0;
+                for (let j = 0; j <= i; j++) tempArr[i] += arr[j].originProbability;
+            }
+            for (let i = 0; i < tempArr.length; i++) tempArr[i] = Math.abs(tempArr[i] - tempArr[tempArr.length - 1] / 2);
+            let tempIndex = getMinValue(tempArr)[1] + 1;
+            for (let i = 0; i < tempIndex; i++) arr[i].code += '0';
+            for (let i = tempIndex; i < arr.length; i++) arr[i].code += '1';
+            sfCoding(arr.slice(0, tempIndex));
+            sfCoding(arr.slice(tempIndex, arr.length));
+        }
     }
-    return sfArr;
+    sfCoding(sfArr);
+    // 计算平均码字长度
+    let averageLength = 0;
+    for (let i = 0; i < sfArr.length; i++) averageLength += sfArr[i].originProbability * sfArr[i].code.length;
+    return [sfArr, averageLength];
 }
 
 // 设置为可拖动
