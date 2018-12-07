@@ -8,11 +8,17 @@ const getMinValue = function (arr) {
             index = i;
         }
     return [min, index];
-}
+};
 
 const logFunc = function (x, a, b, c) {
     
-}
+};
+
+// 二值化
+const binarize = function (fromImg, toImg, threshold) {
+    cv.cvtColor(fromImg, toImg, cv.COLOR_RGBA2GRAY, 0);
+    cv.threshold(toImg, toImg, threshold, 255, cv.THRESH_BINARY);
+};
 
 // 线性灰度变换
 const linearGrayTrans = function (img, f1, f2, t1, t2) {
@@ -27,7 +33,7 @@ const linearGrayTrans = function (img, f1, f2, t1, t2) {
                     pixelData[c] = a + b;
                 }
         }
-}
+};
 
 // 对数变换
 const logGrayTrans = function (img, a, b ,c) {
@@ -36,7 +42,7 @@ const logGrayTrans = function (img, a, b ,c) {
             let pixelData = img.ucharPtr(i, j);
             for (let channel = 0; channel < 3; channel++) pixelData[channel] = Math.log(pixelData[channel] + 1) / (b * Math.log(c)) + a + 0.5;
         }
-}
+};
 
 // 获取某通道的直方图数据
 const getHistogramData = function (img, channel) {          // 0->R, 1->G, 2->B, 3->A
@@ -50,7 +56,7 @@ const getHistogramData = function (img, channel) {          // 0->R, 1->G, 2->B,
             histogramData[valueData]++;
         }
     return histogramData;
-}
+};
 
 // 获取信息熵
 const getEntropy = function (img, channel) {
@@ -68,7 +74,7 @@ const getEntropy = function (img, channel) {
     for (let i = 0; i < grayArr.length; i++) sum += Math.log2(grayArr[i].probability) * grayArr[i].probability
     sum *= -1;
     return sum;
-}
+};
 
 // 直方图均衡化
 const histogramEqualize = function (image, originHistogram, channel) {
@@ -98,7 +104,7 @@ const histogramEqualize = function (image, originHistogram, channel) {
     }
     cv.imshow('currentImgCanvas', image);
     return newHistogram;
-}
+};
 
 // 图像加法
 const imgAddition = function (img1, img2) {
@@ -115,7 +121,7 @@ const imgAddition = function (img1, img2) {
             }
         }
   //  }
-}
+};
 
 // 图像减法
 const imgSubduction = function (img1, img2) {
@@ -132,7 +138,7 @@ const imgSubduction = function (img1, img2) {
             }
         }
  //   }
-}
+};
 
 // 椒盐噪声
 const addSaltAndPepperNoise = function (img, quantity) {
@@ -156,7 +162,7 @@ const addGaussianNoise = function (img, quantity) {
         let colorValue = (Math.round(Math.random()) * 2 - 1) * Math.round(Math.random() * 255);
         for (let c = 0; c < 3; c++) img.ucharPtr(noiseY, noiseX)[c] += colorValue;
     }
-}
+};
 
 // 均值滤波
 const averageSmooth = function (img, channel, templeteSize) {
@@ -181,7 +187,7 @@ const averageSmooth = function (img, channel, templeteSize) {
     for (let i = 0; i < img.rows - templeteSize; i++)
         for (let j = 0; j < img.cols - templeteSize; j++)
             img.ucharPtr(i + Math.round(templeteSize / 2), j + Math.round(templeteSize / 2))[channel] = ouputImg[i][j];
-}
+};
 
 // 中值滤波
 const midValueSmooth = function (img, channel, templeteSize) {
@@ -207,7 +213,7 @@ const midValueSmooth = function (img, channel, templeteSize) {
     for (let i = 0; i < img.rows - templeteSize; i++)
         for (let j = 0; j < img.cols - templeteSize; j++)
             img.ucharPtr(i + Math.round(templeteSize / 2), j + Math.round(templeteSize / 2))[channel] = ouputImg[i][j];
-}
+};
 
 // Huffman编码
 const huffmanCoding = function (img, channel) {
@@ -249,7 +255,7 @@ const huffmanCoding = function (img, channel) {
     let averageLength = 0;
     for (let i = 0; i < huffmanArr.length; i++) averageLength += huffmanArr[i].originProbability * huffmanArr[i].code.length;
     return [huffmanArr, averageLength];
-}
+};
 
 // Shannon-Fano编码
 const shannonFanoCoding = function (img, channel) {
@@ -280,17 +286,18 @@ const shannonFanoCoding = function (img, channel) {
             sfCoding(arr.slice(0, tempIndex));
             sfCoding(arr.slice(tempIndex, arr.length));
         }
-    }
+    };
     sfCoding(sfArr);
     // 计算平均码字长度
     let averageLength = 0;
     for (let i = 0; i < sfArr.length; i++) averageLength += sfArr[i].originProbability * sfArr[i].code.length;
     return [sfArr, averageLength];
-}
+};
 
 // 设置为可拖动
-const setMoveable = function (id, top, left) {
-    let ele = $('#'+id);
+const setMoveable = function (moveSelector, dragSelector, top, left) {
+    let ele = $(moveSelector);
+    let dragBar = $(dragSelector);
     let mouseDown = false,              // 判断拖动
         mouseX = void 0,                    // 按下时鼠标坐标
         mouseY = void 0,
@@ -300,12 +307,14 @@ const setMoveable = function (id, top, left) {
         'position': 'fixed',
         'top': top + 'px',
         'left': left + 'px',
-    }).mousedown(function (e) {             // 鼠标按下
+    });
+    dragBar.mousedown(function (e) {             // 鼠标按下
         e = e?e:window.event;
         mouseDown = true;
         mouseX = e.clientX; mouseY = e.clientY;
-        preTop = parseInt(this.style.top); preLeft = parseInt(this.style.left);
-    }).mousemove(function (e) {             // 鼠标拖动（移动
+        preTop = parseInt(ele.get(0).style.top); preLeft = parseInt(ele.get(0).style.left);
+    });
+    $(document).mousemove(function (e) {             // 鼠标拖动（移动
         e = e?e:window.event;
         if (mouseDown) {
             ele.css('top', preTop + e.clientY - mouseY+'px');
@@ -314,4 +323,4 @@ const setMoveable = function (id, top, left) {
     }).mouseup(function () {                 // 鼠标松开
         mouseDown = false;
     });
-}
+};

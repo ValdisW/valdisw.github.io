@@ -22,6 +22,7 @@
         <li id="spatialSmoothButton">空域平滑</li>
         <li id="addNoiseButton">添加噪声</li>
         <li id="plusOrMinusButton">图像加减</li>
+        <li id="binarizeButton">二值化</li>
         <li id="linearGrayTransButton">灰度变换</li>
         <li id="histogramTransButton">直方图</li>
     </ul>
@@ -47,7 +48,7 @@
 </div>-->
 
 <div id="grayPanel">
-    <p>灰度变换</p>
+    <p class="dragBar">灰度变换</p>
     <div id="grayChart"></div>
     <label for="grayModeSelect">变换类型: </label>
     <select name="grayMode" id="grayModeSelect">
@@ -69,7 +70,7 @@
 </div>
 
 <div id="histogramPanel">
-    <p>直方图变换</p>
+    <p class="dragBar">直方图变换</p>
     <div id="histogramChart"></div>
     <span>通道:&nbsp;</span>
     <input class="channelInput" type="radio" value=0 name="channel">红
@@ -80,7 +81,7 @@
 </div>
 
 <div id="plusOrMinusPanel">
-    <p>图像加减</p>
+    <p class="dragBar">图像加减</p>
     <button onclick="document.getElementById('plusOrMinusInputButton').click()">
         选择图片
         <input type="file" class="fileInputButton" id="plusOrMinusInputButton" accept="image/*">
@@ -95,7 +96,7 @@
 </div>
 
 <div id="spacialSmoothPanel">
-    <p>空域平滑</p>
+    <p class="dragBar">空域平滑</p>
     <div class="gadgetOpions">
         <label for="filterModeSelect">滤波类型: </label>
         <select name="filterMode" id="filterModeSelect">
@@ -111,7 +112,7 @@
 </div>
 
 <div id="addNoisePanel">
-    <p>添加噪声</p>
+    <p class="dragBar">添加噪声</p>
     <div class="gadgetOpions">
         <label for="noiseTypeSelect">噪声类型: </label>
         <select name="noiseType" id="noiseTypeSelect">
@@ -127,7 +128,7 @@
 </div>
 
 <div id="codingAndDecodingPanel">
-    <p>编/解码</p>
+    <p class="dragBar">编/解码</p>
     <div id="codingControl">
         <label for="codingAlgoSelect">编码方式: </label>
         <select name="codingAlgo" id="codingAlgoSelect">
@@ -152,6 +153,16 @@
         <label for="codingEfficiency">编码效率:&nbsp;</label><input type="text" id="codingEfficiency" readonly><br>
     </div>
     <button>关闭</button>
+</div>
+
+<div id="binarizePanel">
+    <p class="dragBar">二值化</p>
+    <div class="gadgetOpions">
+        <label for="threshold">阈值：</label>
+        <input id="threshold" type="range" min="0" max="255" step="1">
+    </div>
+    <button class="confirm">确定</button>
+    <button class="cancel">取消</button>
 </div>
 <!-- 脚本 -->
 <script src="../js/jquery-3.3.1.min.js"></script>

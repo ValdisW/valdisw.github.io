@@ -1,11 +1,10 @@
 const colorbarArr = ['#F77', '#7F7', '#77F'];
 let currentMat = void 0;
+let tempMat = void 0;               // 用于预览
 
 function onOpenCvReady() {
     $('#black, #waiting').fadeOut(300);
 }
-
-
 
 // 读取图片
 const srcImg = $('#srcImg')[0];           // 原图的img标签
@@ -15,6 +14,7 @@ $('#srcImgInputButton').change(function(e) {
 srcImg.onload = function () {
     let srcMat = cv.imread(srcImg);
     currentMat = srcMat;
+    tempMat = new cv.Mat();
 /*
     $('#img_size').html(currentMat.size().width + '×' + currentMat.size().height);
     $('#img_channels').html(currentMat.channels());
@@ -36,7 +36,7 @@ srcImg.onload = function () {
         'cursor': 'move',
         'z-index': '10'
     });
-    setMoveable('currentImgCanvas', 80, 80);
+    setMoveable('#currentImgCanvas', '#currentImgCanvas', 80, 80);
     cv.imshow('currentImgCanvas', srcMat);      // 显示
     //srcMat.delete();
 };
@@ -48,7 +48,7 @@ $('#linearGrayTransButton').click(function () {
     if (!currentMat) alert('请先选择一张图片！');
     else{
         $('#grayPanel, #black').css('display', 'block');
-        setMoveable('grayPanel', 100, 100);
+        setMoveable('#grayPanel', '#grayPanel .dragBar',100, 100);
         let grayChartBlock = $('#grayChart').css({
             'width': '300px',
             'height': '300px'
@@ -153,7 +153,7 @@ $('#histogramTransButton').click(function () {
     if (!currentMat) alert('请先选择一张图片！');
     else {
         $('#histogramPanel, #black').css('display', 'block');       // 弹出窗口
-        setMoveable('histogramPanel', 100, 100);
+        setMoveable('#histogramPanel', '#histogramPanel .dragBar', 100, 100);
         let channelMode = 0;
 
         // initialize
@@ -248,7 +248,7 @@ $('#plusOrMinusButton').click(function () {
     if (!currentMat) alert('请先选择一张图片！');
     else {
         $('#plusOrMinusPanel, #black').css('display', 'block');       // 弹出窗口
-        setMoveable('plusOrMinusPanel', 100, 100);
+        setMoveable('#plusOrMinusPanel', '#plusOrMinusPanel .dragBar', 100, 100);
         plusOrMinusMode = 0;            // 默认为加法
     }
 });
@@ -287,7 +287,7 @@ $('#spatialSmoothButton').click(function () {
     if (!currentMat) alert('请先选择一张图片！');
     else {
         $('#spacialSmoothPanel, #black').css('display', 'block');       // 弹出窗口
-        setMoveable('spacialSmoothPanel', 100, 100);
+        setMoveable('#spacialSmoothPanel', '#spacialSmoothPanel .dragBar', 100, 100);
         filterMode = 0;             // 默认为均值滤波
     }
 });
@@ -309,7 +309,7 @@ $('#addNoiseButton').click(function () {
     if (!currentMat) alert('请先选择一张图片！');
     else {
         $('#addNoisePanel, #black').css('display', 'block');       // 弹出窗口
-        setMoveable('addNoisePanel', 100, 100);
+        setMoveable('#addNoisePanel', '#addNoisePanel .dragBar', 100, 100);
         noiseIntensity = $("#noiseIntensity").val() / 100 * currentMat.cols * currentMat.rows;
         noiseType = 0;
     }
@@ -332,7 +332,7 @@ $('#codingAndDecodingButton').click(function () {
     if (!currentMat) alert('请先选择一张图片！');
     else {
         $('#codingAndDecodingPanel, #black').css('display', 'block');       // 弹出窗口
-        setMoveable('codingAndDecodingPanel', 100, 100);
+        setMoveable('#codingAndDecodingPanel', '#codingAndDecodingPanel .dragBar',100, 100);
         codingAlgo = 0;             // 默认为Huffman编码
         codingChannel = 0;       // 默认通道为红色
         $('#codingChannelSelect').change();
@@ -374,4 +374,29 @@ $('#codingAlgoSelect').change(function () {
 
 $('#codingAndDecodingPanel button:last').click(function () {
     $('#codingAndDecodingPanel, #black').css('display', 'none');
+});
+
+// 二值化
+let threshold = void 0;
+$('#binarizeButton').click(function () {
+    if (!currentMat) alert('请先选择一张图片！');
+    else {
+        $('#binarizePanel, #black').css('display', 'block');       // 弹出窗口
+        setMoveable('#binarizePanel', '#binarizePanel .dragBar', 100, 100);
+        plusOrMinusMode = 0;            // 默认为加法
+    }
+});
+$('#binarizePanel .confirm').click(function () {         // 单击确定
+    $('#binarizePanel, #black').css('display', 'none');
+    currentMat = tempMat.clone();
+    cv.imshow('currentImgCanvas', currentMat);
+});
+$('#binarizePanel .cancel').click(function () {         // 单击取消
+    $('#binarizePanel, #black').css('display', 'none');
+    cv.imshow('currentImgCanvas', currentMat);
+});
+$('#threshold').change(function () {
+    threshold = parseInt($('#threshold').val());
+    binarize(currentMat, tempMat, threshold);
+    cv.imshow('currentImgCanvas', tempMat);
 });
