@@ -313,6 +313,8 @@ const setMoveable = function (moveSelector, dragSelector, top, left) {
         mouseDown = true;
         mouseX = e.clientX; mouseY = e.clientY;
         preTop = parseInt(ele.get(0).style.top); preLeft = parseInt(ele.get(0).style.left);
+    }).mouseup(function () {                 // 鼠标松开
+        mouseDown = false;
     });
     $(document).mousemove(function (e) {             // 鼠标拖动（移动
         e = e?e:window.event;
@@ -320,7 +322,5 @@ const setMoveable = function (moveSelector, dragSelector, top, left) {
             ele.css('top', preTop + e.clientY - mouseY+'px');
             ele.css('left', preLeft + e.clientX - mouseX+'px');
         }
-    }).mouseup(function () {                 // 鼠标松开
-        mouseDown = false;
-    });
+    })
 };

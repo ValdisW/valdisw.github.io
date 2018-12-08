@@ -7,6 +7,9 @@ select{
     color: #DDD;
     border: 1px solid #444;
 }
+.dragBar, button, li{
+    user-select: none;
+}
 .gadgetOpions{
     margin: 20px 50px;
 }
