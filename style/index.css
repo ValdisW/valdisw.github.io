@@ -1,5 +1,6 @@
 *{margin: 0; padding: 0; color: #000; outline: none; font-size: 14px;}
 ul{list-style-type: none}
+li{cursor: pointer}
 a{text-decoration: none;}
 body{
     background-color: #FFF;
@@ -10,18 +11,19 @@ body{
     height: 100%; width: 160px;
     position: fixed;
     z-index: 10;
+    margin: 60px;
 }
 
 #nav ul{width: 100%;}
 #nav ul > li{
     height: 60px; width: 100%;
     text-align: center; line-height: 60px;
+    border-bottom: 1px solid #CCC;
     transition: 0.3s;
-    background-color: #ccc;
 }
 
 #nav ul > li:hover {
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 #menu_group_homework:hover ul{display: block;}
@@ -37,7 +39,7 @@ body{
 #nav a {
     font-size: 16px;
     text-decoration: none;
-    color: #FFF;
+    color: #000;
 }
 
 /*body*/
