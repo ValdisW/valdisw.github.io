@@ -154,10 +154,10 @@ $('#histogramTransButton').click(function () {
     else {
         $('#histogramPanel, #black').css('display', 'block');       // 弹出窗口
         setMoveable('#histogramPanel', '#histogramPanel .dragBar', 100, 100);
-        let channelMode = 0;
+        let channelMode = parseInt($('#histogramChannelSelect').val());
 
         // initialize
-        $('.channelInput:first')[0].checked = true;         // 默认通道选红色
+        //$('.channelInput:first')[0].checked = true;         // 默认通道选红色
         let histogramData = getHistogramData(currentMat, channelMode);        // 获取直方图数据
         let histogramData_2 = new Array(getHistogramData.length);                   // 转化成二维数组，用于echarts绘制
         for (let i = 0; i < histogramData.length; i++) {
@@ -200,17 +200,15 @@ $('#histogramTransButton').click(function () {
                 type: 'bar',
                 data: histogramData_2,
                 barMaxWidth: 7,
-                itemStyle: {color: colorbarArr[0]},
+                itemStyle: {color: colorbarArr[channelMode]},
             }
         };
         histogramChart.setOption(histogramOption);
 
-        let channelInputs = $('.channelInput');
-        let currentChannel = 0;             // 当前通道
+        let currentChannel = parseInt($('#histogramChannelSelect').val());   // 当前通道
 
-
-        $('.channelInput:eq(0), .channelInput:eq(1), .channelInput:eq(2)').change(function () {         // 选择通道
-            currentChannel = this.value;                                                                          // 调整当前通道
+        $('#histogramChannelSelect').change(function () {         // 选择通道
+            currentChannel = parseInt($('#histogramChannelSelect').val());                                                                          // 调整当前通道
             histogramData = getHistogramData(currentMat, currentChannel);        // 获取直方图数据
             histogramData_2 = new Array(getHistogramData.length);                      // 转化成二维数组用于echarts绘制
             for (let i = 0; i < histogramData.length; i++) {
@@ -384,6 +382,7 @@ $('#binarizeButton').click(function () {
         $('#binarizePanel, #black').css('display', 'block');       // 弹出窗口
         setMoveable('#binarizePanel', '#binarizePanel .dragBar', 100, 100);
         plusOrMinusMode = 0;            // 默认为加法
+        $('#threshold').change();
     }
 });
 $('#binarizePanel .confirm').click(function () {         // 单击确定

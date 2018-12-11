@@ -37,27 +37,12 @@ body{
 }
 
 #nav a {
-    font-size: 16px;
     text-decoration: none;
     color: #000;
 }
 
 /*body*/
-#blackblock {
-    height: 500px;
-    width: 90%;
-    margin: 0 auto;
-    position: relative;
-    top: 100px;
-}
-.blockAreas {
-    color: #DDD;
-    background-color: #222;
-    width: 30%;
-}
-.blockTitle {
-    background-color: #666;
-    font-weight: bold;
-    text-align: center;
-}
+
+
+
 /* footer */

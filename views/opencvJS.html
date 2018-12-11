@@ -72,10 +72,12 @@
 <div id="histogramPanel">
     <p class="dragBar">直方图变换</p>
     <div id="histogramChart"></div>
-    <span>通道:&nbsp;</span>
-    <input class="channelInput" type="radio" value=0 name="channel">红
-    <input class="channelInput" type="radio" value=1 name="channel">绿
-    <input class="channelInput" type="radio" value=2 name="channel">蓝
+    <label  for="histogramChannelSelect">通道:&nbsp;</label>
+    <select name="channel" id="histogramChannelSelect">
+        <option value="0">红</option>
+        <option value="1">绿</option>
+        <option value="2">蓝</option>
+    </select>
     <button id="ifEqualize" type="checkbox">均衡化</button>
     <button>关闭</button>
 </div>
