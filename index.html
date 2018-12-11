@@ -8,33 +8,40 @@
     <link rel="stylesheet" href="style/index.css">
 </head>
 <body>
-<script src="./js/jquery-3.3.1.min.js"></script>
-<script src="./script/toTop.js"></script>
+
 <div id="top"></div>
 <div id="header">
     <div id="nav">
         <ul>
-            <a href="#"><li>首页</li></a>
-            <a href="./views/fourierTest.html"><li>智能算法</li></a>
-            <a href="./views/opencvJS.html"><li>图像处理</li></a>
-            <a href="./views/mathTest.html"><li>互动媒体</li></a>
-            <a href="#"><li>其他</li></a>
+            <li>
+                <a href="#">首页</a>
+            </li>
+            <li id="menu_group_homework">
+                <a href="#">作业</a>
+                <ul>
+                    <a href="./views/fourierTest.html"><li>智能算法</li></a>
+                    <a href="./views/opencvJS.html"><li>图像处理</li></a>
+                    <a href="./views/mathTest.html"><li>互动媒体</li></a>
+                    <a href="#"><li>其他</li></a>
+                </ul>
+            </li>
+            <li id="menu_group_games">
+                <a href="#">游戏</a>
+                <ul>
+                    <li><a href="./views/games/tys_2D.html">贪吔蛇！</a></li>
+                    <li><a href="./views/games/plane.html">飞机！</a></li>
+                </ul>
+            </li>
         </ul>
     </div>
 </div>
 <div id="body">
-    <div id="blackblock">
-        <div id="gamesBlock" class="blockAreas">
-            <div class="blockTitle">游戏</div>
-            <ul>
-                <li><a href="./views/games/tys_2D.html">贪吔蛇！</a></li>
-                <li><a href="./views/games/plane.html">飞机！</a></li>
-            </ul>
-        </div>
-    </div>
+
 </div>
 <div id="footer">
 
 </div>
+<script src="./js/jquery-3.3.1.min.js"></script>
+<script src="./script/toTop.js"></script>
 </body>
 </html>
