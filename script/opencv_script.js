@@ -399,3 +399,28 @@ $('#threshold').change(function () {
     binarize(currentMat, tempMat, threshold);
     cv.imshow('currentImgCanvas', tempMat);
 });
+
+// 边缘检测
+let operator = void 0;
+$('#borderDetectButton').click(function () {
+    if (!currentMat) alert('请先选择一张图片！');
+    else {
+        $('#borderDetectPanel, #black').css('display', 'block');       // 弹出窗口
+        setMoveable('#borderDetectPanel', '#borderDetectPanel .dragBar', 100, 100);
+        $('#operatorSelect').change();
+    }
+});
+$('#borderDetectPanel .confirm').click(function () {         // 单击确定
+    $('#borderDetectPanel, #black').css('display', 'none');
+    currentMat = tempMat.clone();
+    cv.imshow('currentImgCanvas', currentMat);
+});
+$('#borderDetectPanel .cancel').click(function () {         // 单击取消
+    $('#borderDetectPanel, #black').css('display', 'none');
+    cv.imshow('currentImgCanvas', currentMat);
+});
+$('#operatorSelect').change(function () {
+    operator = parseInt($('#operatorSelect').val());
+    robertsOperatorBorderDetect(currentMat, tempMat, operator);
+    cv.imshow('currentImgCanvas', tempMat);
+});

@@ -294,6 +294,53 @@ const shannonFanoCoding = function (img, channel) {
     return [sfArr, averageLength];
 };
 
+// 边缘检测
+const robertsOperatorBorderDetect = function (fromImg, toImg, operator) {
+    let temp_mat = new cv.Mat();
+
+    cv.cvtColor(fromImg, toImg, cv.COLOR_RGBA2RGB, 0);
+    cv.cvtColor(toImg, temp_mat, cv.COLOR_RGB2HSV, 0);
+    if (operator === 0) {                       // Roberts算子
+        for (let i = 1; i < temp_mat.rows - 1; i++)
+            for (let j = 1; j < temp_mat.cols - 1; j++) {
+                let x = temp_mat.ucharPtr(i, j)[2] - temp_mat.ucharPtr(i-1, j-1)[2];
+                let y = temp_mat.ucharPtr(i-1, j)[2] - temp_mat.ucharPtr(i, j-1)[2];
+                let t = Math.ceil(Math.sqrt(x*x + y*y));
+                for (let c = 0; c < 3; c++) toImg.ucharPtr(i, j)[c] = t;
+            }
+    }
+    else if (operator === 1) {              // Sobel算子
+        for (let i = 1; i < temp_mat.rows - 1; i++)
+            for (let j = 1; j < temp_mat.cols - 1; j++) {
+                let x = (temp_mat.ucharPtr(i-1, j-1)[2] + 2 * temp_mat.ucharPtr(i-1, j)[2] + temp_mat.ucharPtr(i-1, j+1)[2] - toImg.ucharPtr(i+1, j-1)[2] - 2 * toImg.ucharPtr(i+1, j)[2] - toImg.ucharPtr(i+1, j+1)[2]) / 4;
+                let y = (temp_mat.ucharPtr(i-1, j+1)[2] + 2 * temp_mat.ucharPtr(i, j+1)[2] + temp_mat.ucharPtr(i+1, j+1)[2] - toImg.ucharPtr(i-1, j-1)[2] - 2 * toImg.ucharPtr(i, j-1)[2] - toImg.ucharPtr(i+1, j-1)[2]) / 4;
+                let t = Math.ceil(Math.sqrt(x*x + y*y));
+                for (let c = 0; c < 3; c++) toImg.ucharPtr(i, j)[c] = t;
+            }
+    }
+    else if (operator === 2) {              // Prewitt算子
+        for (let i = 1; i < temp_mat.rows - 1; i++)
+            for (let j = 1; j < temp_mat.cols - 1; j++) {
+                let x = (temp_mat.ucharPtr(i-1, j+1)[2] + temp_mat.ucharPtr(i, j+1)[2] + temp_mat.ucharPtr(i+1, j+1)[2] - toImg.ucharPtr(i-1, j-1)[2] - toImg.ucharPtr(i, j-1)[2] - toImg.ucharPtr(i+1, j-1)[2]) / 3;
+                let y = (temp_mat.ucharPtr(i-1, j-1)[2] + temp_mat.ucharPtr(i-1, j)[2] + temp_mat.ucharPtr(i-1, j+1)[2] - toImg.ucharPtr(i+1, j-1)[2] - toImg.ucharPtr(i+1, j)[2] - toImg.ucharPtr(i+1, j+1)[2]) / 3;
+                let t = Math.ceil(Math.sqrt(x*x + y*y));
+                for (let c = 0; c < 3; c++) toImg.ucharPtr(i, j)[c] = t;
+            }
+    }
+    else if (operator === 3) {              // Lapplacian算子
+        for (let i = 1; i < temp_mat.rows - 1; i++)
+            for (let j = 1; j < temp_mat.cols - 1; j++) {
+                let t = 4 * temp_mat.ucharPtr(i, j)[2] - temp_mat.ucharPtr(i+1, j)[2] - temp_mat.ucharPtr(i-1, j)[2] - temp_mat.ucharPtr(i, j+1)[2] - temp_mat.ucharPtr(i, j-1)[2];
+                for (let c = 0; c < 3; c++) toImg.ucharPtr(i, j)[c] = t;
+            }
+    }
+}
+
+// 迭代阈值分割
+const thresholdSplit = function (img) {
+    
+}
+
 // 设置为可拖动
 const setMoveable = function (moveSelector, dragSelector, top, left) {
     let ele = $(moveSelector);

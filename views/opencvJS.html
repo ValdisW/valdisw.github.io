@@ -18,6 +18,7 @@
         <input type="file" class="fileInputButton" id="srcImgInputButton" accept="image/*">
     </button>
     <ul>
+        <li id="borderDetectButton">边缘检测</li>
         <li id="codingAndDecodingButton">图像编码</li>
         <li id="spatialSmoothButton">空域平滑</li>
         <li id="addNoiseButton">添加噪声</li>
@@ -166,7 +167,23 @@
     <button class="confirm">确定</button>
     <button class="cancel">取消</button>
 </div>
-<!-- 脚本 -->
+
+<div id="borderDetectPanel">
+    <p class="dragBar">边缘检测</p>
+    <div class="gadgetOpions">
+        <label for="operatorSelect">选择算子：</label>
+        <select name="operatorSelect" id="operatorSelect">
+            <option value=0>Roberts算子（四点差分）</option>
+            <option value=1>Sobel算子（加权平均差分）</option>
+            <option value=2>Prewitt算子（局部差分平均）</option>
+            <option value=3>Lapplacian算子</option>
+        </select>
+    </div>
+    <button class="confirm">确定</button>
+    <button class="cancel">取消</button>
+</div>
+
+<!-- Scripts -->
 <script src="../js/jquery-3.3.1.min.js"></script>
 <script src="../js/echarts.js"></script>
 <script src="../script/opencvUtils.js"></script>
