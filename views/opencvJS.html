@@ -18,6 +18,7 @@
         <input type="file" class="fileInputButton" id="srcImgInputButton" accept="image/*">
     </button>
     <ul>
+        <li id="splitButton">图像分割</li>
         <li id="borderDetectButton">边缘检测</li>
         <li id="codingAndDecodingButton">图像编码</li>
         <li id="spatialSmoothButton">空域平滑</li>
@@ -177,6 +178,19 @@
             <option value=1>Sobel算子（加权平均差分）</option>
             <option value=2>Prewitt算子（局部差分平均）</option>
             <option value=3>Lapplacian算子</option>
+        </select>
+    </div>
+    <button class="confirm">确定</button>
+    <button class="cancel">取消</button>
+</div>
+
+<div id="splitPanel">
+    <p class="dragBar">图像分割 </p>
+    <div class="gadgetOpions">
+        <label for="splitAlgoSelect">分割算法：</label>
+        <select name="splitAlgoSelect" id="splitAlgoSelect">
+            <option value=0>迭代阈值分割</option>
+            <option value=1>区域生长算法分割</option>
         </select>
     </div>
     <button class="confirm">确定</button>

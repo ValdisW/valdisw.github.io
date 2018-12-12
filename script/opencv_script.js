@@ -15,12 +15,6 @@ srcImg.onload = function () {
     let srcMat = cv.imread(srcImg);
     currentMat = srcMat;
     tempMat = new cv.Mat();
-/*
-    $('#img_size').html(currentMat.size().width + '×' + currentMat.size().height);
-    $('#img_channels').html(currentMat.channels());
-    $('#img_depth').html(currentMat.depth());
-    $('#img_type').html(currentMat.type());
-*/
 
     // 添加canvas元素用于显示打开的图像，并附加于div窗口上
     let imageCanvas = $('<canvas id="currentImgCanvas"></canvas>');
@@ -422,5 +416,35 @@ $('#borderDetectPanel .cancel').click(function () {         // 单击取消
 $('#operatorSelect').change(function () {
     operator = parseInt($('#operatorSelect').val());
     robertsOperatorBorderDetect(currentMat, tempMat, operator);
+    cv.imshow('currentImgCanvas', tempMat);
+});
+
+// 图像分割
+let splitAlgo = void 0;
+$('#splitButton').click(function () {
+    if (!currentMat) alert('请先选择一张图片！');
+    else {
+        $('#splitPanel, #black').css('display', 'block');       // 弹出窗口
+        setMoveable('#splitPanel', '#splitPanel .dragBar', 100, 100);
+        $('#splitAlgoSelect').change();
+    }
+});
+$('#splitPanel .confirm').click(function () {         // 单击确定
+    $('#splitPanel, #black').css('display', 'none');
+    currentMat = tempMat.clone();
+    cv.imshow('currentImgCanvas', currentMat);
+});
+$('#splitPanel .cancel').click(function () {         // 单击取消
+    $('#splitPanel, #black').css('display', 'none');
+    cv.imshow('currentImgCanvas', currentMat);
+});
+$('#splitAlgoSelect').change(function () {
+    splitAlgo = parseInt($('#splitAlgoSelect').val());
+    if (splitAlgo === 0) thresholdSplit(currentMat, tempMat);
+    else if (splitAlgo === 1) {
+        $('#currentImgCanvas').click(function (e) {
+            console.log(e.clientX - parseInt($(this).css('left').slice(0, -2)), e.clientY - parseInt($(this).css('top').slice(0, -2)));
+        });
+    }
     cv.imshow('currentImgCanvas', tempMat);
 });

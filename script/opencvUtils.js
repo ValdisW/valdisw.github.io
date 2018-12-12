@@ -11,7 +11,7 @@ const getMinValue = function (arr) {
 };
 
 const logFunc = function (x, a, b, c) {
-    
+
 };
 
 // 二值化
@@ -108,36 +108,36 @@ const histogramEqualize = function (image, originHistogram, channel) {
 
 // 图像加法
 const imgAddition = function (img1, img2) {
-   // if (img1.rows === img2.rows && img1.cols === img2.cols) {;
-        for (let i = 0; i < img1.rows; i++) {
-            for (let j = 0; j < img1.cols; j++) {
-                let pixelData1 = img1.ucharPtr(i, j);
-                let pixelData2 = img2.ucharPtr(i, j);
-                if (pixelData2) {
-                    for (let c = 0; c < 3; c++) {
-                        pixelData1[c] = Math.round((pixelData1[c] + pixelData2[c]) / 2);
-                    }
+    // if (img1.rows === img2.rows && img1.cols === img2.cols) {;
+    for (let i = 0; i < img1.rows; i++) {
+        for (let j = 0; j < img1.cols; j++) {
+            let pixelData1 = img1.ucharPtr(i, j);
+            let pixelData2 = img2.ucharPtr(i, j);
+            if (pixelData2) {
+                for (let c = 0; c < 3; c++) {
+                    pixelData1[c] = Math.round((pixelData1[c] + pixelData2[c]) / 2);
                 }
             }
         }
-  //  }
+    }
+    //  }
 };
 
 // 图像减法
 const imgSubduction = function (img1, img2) {
-  //  if (img1.rows === img2.rows && img1.cols === img2.cols) {
-        for (let i = 0; i < img1.rows; i++) {
-            for (let j = 0; j < img1.cols; j++) {
-                let pixelData1 = img1.ucharPtr(i, j);
-                let pixelData2 = img2.ucharPtr(i, j);
-                if (pixelData2) {
-                    for (let c = 0; c < 3; c++) {
-                        pixelData1[c] = Math.round(pixelData1[c] - pixelData2[c]);
-                    }
+    //  if (img1.rows === img2.rows && img1.cols === img2.cols) {
+    for (let i = 0; i < img1.rows; i++) {
+        for (let j = 0; j < img1.cols; j++) {
+            let pixelData1 = img1.ucharPtr(i, j);
+            let pixelData2 = img2.ucharPtr(i, j);
+            if (pixelData2) {
+                for (let c = 0; c < 3; c++) {
+                    pixelData1[c] = Math.round(pixelData1[c] - pixelData2[c]);
                 }
             }
         }
- //   }
+    }
+    //   }
 };
 
 // 椒盐噪声
@@ -337,8 +337,58 @@ const robertsOperatorBorderDetect = function (fromImg, toImg, operator) {
 }
 
 // 迭代阈值分割
-const thresholdSplit = function (img) {
-    
+const thresholdSplit = function (fromImg, toImg) {
+    let temp_mat = new cv.Mat();
+    cv.cvtColor(fromImg, temp_mat, cv.COLOR_RGBA2RGB, 0);
+    cv.cvtColor(temp_mat, temp_mat, cv.COLOR_RGB2HSV, 0);
+
+    let histoData = getHistogramData(temp_mat, 2);          // 获取明度的直方图信息
+    let max_gray = void 0,              // 直方图的最大灰度值
+        min_gray = void 0,                // 直方图的最小灰度值
+        middle_gray = -1,          // 直方图的灰度中值
+        new_middle_gray = void 0;
+    // 先求初始的中值
+
+    for (let i = 0; i < histoData.length; i++) if (histoData[i]) {min_gray = i;break};
+    for (let i = histoData.length - 1; i >= 0; i--) if (histoData[i]) {max_gray = i; break};
+    new_middle_gray = Math.round((max_gray + min_gray) / 2);
+
+
+    // 迭代
+    while (Math.abs(middle_gray - new_middle_gray) > 1){
+        let temp = 0,
+            smaller_part = 0,                  // 以中值对直方图分割，较小灰度值范围的灰度均值
+            bigger_part = 0;                   // 以中值对直方图分割，较大灰度值范围的灰度均值
+
+        middle_gray = new_middle_gray;
+
+        // 求两部分的均值
+        for (let i = 0; i < middle_gray; i++)  {
+            smaller_part += histoData[i] * i;
+            temp += histoData[i];
+        }
+        smaller_part /= temp;
+        temp = 0;
+        for (let i = middle_gray; i < histoData.length; i++)  {
+            bigger_part += histoData[i] * i;
+            temp += histoData[i];
+        }
+        bigger_part /= temp;
+
+        new_middle_gray = Math.round((smaller_part + bigger_part) / 2);
+    }
+    console.log(new_middle_gray );
+    binarize(fromImg, toImg, new_middle_gray);
+}
+
+// 区域生长分割
+const regionGrowingSplit = function (fromImg, toImg, x, y) {
+    // 原图的HSV版本
+    let temp_mat = new cv.Mat();
+    cv.cvtColor(fromImg, temp_mat, cv.COLOR_RGBA2RGB, 0);
+    cv.cvtColor(temp_mat, temp_mat, cv.COLOR_RGB2HSV, 0);
+
+    let currentValue = temp_mat.ucharPtr(x, y)[2];              // 获取当前明度
 }
 
 // 设置为可拖动
