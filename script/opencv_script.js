@@ -313,7 +313,7 @@ $('#noiseTypeSelect').change(function () {
 
 $('#addNoisePanel button:last').click(function () {
     if (!noiseType) addSaltAndPepperNoise(currentMat, Math.round(noiseIntensity));
-    else addGaussianNoise(currentMat, Math.round(noiseIntensity));
+    else addGaussianNoise(currentMat);
     cv.imshow('currentImgCanvas', currentMat);      // 显示
     $('#addNoisePanel, #black').css('display', 'none');
 });
@@ -440,11 +440,14 @@ $('#splitPanel .cancel').click(function () {         // 单击取消
 });
 $('#splitAlgoSelect').change(function () {
     splitAlgo = parseInt($('#splitAlgoSelect').val());
-    if (splitAlgo === 0) thresholdSplit(currentMat, tempMat);
+    if (splitAlgo === 0) {
+        thresholdSplit(currentMat, tempMat);
+        cv.imshow('currentImgCanvas', tempMat);
+    }
     else if (splitAlgo === 1) {
+        cv.imshow('currentImgCanvas', currentMat);
         $('#currentImgCanvas').click(function (e) {
-            console.log(e.clientX - parseInt($(this).css('left').slice(0, -2)), e.clientY - parseInt($(this).css('top').slice(0, -2)));
+            regionGrowingSplit(currentMat, e.clientX - parseInt($(this).css('left').slice(0, -2)), e.clientY - parseInt($(this).css('top').slice(0, -2)), 10);
         });
     }
-    cv.imshow('currentImgCanvas', tempMat);
 });

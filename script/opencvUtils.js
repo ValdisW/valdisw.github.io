@@ -1,3 +1,17 @@
+let currentSelectedPixelCoors = [];
+
+// 正态分布（高斯分布）
+function normalRand(meanVal, std){          // 均值和标准差
+    let u = 0.0, v = 0.0, w = 0.0, c = 0.0;
+    do{
+        u = Math.random() * 2 - 1.0;
+        v = Math.random() * 2 - 1.0;
+        w = u * u + v * v;
+    }while(w === 0.0 || w >= 1.0)
+    c = Math.sqrt((-2 * Math.log(w)) / w);
+    return meanVal + std * u*c;
+}
+
 // 获取数组最小值及下标
 const getMinValue = function (arr) {
     let min = arr[0],
@@ -153,15 +167,18 @@ const addSaltAndPepperNoise = function (img, quantity) {
 }
 
 // 高斯噪声（伪）
-const addGaussianNoise = function (img, quantity) {
-    let imgHeight = img.rows;
-    let imgWidth = img.cols;
-    for (let i = 0; i < quantity; i++) {
-        let noiseX = Math.round(Math.random() * imgWidth);
-        let noiseY = Math.round(Math.random() * imgHeight);
-        let colorValue = (Math.round(Math.random()) * 2 - 1) * Math.round(Math.random() * 255);
-        for (let c = 0; c < 3; c++) img.ucharPtr(noiseY, noiseX)[c] += colorValue;
-    }
+const addGaussianNoise = function (img) {
+    // 获取原图的HSV版本
+    let temp_mat = new cv.Mat();
+    cv.cvtColor(img, temp_mat, cv.COLOR_RGBA2RGB, 0);
+    cv.cvtColor(temp_mat, temp_mat, cv.COLOR_RGB2HSV, 0);
+
+    for (let i = 0; i < temp_mat.rows; i++)
+        for (let j = 0; j < temp_mat.cols; j++) {
+            let pixelData = temp_mat.ucharPtr(i, j)[2];         // 获取V值
+            temp_mat.ucharPtr(i, j)[2] = normalRand(pixelData, 5);
+        }
+    cv.cvtColor(temp_mat, img, cv.COLOR_HSV2RGB, 0);
 };
 
 // 均值滤波
@@ -312,28 +329,29 @@ const robertsOperatorBorderDetect = function (fromImg, toImg, operator) {
     else if (operator === 1) {              // Sobel算子
         for (let i = 1; i < temp_mat.rows - 1; i++)
             for (let j = 1; j < temp_mat.cols - 1; j++) {
-                let x = (temp_mat.ucharPtr(i-1, j-1)[2] + 2 * temp_mat.ucharPtr(i-1, j)[2] + temp_mat.ucharPtr(i-1, j+1)[2] - toImg.ucharPtr(i+1, j-1)[2] - 2 * toImg.ucharPtr(i+1, j)[2] - toImg.ucharPtr(i+1, j+1)[2]) / 4;
-                let y = (temp_mat.ucharPtr(i-1, j+1)[2] + 2 * temp_mat.ucharPtr(i, j+1)[2] + temp_mat.ucharPtr(i+1, j+1)[2] - toImg.ucharPtr(i-1, j-1)[2] - 2 * toImg.ucharPtr(i, j-1)[2] - toImg.ucharPtr(i+1, j-1)[2]) / 4;
-                let t = Math.ceil(Math.sqrt(x*x + y*y));
+                let x = (temp_mat.ucharPtr(i-1, j-1)[2] + 2 * temp_mat.ucharPtr(i-1, j)[2] + temp_mat.ucharPtr(i-1, j+1)[2] - temp_mat.ucharPtr(i+1, j-1)[2] - 2 * temp_mat.ucharPtr(i+1, j)[2] - temp_mat.ucharPtr(i+1, j+1)[2]) / 4;
+                let y = (temp_mat.ucharPtr(i-1, j+1)[2] + 2 * temp_mat.ucharPtr(i, j+1)[2] + temp_mat.ucharPtr(i+1, j+1)[2] - temp_mat.ucharPtr(i-1, j-1)[2] - 2 * temp_mat.ucharPtr(i, j-1)[2] - temp_mat.ucharPtr(i+1, j-1)[2]) / 4;
+                    let t = Math.ceil(Math.sqrt(x*x + y*y));
                 for (let c = 0; c < 3; c++) toImg.ucharPtr(i, j)[c] = t;
             }
     }
     else if (operator === 2) {              // Prewitt算子
         for (let i = 1; i < temp_mat.rows - 1; i++)
             for (let j = 1; j < temp_mat.cols - 1; j++) {
-                let x = (temp_mat.ucharPtr(i-1, j+1)[2] + temp_mat.ucharPtr(i, j+1)[2] + temp_mat.ucharPtr(i+1, j+1)[2] - toImg.ucharPtr(i-1, j-1)[2] - toImg.ucharPtr(i, j-1)[2] - toImg.ucharPtr(i+1, j-1)[2]) / 3;
-                let y = (temp_mat.ucharPtr(i-1, j-1)[2] + temp_mat.ucharPtr(i-1, j)[2] + temp_mat.ucharPtr(i-1, j+1)[2] - toImg.ucharPtr(i+1, j-1)[2] - toImg.ucharPtr(i+1, j)[2] - toImg.ucharPtr(i+1, j+1)[2]) / 3;
+                let x = (temp_mat.ucharPtr(i-1, j+1)[2] + temp_mat.ucharPtr(i, j+1)[2] + temp_mat.ucharPtr(i+1, j+1)[2] - temp_mat.ucharPtr(i-1, j-1)[2] - temp_mat.ucharPtr(i, j-1)[2] - temp_mat.ucharPtr(i+1, j-1)[2]) / 3;
+                let y = (temp_mat.ucharPtr(i-1, j-1)[2] + temp_mat.ucharPtr(i-1, j)[2] + temp_mat.ucharPtr(i-1, j+1)[2] - temp_mat.ucharPtr(i+1, j-1)[2] - temp_mat.ucharPtr(i+1, j)[2] - temp_mat.ucharPtr(i+1, j+1)[2]) / 3;
                 let t = Math.ceil(Math.sqrt(x*x + y*y));
                 for (let c = 0; c < 3; c++) toImg.ucharPtr(i, j)[c] = t;
             }
     }
-    else if (operator === 3) {              // Lapplacian算子
+    else if (operator === 3) {              // Laplacian算子
         for (let i = 1; i < temp_mat.rows - 1; i++)
             for (let j = 1; j < temp_mat.cols - 1; j++) {
-                let t = 4 * temp_mat.ucharPtr(i, j)[2] - temp_mat.ucharPtr(i+1, j)[2] - temp_mat.ucharPtr(i-1, j)[2] - temp_mat.ucharPtr(i, j+1)[2] - temp_mat.ucharPtr(i, j-1)[2];
+                let t = (4 * temp_mat.ucharPtr(i, j)[2] - temp_mat.ucharPtr(i+1, j)[2] - temp_mat.ucharPtr(i-1, j)[2] - temp_mat.ucharPtr(i, j+1)[2] - temp_mat.ucharPtr(i, j-1)[2]) / 4;
                 for (let c = 0; c < 3; c++) toImg.ucharPtr(i, j)[c] = t;
             }
     }
+    temp_mat.delete();
 }
 
 // 迭代阈值分割
@@ -382,13 +400,28 @@ const thresholdSplit = function (fromImg, toImg) {
 }
 
 // 区域生长分割
-const regionGrowingSplit = function (fromImg, toImg, x, y) {
+const regionGrowingSplit = function (fromImg, x, y, threshold) {
     // 原图的HSV版本
     let temp_mat = new cv.Mat();
     cv.cvtColor(fromImg, temp_mat, cv.COLOR_RGBA2RGB, 0);
     cv.cvtColor(temp_mat, temp_mat, cv.COLOR_RGB2HSV, 0);
 
-    let currentValue = temp_mat.ucharPtr(x, y)[2];              // 获取当前明度
+    let currentValue = temp_mat.ucharPtr(x, y)[2];              // 获取原始像素点的明度，所有其他像素点与之比较
+
+    currentSelectedPixelCoors = [];
+    regionGrowingSplit_recur(temp_mat, currentValue, x, y, threshold);
+    console.log(currentSelectedPixelCoors);
+}
+
+// 区域生长的递归函数，如果当前像素点的明度与原始像素点明度之差小于阈值，就将该点加入被选中的数组中，并向周围扩散调用
+const regionGrowingSplit_recur = function (img, centerValue, x, y, threshold) {
+    if (Math.abs(img.ucharPtr(x, y)[2] - centerValue) <= threshold) {
+        currentSelectedPixelCoors.push([x, y].toString());
+        if (x > 0 && (!currentSelectedPixelCoors.includes([x-1, y].toString()))) regionGrowingSplit_recur(img, centerValue, x - 1, y, threshold);
+        if (y < img.rows && (!currentSelectedPixelCoors.includes([x, y+1].toString()))) regionGrowingSplit_recur(img, centerValue, x, y + 1, threshold);
+        if (x < img.cols && (!currentSelectedPixelCoors.includes([x+1, y].toString()))) regionGrowingSplit_recur(img, centerValue, x + 1, y, threshold);
+        if (y > 0 && (!currentSelectedPixelCoors.includes([x, y-1].toString()))) regionGrowingSplit_recur(img, centerValue, x, y - 1, threshold);
+    }
 }
 
 // 设置为可拖动
