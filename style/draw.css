@@ -1,0 +1,29 @@
+*{margin: 0; padding: 0}
+body{overflow-y: hidden}
+html, body{width: 100%; height: 100%;}
+canvas{
+    position: absolute;
+    cursor: none;
+}
+
+/*
+button {
+    height: 30px; width: 75px;
+    border: 1px solid #DDD;
+    background-color: transparent;
+    color: #DDD;
+    border-radius: 15px;
+    outline: none;
+    cursor: pointer;
+    transition: 0.1s;
+}
+button:hover{
+    background-color: #DDD;
+    color: #000;
+}
+#controlPanel{
+     height: 100%; width: 10%;
+     background-color: #222;
+     position: fixed; right: 0;
+     z-index: 10;
+ }*/

@@ -166,7 +166,7 @@ const addSaltAndPepperNoise = function (img, quantity) {
     }
 }
 
-// 高斯噪声（伪）
+// 高斯噪声
 const addGaussianNoise = function (img) {
     // 获取原图的HSV版本
     let temp_mat = new cv.Mat();
