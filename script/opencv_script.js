@@ -18,7 +18,7 @@ srcImg.onload = function () {
 
     // 添加canvas元素用于显示打开的图像，并附加于div窗口上
     let imageCanvas = $('<canvas id="currentImgCanvas"></canvas>');
-    $('#mainFrame').append(imageCanvas);
+    $('body').append(imageCanvas);
     let currentImgCanvas = $('#currentImgCanvas');
     let mouseDown = false,              // 判断拖动
         mouseX = void 0,                    // 按下时鼠标坐标
@@ -30,7 +30,7 @@ srcImg.onload = function () {
         'cursor': 'move',
         'z-index': '10'
     });
-    setMoveable('#currentImgCanvas', '#currentImgCanvas', 80, 80);
+    setMoveable('#currentImgCanvas', '#currentImgCanvas', 80, 180);
     cv.imshow('currentImgCanvas', srcMat);      // 显示
     //srcMat.delete();
 };

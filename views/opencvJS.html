@@ -12,27 +12,32 @@
 <div id="black"></div>
 <div id="waiting">请稍等，OpenCV.js加载中...</div>
 
-<div id="nav">
-    <button onclick="document.getElementById('srcImgInputButton').click()">
-        选择图片
-        <input type="file" class="fileInputButton" id="srcImgInputButton" accept="image/*">
-    </button>
-    <ul>
-        <li id="splitButton">图像分割</li>
-        <li id="borderDetectButton">边缘检测</li>
-        <li id="codingAndDecodingButton">图像编码</li>
-        <li id="spatialSmoothButton">空域平滑</li>
-        <li id="addNoiseButton">添加噪声</li>
-        <li id="plusOrMinusButton">图像加减</li>
-        <li id="binarizeButton">二值化</li>
-        <li id="linearGrayTransButton">灰度变换</li>
-        <li id="histogramTransButton">直方图</li>
-    </ul>
+<div id="header">
+    <div id="nav">
+        <button onclick="document.getElementById('srcImgInputButton').click()">
+            选择图片
+            <input type="file" class="fileInputButton" id="srcImgInputButton" accept="image/*">
+        </button>
+        <ul>
+            <li>
+                <span>图像</span>
+                <ul>
+                    <li id="binarizeButton">二值化</li>
+                    <li id="linearGrayTransButton">灰度变换</li>
+                    <li id="histogramTransButton">直方图</li>
+                    <li id="spatialSmoothButton">空域平滑</li>
+                    <li id="addNoiseButton">添加噪声</li>
+                </ul>
+            </li>
+            <li id="splitButton">图像分割</li>
+            <li id="borderDetectButton">边缘检测</li>
+            <li id="codingAndDecodingButton">图像编码</li>
+            <li id="plusOrMinusButton">图像加减</li>
+        </ul>
+    </div>
 </div>
 
-<div id="mainFrame">
-    <img src="" id="srcImg" alt="">
-</div>
+<img src="" id="srcImg" alt="">
 
 <!--<div id="controlPanel">
     <p id="img_size_label">
@@ -58,10 +63,10 @@
         <option value=1>对数</option>
     </select>
     <div id="linearPart">
-        原灰度范围:最小值:<input id="from_min" type="text" value=0>
-        最大值:<input id="from_max" type="text" value=255><br>
-        变换后灰度范围:最小值<input id="to_min" type="text" value=0>
-        最大值:<input id="to_max" type="text" value=255>
+        <label for="from_min">原灰度范围:最小值:</label><input id="from_min" type="text" value=0>
+        <label for="from_max">最大值:</label><input id="from_max" type="text" value=255><br>
+        <label for="to_min">变换后灰度范围:最小值</label><input id="to_min" type="text" value=0>
+        <label for="to_max">最大值:</label><input id="to_max" type="text" value=255>
     </div>
     <div id="expPart">
         <label for="para_a">参数a:</label><input id="para_a" type="text" value=100>

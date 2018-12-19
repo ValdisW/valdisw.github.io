@@ -1,10 +1,10 @@
 *{margin: 0; padding: 0; color: #000; outline: none; font-size: 14px;}
 ul{list-style-type: none}
+/*
 li{cursor: pointer}
+*/
 a{text-decoration: none;}
-body{
-    background-color: #FFF;
-}
+body{background-color: #FFF;}
 
 /*header*/
 #header{
@@ -22,13 +22,11 @@ body{
     transition: 0.3s;
 }
 
-#nav ul > li:hover {
+#nav ul > li:hover{
     background-color: rgba(0, 0, 0, 0.5);
 }
 
-#menu_group_homework:hover ul{display: block;}
-#menu_group_games:hover ul{display: block;}
-
+#nav ul > li:hover ul{display: block;}
 #nav ul > li > ul{
     position: relative;
     left: 160px;

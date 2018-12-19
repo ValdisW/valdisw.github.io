@@ -33,11 +33,42 @@ select{
 }
 
 /* 导航栏 */
-#nav{
-    width: 100%; height: 50px;
+#header{width: 120px; margin-left: 30px; margin-top: 50px;}
+#nav ul{margin-top: 30px;}
+#nav > ul > li{
+    height: 40px; width: 100%;
+    line-height: 40px; text-align: center;
+    font-size: 13px;
+    margin-bottom: 10px;
+    border-radius: 25px;
     background-color: #222;
+    cursor: pointer;
+    transition: 0.1s;
 }
-#nav > *{float: left}
+#nav > ul > li:hover{background-color: #FFF; transform: translate(15px);}
+#nav > ul > li:hover > span{color: #000; font-weight: bold}
+#nav > ul > li:hover > ul{display: block}
+
+#nav > ul > li > ul{
+    display: none;
+    position: relative;
+    left: 120px; top: -65px;
+    padding-left: 10px;
+}
+#nav > ul > li > ul > li{
+    height: 30px; width: 80%;
+    line-height: 30px; text-align: center;
+    margin-bottom: 10px;
+    border-radius: 25px;
+    background-color: #222;
+    transition: 0.1s
+}
+#nav > ul > li > ul > li:hover{
+    background-color: #FFF;
+    color: #000;
+    transform: translate(5px);
+}
+
 .fileInputButton{display: none;}
 button{
     position: relative;
@@ -47,27 +78,11 @@ button{
     background-color: transparent;
     cursor: pointer;
     transition: 0.2s;
-    margin: 0 0 0 40px;
+    margin: 0 0 0 20px;
 }
 button:hover{
     background-color: #FFF;
     color: #000;
-}
-#nav > ul{
-    display: inline;
-}
-#nav>ul>li{
-    height: 50px; width: 100px;
-    text-align: center; line-height: 50px;
-    float: right;
-    margin: 0 20px;
-    transition: 0.2s;
-    font-size: 13px;
-    cursor: pointer;
-}
-#nav>ul>li:hover{
-    color: #000;
-    background-color: #CCC;
 }
 
 /* 灰度变换 */
@@ -259,12 +274,7 @@ button:hover{
     height: 30px;
 }
 
-/* 显示图片的界面 */
-#mainFrame{
-    width: 75%; min-height: 660px;
-    position: relative;
-    top: 18px; left: 26px;
-}
+/* 显示图片 */
 #srcImg{display: none}
 #currentImgCanvas{}
 
