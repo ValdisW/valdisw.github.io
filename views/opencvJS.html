@@ -42,21 +42,6 @@
 
 <img src="" id="srcImg" alt="">
 
-<!--<div id="controlPanel">
-    <p id="img_size_label">
-        尺寸:&nbsp;<span id="img_size"></span>
-    </p>
-    <p id="img_channels_label">
-        通道数:&nbsp;<span id="img_channels"></span>
-    </p>
-    <p id="img_depth_label">
-        图像深度:&nbsp;<span id="img_depth"></span>
-    </p>
-    <p id="img_type_label">
-        类型:&nbsp;<span id="img_type"></span>
-    </p>
-</div>-->
-
 <div id="grayPanel" class="window_panel">
     <p class="dragBar">灰度变换</p>
     <div id="grayChart"></div>
@@ -88,7 +73,7 @@
         <option value="1">绿</option>
         <option value="2">蓝</option>
     </select>
-    <button id="ifEqualize" type="checkbox">均衡化</button>
+    <button id="ifEqualize">均衡化</button>
     <button>关闭</button>
 </div>
 
@@ -103,7 +88,7 @@
         <option value=0>加法</option>
         <option value=1>减法</option>
     </select>
-    <img id="operationImg" alt="操作图片">
+    <img src="" id="operationImg" alt="操作图片">
     <button>确定</button>
 </div>
 
@@ -217,6 +202,16 @@
 
 <div id="differencesPanel" class="window_panel">
     <p class="dragBar">找不同</p>
+    <div class="gadgetOpions">
+
+
+    </div>
+    <button class="confirm">确定</button>
+    <button class="cancel">取消</button>
+</div>
+
+<div id="recognizePanel">
+    <p class="dragBar">识别</p>
     <div class="gadgetOpions">
 
 
