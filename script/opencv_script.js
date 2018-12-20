@@ -451,3 +451,43 @@ $('#splitAlgoSelect').change(function () {
         });
     }
 });
+
+
+//计数
+$('#countingButton').click(function () {
+    if (!currentMat) alert('请先选择一张图片！');
+    else {
+        $('#countingPanel, #black').css('display', 'block');       // 弹出窗口
+        setMoveable('#splitPanel', '#splitPanel .dragBar', 100, 100);
+
+    }
+});
+$('#countingPanel .confirm').click(function () {         // 单击确定
+    $('#countingPanel, #black').css('display', 'none');
+    currentMat = tempMat.clone();
+    cv.imshow('currentImgCanvas', currentMat);
+});
+$('#countingPanel .cancel').click(function () {         // 单击取消
+    $('#countingPanel, #black').css('display', 'none');
+    cv.imshow('currentImgCanvas', currentMat);
+});
+
+// 找不同
+$('#differencesButton').click(function () {
+    if (!currentMat) alert('请先选择一张图片！');
+    else {
+        $('#differencesPanel, #black').css('display', 'block');       // 弹出窗口
+        setMoveable('#splitPanel', '#splitPanel .dragBar', 100, 100);
+
+    }
+});
+$('#differencesPanel .confirm').click(function () {         // 单击确定
+    $('#differencesPanel, #black').css('display', 'none');
+    currentMat = tempMat.clone();
+    cv.imshow('currentImgCanvas', currentMat);
+});
+$('#differencesPanel .cancel').click(function () {         // 单击取消
+    $('#differencesPanel, #black').css('display', 'none');
+    cv.imshow('currentImgCanvas', currentMat);
+});
+
