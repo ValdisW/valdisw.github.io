@@ -109,22 +109,13 @@ button:hover{
     border: 1px solid #666;
     width: 60px;
 }
-#grayChart {
-    margin: 10px auto;
-}
-#expPart {
-    display: none;
-}
-
+#grayChart {margin: 10px auto;}
+#expPart {display: none;}       /*最初不显示参数设置*/
 /* 直方图变换 */
-#histogramPanel{
-    height: 500px; width: 600px;
-}
-
+#histogramPanel{height: 500px; width: 600px;}
 
 /* 图像加减 */
 #plusOrMinusPanel {height: 500px; width: 800px;}
-
 
 /* 添加噪声 */
 #addNoisePanel {height: 200px; width: 300px;}
@@ -142,9 +133,7 @@ button:hover{
 }
 
 /* 编/解码 */
-#codingAndDecodingPanel{
-    height: 600px; width: 800px;
-}
+#codingAndDecodingPanel{height: 600px; width: 800px;}
 
 #codingControl, #codingInfo{margin-left: 50px;}
 #codingControl{margin-top: 10px;}
@@ -170,20 +159,14 @@ button:hover{
 /* 二值化 */
 #binarizePanel{height: 150px; width: 300px;}
 
-
 /* 边缘检测 */
 #borderDetectPanel{height: 150px; width: 300px;}
-
 
 /* 图像分割 */
 #splitPanel{height: 150px; width: 300px;}
 
-
-/* 找不同 */
-#differencesPanel{height: 150px; width: 300px;}
-
-/* 识别 */
-#recognizePanel{height: 150px; width: 300px;}
+/* 计数 */
+#countingPanel{height: 150px; width: 300px;}
 
 /* 显示图片 */
 #srcImg{display: none}

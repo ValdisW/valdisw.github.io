@@ -454,3 +454,53 @@ const setMoveable = function (moveSelector, dragSelector, top, left) {
         }
     })
 };
+
+// 目标计数
+const targetCounting = function(fromImg) {
+    let src = fromImg.clone();                 // 原图像
+    let enhance = src.clone();
+    let dst = new cv.Mat();
+    let gray = new cv.Mat();
+    let opening = new cv.Mat();
+    let coinsBg = new cv.Mat();                // 背景图像
+    let coinsFg = new cv.Mat();                // 前景图像
+    let distTrans = new cv.Mat();
+    let unknown = new cv.Mat();
+    let markers = new cv.Mat();
+
+    // 直方图均衡化
+    histogramEqualize(enhance, getHistogramData(enhance, 0), 0);
+    histogramEqualize(enhance, getHistogramData(enhance, 1), 1);
+    histogramEqualize(enhance, getHistogramData(enhance, 2), 2);
+
+    //平滑处理
+    for (let c = 0; c < 3; c++) midValueSmooth(enhance, c, 3);
+
+    // 转换成二值图
+    cv.cvtColor(enhance, gray, cv.COLOR_RGBA2GRAY, 0);
+    cv.threshold(gray, gray, 0, 255, cv.THRESH_BINARY_INV + cv.THRESH_OTSU);
+
+    // 开运算
+    let M = cv.Mat.ones(3, 3, cv.CV_8U);
+    cv.erode(gray, gray, M);
+    cv.dilate(gray, opening, M);
+
+    // 计算背景
+    cv.dilate(opening, coinsBg, M, new cv.Point(-1, -1), 3);
+
+    // 距离变换
+    cv.distanceTransform(opening, distTrans, cv.DIST_L2, 5);
+    cv.normalize(distTrans, distTrans, 255, 0, cv.NORM_INF);
+
+    // 计算前景
+    cv.threshold(distTrans, coinsFg, 180, 255, cv.THRESH_BINARY);
+
+    let contours = new cv.MatVector();
+    cv.findContours(src, contours, new cv.Mat(), cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE);
+    console.log(contours.size());
+
+    cv.imshow('currentImgCanvas', coinsFg);
+    src.delete(); dst.delete(); gray.delete(); opening.delete(); coinsBg.delete(); enhance.delete();
+    coinsFg.delete(); distTrans.delete(); unknown.delete(); markers.delete(); M.delete();
+
+}
