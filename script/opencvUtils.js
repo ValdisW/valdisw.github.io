@@ -35,18 +35,22 @@ const binarize = function (fromImg, toImg, threshold) {
 };
 
 // 线性灰度变换
-const linearGrayTrans = function (img, f1, f2, t1, t2) {
+const linearGrayTrans = function (fromImg, toImg, f1, f2, t1, t2) {
     let k = (t2 - t1) / (f2 - f1),
         b = (f1 * t2 - f2 * t1) / (f1 - f2);
-    for (let i = 0; i < img.rows; i++)
-        for (let j = 0; j < img.cols; j++) {
-            let pixelData = img.ucharPtr(i, j);
-            for (let c = 0; c < 3; c++)
-                if (pixelData[c] >= f1 && pixelData[c] <= f2) {
-                    let a = Math.round(k * pixelData[c]);
-                    pixelData[c] = a + b;
-                }
-        }
+    if (fromImg.channels() >= 3) {
+        for (let i = 0; i < fromImg.rows; i++)
+            for (let j = 0; j < fromImg.cols; j++) {
+                let pixelData = toImg.ucharPtr(i, j);
+                for (let c = 0; c < 3; c++)
+                    if (pixelData[c] >= f1 && pixelData[c] <= f2) {
+                        let a = Math.round(k * pixelData[c]);
+                        pixelData[c] = a + b;
+                    }
+            }
+    } else if (fromImg.channels() === 1) {
+
+    }
 };
 
 // 对数变换
@@ -54,7 +58,7 @@ const logGrayTrans = function (img, a, b ,c) {
     for (let i = 0; i < img.rows; i++)
         for (let j = 0; j < img.cols; j++) {
             let pixelData = img.ucharPtr(i, j);
-            for (let channel = 0; channel < 3; channel++) pixelData[channel] = Math.log(pixelData[channel] + 1) / (b * Math.log(c)) + a + 0.5;
+            for (let channel = 0; channel < 3; channel++) pixelData[channel] = Math.round(Math.log(pixelData[channel] + 1) / (b * Math.log(c)) + a + 0.5);
         }
 };
 
@@ -462,18 +466,15 @@ const targetCounting = function(fromImg) {
     let dst = new cv.Mat();
     let gray = new cv.Mat();
     let opening = new cv.Mat();
-    let coinsBg = new cv.Mat();                // 背景图像
-    let coinsFg = new cv.Mat();                // 前景图像
+    let coinsFg = new cv.Mat();
     let distTrans = new cv.Mat();
     let unknown = new cv.Mat();
     let markers = new cv.Mat();
 
     // 直方图均衡化
-    histogramEqualize(enhance, getHistogramData(enhance, 0), 0);
-    histogramEqualize(enhance, getHistogramData(enhance, 1), 1);
-    histogramEqualize(enhance, getHistogramData(enhance, 2), 2);
+    for (let c = 0; c < 3; c++) histogramEqualize(enhance, getHistogramData(enhance, c), c);
 
-    //平滑处理
+    // 平滑处理去噪 - 中值滤波
     for (let c = 0; c < 3; c++) midValueSmooth(enhance, c, 3);
 
     // 转换成二值图
@@ -485,22 +486,37 @@ const targetCounting = function(fromImg) {
     cv.erode(gray, gray, M);
     cv.dilate(gray, opening, M);
 
-    // 计算背景
-    cv.dilate(opening, coinsBg, M, new cv.Point(-1, -1), 3);
+    // 闭运算
+    cv.dilate(opening, opening, M);
+    cv.erode(opening, gray, M);
 
     // 距离变换
-    cv.distanceTransform(opening, distTrans, cv.DIST_L2, 5);
+    cv.distanceTransform(gray, distTrans, cv.DIST_L1, 5, 0);
     cv.normalize(distTrans, distTrans, 255, 0, cv.NORM_INF);
 
-    // 计算前景
-    cv.threshold(distTrans, coinsFg, 180, 255, cv.THRESH_BINARY);
+    // 再次二值化
+    cv.threshold(distTrans, coinsFg, 22, 255, cv.THRESH_BINARY);
+
+    for (let i = 0; i < 18; i++){
+        cv.erode(coinsFg, coinsFg, M);
+
+        cv.erode(coinsFg, coinsFg, M);
+        cv.dilate(coinsFg, coinsFg, M);
+
+        // 闭运算
+        cv.dilate(coinsFg, coinsFg, M);
+        cv.erode(coinsFg, coinsFg, M);
+
+    }
 
     let contours = new cv.MatVector();
-    cv.findContours(src, contours, new cv.Mat(), cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE);
-    console.log(contours.size());
+    cv.findContours(coinsFg, contours, new cv.Mat(), cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE);
+    console.log('个数：'+contours.size());
 
-    cv.imshow('currentImgCanvas', coinsFg);
-    src.delete(); dst.delete(); gray.delete(); opening.delete(); coinsBg.delete(); enhance.delete();
+
+    cv.imshow('currentImgCanvas', distTrans);
+
+    src.delete(); dst.delete(); gray.delete(); opening.delete(); enhance.delete();
     coinsFg.delete(); distTrans.delete(); unknown.delete(); markers.delete(); M.delete();
-
 }
+

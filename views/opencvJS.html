@@ -27,6 +27,7 @@
                     <li id="histogramTransButton">直方图</li>
                     <li id="spatialSmoothButton">空域平滑</li>
                     <li id="addNoiseButton">添加噪声</li>
+                    <li id="morphologicalButton">形态学处理</li>
                 </ul>
             </li>
             <li id="splitButton">图像分割</li>
@@ -59,7 +60,8 @@
         <label for="para_b">参数b:</label><input id="para_b" type="text" value=0.01>
         <label for="para_c">参数c:</label><input id="para_c" type="text" value=80>
     </div>
-    <button>确定</button>
+    <button class="confirm">确定</button>
+    <button class="cancel">取消</button>
 </div>
 
 <div id="histogramPanel" class="window_panel">
@@ -197,6 +199,20 @@
     <button class="cancel">取消</button>
 </div>
 
+<div id="morphologicalPanel" class="window_panel">
+    <p class="dragBar">形态学处理</p>
+    <div class="gadgetOpions">
+        <label for="morphologicalSelect">处理：</label>
+        <select name="morphologicalSelect" id="morphologicalSelect">
+            <option value="erode">腐蚀</option>
+            <option value="dilate">膨胀</option>
+            <option value="opening">开运算</option>
+            <option value="closing">闭运算</option>
+        </select>
+    </div>
+    <button class="confirm">确定</button>
+    <button class="cancel">取消</button>
+</div>
 
 <!-- Scripts -->
 <script src="../js/jquery-3.3.1.min.js"></script>

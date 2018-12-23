@@ -88,14 +88,15 @@ $('#linearGrayTransButton').click(function () {
         };
         grayChart.setOption(grayOption);
 
+        // 对数和线性参数选项改变时
         $('#grayModeSelect').change(function () {
             grayMode = parseInt($('#grayModeSelect').val());
             // 面板切换
-            if (grayMode) {                     // 对数
+            if (grayMode) {                     // 切换到对数时的场合
                 $('#linearPart').css('display', 'none');
                 $('#expPart').css('display', 'block');
                 grayOption.series.data = data_log;
-            } else {                                     // 线性
+            } else {                                     // 切换到线性时的场合
                 $('#linearPart').css('display', 'block');
                 $('#expPart').css('display', 'none');
                 grayOption.series.data = data_gray;
@@ -104,7 +105,9 @@ $('#linearGrayTransButton').click(function () {
             grayChart.setOption(grayOption);
         })
 
+        // 对数变换参数改变时
         $('#para_a, #para_b, #para_c').change(function () {
+            // 更新图表
             let data_log = new Array(256);
             for (let i = 0; i < data_log.length; i++) {
                 data_log[i] = new Array(2);
@@ -113,33 +116,41 @@ $('#linearGrayTransButton').click(function () {
             }
             grayOption.series.data = data_log;
             grayChart.setOption(grayOption);
+
+            // 更新图片
+            linearGrayTrans(currentMat,
+                parseInt($('#from_min').val()),
+                parseInt($('#from_max').val()),
+                parseInt($('#to_min').val()),
+                parseInt($('#to_max').val())
+            );
+
         });
 
+        // 线性变换参数改变时
         $('#from_min, #from_max, #to_min, #to_max').change(function () {
             grayOption.series.data[1][0] = parseInt($('#from_min').val());
             grayOption.series.data = [[0, 0], [parseInt($('#from_min').val()), parseInt($('#from_min').val())], [parseInt($('#from_min').val()), parseInt($('#to_min').val())], [parseInt($('#from_max').val()), parseInt($('#to_max').val())], [parseInt($('#from_max').val()), parseInt($('#from_max').val())], [255, 255]];
             grayChart.setOption(grayOption);
+
+            // 更新图片
+            logGrayTrans(currentMat,
+                parseInt($('#para_a').val()),
+                parseInt($('#para_b').val()),
+                parseInt($('#para_c').val())
+            )
         });
     }
 });
 
-$('#grayPanel button').click(function () {      // 确定
-    if (grayMode) {                 // 对数
-        logGrayTrans(currentMat,
-            parseInt($('#para_a').val()),
-            parseInt($('#para_b').val()),
-            parseInt($('#para_c').val())
-        )
-    }else {
-        linearGrayTrans(currentMat,
-            parseInt($('#from_min').val()),
-            parseInt($('#from_max').val()),
-            parseInt($('#to_min').val()),
-            parseInt($('#to_max').val())
-        );
-    }
-    cv.imshow('currentImgCanvas', currentMat);      // 显示
+$('#grayPanel .confirm').click(function () {      // 确定
     $('#grayPanel, #black').css('display', 'none');
+    currentMat = tempMat.clone();
+    cv.imshow('currentImgCanvas', currentMat);
+});
+$('#grayPanel .cancel').click(function () {         // 单击取消
+    $('#grayPanel, #black').css('display', 'none');
+    cv.imshow('currentImgCanvas', currentMat);
 });
 
 // 直方图变换
@@ -453,13 +464,56 @@ $('#splitAlgoSelect').change(function () {
 });
 
 
-//计数
+// 形态学处理
+let morphological = void 0;
+$('#morphologicalButton').click(function () {
+    if (!currentMat) alert('请先选择一张图片！');
+    else {
+        $('#morphologicalPanel, #black').css('display', 'block');       // 弹出窗口
+        setMoveable('#splitPanel', '#splitPanel .dragBar', 100, 100);
+        $('#morphologicalSelect').change();
+    }
+});
+$('#morphologicalPanel .confirm').click(function () {         // 单击确定
+    $('#morphologicalPanel, #black').css('display', 'none');
+    currentMat = tempMat.clone();
+    cv.imshow('currentImgCanvas', currentMat);
+});
+$('#morphologicalPanel .cancel').click(function () {         // 单击取消
+    $('#morphologicalPanel, #black').css('display', 'none');
+    cv.imshow('currentImgCanvas', currentMat);
+});
+$('#morphologicalSelect').change(function () {
+    morphological = $('#morphologicalSelect').val();
+    let M = cv.Mat.ones(3, 3, cv.CV_8U);
+    if (morphological === 'erode') {           // 腐蚀
+        cv.erode(currentMat, tempMat, M);
+        cv.imshow('currentImgCanvas', tempMat);
+    }
+    else if (morphological === 'dilate') {      // 膨胀
+        cv.dilate(currentMat, tempMat, M);
+        cv.imshow('currentImgCanvas', tempMat);
+    }
+    else if (morphological === 'opening') {     // 开运算
+        cv.erode(currentMat, tempMat, M);
+        cv.dilate(tempMat, tempMat, M);
+        cv.imshow('currentImgCanvas', tempMat);
+    }
+    else if (morphological === 'closing') {     // 闭运算
+        cv.dilate(currentMat, tempMat, M);
+        cv.erode(tempMat, tempMat, M);
+        cv.imshow('currentImgCanvas', tempMat);
+    }
+    M.delete();
+});
+
+// 计数
 $('#countingButton').click(function () {
     if (!currentMat) alert('请先选择一张图片！');
     else {
         $('#countingPanel, #black').css('display', 'block');       // 弹出窗口
         setMoveable('#splitPanel', '#splitPanel .dragBar', 100, 100);
-
+        targetCounting(currentMat);
     }
 });
 $('#countingPanel .confirm').click(function () {         // 单击确定

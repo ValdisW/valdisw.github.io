@@ -1,5 +1,5 @@
 *{margin: 0; padding: 0; color: #DDD; outline: none}
-body{background-color: #000}
+body{background-color: #222}
 ul{list-style-type: none}
 label{font-size: 14px}
 select{
@@ -51,13 +51,13 @@ select{
 /* 导航栏 */
 #header{width: 120px; margin-left: 30px; margin-top: 50px;}
 #nav ul{margin-top: 30px;}
-#nav > ul > li{
+#nav > ul > li{             /* 一级菜单元素 */
     height: 40px; width: 100%;
     line-height: 40px; text-align: center;
     font-size: 13px;
     margin-bottom: 10px;
     border-radius: 25px;
-    background-color: #222;
+    background-color: #666;
     cursor: pointer;
     transition: 0.1s;
 }
@@ -71,12 +71,12 @@ select{
     left: 120px; top: -65px;
     padding-left: 10px;
 }
-#nav > ul > li > ul > li{
+#nav > ul > li > ul > li{       /* 二级菜单元素 */
     height: 30px; width: 80%;
     line-height: 30px; text-align: center;
     margin-bottom: 10px;
     border-radius: 25px;
-    background-color: #222;
+    background-color: #333;
     transition: 0.1s
 }
 #nav > ul > li > ul > li:hover{
@@ -164,6 +164,9 @@ button:hover{
 
 /* 图像分割 */
 #splitPanel{height: 150px; width: 300px;}
+
+/* 形态学处理 */
+#morphologicalPanel{height: 200px; width: 300px;}
 
 /* 计数 */
 #countingPanel{height: 150px; width: 300px;}
