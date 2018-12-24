@@ -476,47 +476,47 @@ const targetCounting = function(fromImg) {
 
     // 平滑处理去噪 - 中值滤波
     for (let c = 0; c < 3; c++) midValueSmooth(enhance, c, 3);
+    cv.imshow('currentImgCanvas', enhance);
 
     // 转换成二值图
     cv.cvtColor(enhance, gray, cv.COLOR_RGBA2GRAY, 0);
     cv.threshold(gray, gray, 0, 255, cv.THRESH_BINARY_INV + cv.THRESH_OTSU);
+    cv.imshow('currentImgCanvas', gray);
 
     // 开运算
     let M = cv.Mat.ones(3, 3, cv.CV_8U);
     cv.erode(gray, gray, M);
     cv.dilate(gray, opening, M);
+    cv.imshow('currentImgCanvas', opening);
 
     // 闭运算
     cv.dilate(opening, opening, M);
     cv.erode(opening, gray, M);
+    cv.imshow('currentImgCanvas', gray);
 
     // 距离变换
     cv.distanceTransform(gray, distTrans, cv.DIST_L1, 5, 0);
     cv.normalize(distTrans, distTrans, 255, 0, cv.NORM_INF);
+    cv.imshow('currentImgCanvas', distTrans);
 
     // 再次二值化
     cv.threshold(distTrans, coinsFg, 22, 255, cv.THRESH_BINARY);
+    cv.imshow('currentImgCanvas', coinsFg);
 
-    for (let i = 0; i < 18; i++){
-        cv.erode(coinsFg, coinsFg, M);
-
-        cv.erode(coinsFg, coinsFg, M);
-        cv.dilate(coinsFg, coinsFg, M);
-
-        // 闭运算
-        cv.dilate(coinsFg, coinsFg, M);
-        cv.erode(coinsFg, coinsFg, M);
-
-    }
+    // 腐蚀
+    for (let i = 0; i < 20; i++) cv.erode(coinsFg, coinsFg, M);
+    cv.imshow('currentImgCanvas', coinsFg);
 
     let contours = new cv.MatVector();
     cv.findContours(coinsFg, contours, new cv.Mat(), cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE);
+
+
     console.log('个数：'+contours.size());
 
 
-    cv.imshow('currentImgCanvas', distTrans);
 
     src.delete(); dst.delete(); gray.delete(); opening.delete(); enhance.delete();
     coinsFg.delete(); distTrans.delete(); unknown.delete(); markers.delete(); M.delete();
+    return contours.size();
 }
 

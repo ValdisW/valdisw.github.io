@@ -193,8 +193,20 @@
 <div id="countingPanel" class="window_panel">
     <p class="dragBar">目标计数</p>
     <div class="gadgetOpions">
-
+        <label for="targetNum">目标个数: </label><input type="text" id="targetNum">
     </div>
+
+    <div>分步骤：</div>
+    <button id="stepButton1">均衡化</button><br>
+    <button id="stepButton2">中值滤波</button><br>
+    <button id="stepButton3">二值化</button><br>
+    <button id="stepButton4">闭运算</button><br>
+    <button id="stepButton5">距离归一</button><br>
+    <button id="stepButton6">二值化</button><br>
+    <button id="stepButton7">腐蚀</button><br>
+    <button id="stepButton8">计数</button>
+    <br>
+    <button id="oneStepButton">一键计数</button>
     <button class="confirm">确定</button>
     <button class="cancel">取消</button>
 </div>

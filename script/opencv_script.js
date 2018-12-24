@@ -513,7 +513,7 @@ $('#countingButton').click(function () {
     else {
         $('#countingPanel, #black').css('display', 'block');       // 弹出窗口
         setMoveable('#splitPanel', '#splitPanel .dragBar', 100, 100);
-        targetCounting(currentMat);
+        tempMat = currentMat.clone();
     }
 });
 $('#countingPanel .confirm').click(function () {         // 单击确定
@@ -525,4 +525,46 @@ $('#countingPanel .cancel').click(function () {         // 单击取消
     $('#countingPanel, #black').css('display', 'none');
     cv.imshow('currentImgCanvas', currentMat);
 });
+$('#oneStepButton').click(function () {         // 一键计数
+    $('#targetNum').val(targetCounting(currentMat));
+});
 
+$('#stepButton1').click(function () {         // 均衡化
+    for (let c = 0; c < 3; c++) histogramEqualize(tempMat, getHistogramData(tempMat, c), c);
+});
+$('#stepButton2').click(function () {         // 中值滤波
+    for (let c = 0; c < 3; c++) midValueSmooth(tempMat, c, 3);
+    cv.imshow('currentImgCanvas', tempMat);
+});
+$('#stepButton3').click(function () {         // 二值化
+    cv.cvtColor(tempMat, tempMat, cv.COLOR_RGBA2GRAY, 0);
+    cv.threshold(tempMat, tempMat, 0, 255, cv.THRESH_BINARY_INV + cv.THRESH_OTSU);
+    cv.imshow('currentImgCanvas', tempMat);
+});
+$('#stepButton4').click(function () {         // 开闭运算
+    let M = cv.Mat.ones(3, 3, cv.CV_8U);
+    cv.erode(tempMat, tempMat, M);
+    cv.dilate(tempMat, tempMat, M);
+    cv.dilate(tempMat, tempMat, M);
+    cv.erode(tempMat, tempMat, M);
+    cv.imshow('currentImgCanvas', tempMat);
+});
+$('#stepButton5').click(function () {         // 距离归一
+    cv.distanceTransform(tempMat, tempMat, cv.DIST_L1, 5, 0);
+    cv.normalize(tempMat, tempMat, 255, 0, cv.NORM_INF);
+    cv.imshow('currentImgCanvas', tempMat);
+});
+$('#stepButton6').click(function () {         // 二值化
+    cv.threshold(tempMat, tempMat, 22, 255, cv.THRESH_BINARY);
+    cv.imshow('currentImgCanvas', tempMat);
+});
+$('#stepButton7').click(function () {         // 腐蚀
+    let M = cv.Mat.ones(3, 3, cv.CV_8U);
+    for (let i = 0; i < 20; i++) cv.erode(tempMat, tempMat, M);
+    cv.imshow('currentImgCanvas', tempMat);
+});
+$('#stepButton8').click(function () {         // 一键计数
+    let contours = new cv.MatVector();
+    cv.findContours(tempMat, contours, new cv.Mat(), cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE);
+    $('#targetNum').val(contours.size());
+});

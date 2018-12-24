@@ -1,7 +1,7 @@
 *{margin: 0; padding: 0; color: #DDD; outline: none}
 body{background-color: #222}
 ul{list-style-type: none}
-label{font-size: 14px}
+label{font-size: 14px; background-color: transparent}
 select{
     background-color: #222;
     color: #DDD;
@@ -169,7 +169,7 @@ button:hover{
 #morphologicalPanel{height: 200px; width: 300px;}
 
 /* 计数 */
-#countingPanel{height: 150px; width: 300px;}
+#countingPanel{height: 550px; width: 300px;}
 
 /* 显示图片 */
 #srcImg{display: none}
