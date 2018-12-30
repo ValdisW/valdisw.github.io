@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>op</title>
+    <style>
+        *{margin: 0; padding: 0}
+        body{overflow-y: hidden}
+        img{display: none}
+        #addPic{
+            background-color: #FFF;
+            color: #333;
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            box-shadow: #666 0 0 10px 0;
+            position: fixed; top: 30px; right: 30px;
+            cursor: pointer;
+            line-height: 50px; text-align: center; font-size: 30px;
+            z-index: 100;
+            user-select: none;
+            overflow: hidden;
+            transition: 0.1s;
+        }
+        #addPic:hover{
+            box-shadow: aquamarine 0 0 10px 0;
+            color: aquamarine;
+        }
+        #addPic:active{
+            transform: translate(2px, 2px);
+        }
+        canvas{
+            z-index: 1;
+        }
+        #canvas_pro{display: none}
+    </style>
+</head>
+<body>
+<div id="addPic" onclick="document.getElementById('srcImgInputButton').click()">
+    +
+    <input type="file" class="fileInputButton" id="srcImgInputButton" accept="image/*">
+</div>
+<img id="srcImg" src="" alt="">
+
+<canvas id="canvas_pro"></canvas>
+
+<script src="../js/jquery-3.3.1.min.js"></script>
+<script src="../js/p5.js"></script>
+<script src="../js/opencv.js"></script>
+<script>
+    // 常量
+    const pointGap = 10;
+    const pointNum_x = Math.ceil(window.innerWidth / pointGap);
+    const pointNum_y = Math.ceil(window.innerHeight / pointGap);
+    const pointMatrix = new Array(pointNum_y);
+    for (let i = 0; i < pointNum_y; i++) pointMatrix[i] = new Array(pointNum_x).fill(2);
+
+    // 图像处理
+    const srcImg = $('#srcImg')[0];           // 原图的img标签
+    $('#srcImgInputButton').change(function(e) {
+        srcImg.src = URL.createObjectURL(e.target.files[0]);    // 更新img标签
+    });
+    srcImg.onload = function () {
+        let aspect_ratio = srcImg.width / srcImg.height;        // 图像宽高比
+        srcImg.width = window.innerWidth;
+        srcImg.height = srcImg.width / aspect_ratio;
+        // 调整宽高，适应屏幕
+        while (srcImg.height > window.innerHeight || srcImg.width > window.innerWidth) {
+            if (srcImg.width > window.innerWidth) {
+                srcImg.width = window.innerWidth * 0.9;
+                srcImg.height = srcImg.width / aspect_ratio;
+            }
+            else if (srcImg.height > window.innerHeight) {
+                srcImg.height = window.innerHeight * 0.9;
+                srcImg.width = srcImg.height * aspect_ratio;
+            }
+        }
+
+        // 实际像素操作
+        let srcMat = cv.imread(srcImg);
+        cv.cvtColor(srcMat, srcMat, cv.COLOR_RGBA2GRAY, 0);
+        for (let i = 0; i < pointNum_y; i++) for (let j = 0; j < pointNum_x; j++) pointMatrix[i][j] = 2;
+        for(let i = 0, r = 0; r < srcMat.rows; r += pointGap, i++)              // 行
+            for (let j = 0, c = 0; c < srcMat.cols; c += pointGap, j++) {       // 列
+                let grayData = srcMat.ucharPtr(r, c)[0];
+                let mappedData = ((255 - grayData) / 255) * pointGap;
+                pointMatrix[i][j] = mappedData;
+            }
+        cv.imshow('canvas_pro', srcMat);
+    };
+
+    
+    const updateCanvasFromMatrix = function (matrix) {
+        for (let i = 0; i < pointNum_x; i++)
+            for (let j = 0; j < pointNum_y; j++) {
+                strokeWeight(matrix[j][i]);
+                point(i * pointGap, j * pointGap);
+            }
+    };
+
+
+    function setup() {
+        createCanvas(window.innerWidth, window.innerHeight);
+        frameRate(60);
+
+
+        updateCanvasFromMatrix(pointMatrix);
+    }
+    
+    function draw() {
+        updateCanvasFromMatrix(pointMatrix);
+    }
+</script>
+</body>
+</html>
