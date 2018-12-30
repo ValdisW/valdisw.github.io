@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    class DecisionTree{
+        constructor(config){
+
+        }
+
+        /
+        build(config) {
+            // 计算熵
+
+        }
+
+        // 预测新值
+        predict(data){
+
+        }
+    }
+
+
+
+
+    let courseData = [
+        {'学历层次': '研究生', '专业类别': '电信类', '学习基础': '修过AI', '选课方案': '不修'},
+        {'学历层次': '研究生', '专业类别': '电信类', '学习基础': '未修AI', '选课方案': '必修'},
+        {'学历层次': '研究生', '专业类别': '机电类', '学习基础': '修过AI', '选课方案': '不修'},
+        {'学历层次': '研究生', '专业类别': '机电类', '学习基础': '未修AI', '选课方案': '选修'},
+        {'学历层次': '本科', '专业类别': '电信类', '学习基础': '修过AI', '选课方案': '不修'},
+        {'学历层次': '本科', '专业类别': '电信类', '学习基础': '未修AI', '选课方案': '选修'},
+        {'学历层次': '本科', '专业类别': '机电类', '学习基础': '修过AI', '选课方案': '不修'},
+        {'学历层次': '本科', '专业类别': '机电类', '学习基础': '未修AI', '选课方案': '不修'}
+    ];
+    let course_decisionTree = new DecisionTree({
+        trainingSet: courseData,                          //训练集
+        categoryAttr: '选课方案',                         //用于区分的类别属性
+    });
+
+    let test = {'学历层次': '本科', '专业类别': '电信类', '学习基础': '未修AI'};
+    console.log(test, course_decisionTree.predict(test));
+
+</script>
+</body>
+</html>

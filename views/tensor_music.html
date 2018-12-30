@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script src="../js/tf.min.js"></script>
+<script>
+    const melodies = {
+        blues: [
+            [1, 0, 1, 3, 0, 1, 1, 0],
+            [1, 1, 3, 1, 3, 1, 3, 1],
+            [5, 5, 6, 5, 7, 5, 6, 5],
+            [1, 1, 0, 1, 0, 1, 0, 1],
+        ],
+        pop: [
+            [1, 0, 1, 1, 0, 1, 0, 12],
+            [1, 3, 1, 3, 1, 5, 5, 5],
+            [1, 1, 1, 1, 1, 12, 12, 3],
+            [6, 6, 5, 3, 0, 3, 1, 3],
+        ],
+        jazz: [
+            [1, 5, 8, 1, 1, 0, 1, 0],
+            [8, 7, 6, 5, 4, 3, 1, 5],
+            [1, 4, 6, 7, 8, 7, 6, 4],
+            [3, 10, 0, 0, 5, 3, 5, 10],
+        ],
+        metal: [
+            [1, 1, 2, 1, 11, 4, 1, 2],
+            [1, 4, 7, 10, 7, 4, 1, 4],
+            [1, 1, 1, 11, 1, 2, 2, 2],
+            [1, 4, 0, 4, 6, 6, 0, 9],
+        ],
+    };
+    //将旋律转化成矩阵
+    function convertMelody(melody) {
+        const converted = [];
+
+        for (let i = 0; i < melody.length; i += 1) {
+            const note = melody[i];
+            const beat = new Array(12).fill(0);
+            if (note) {
+                beat[note - 1] = 1;
+            }
+            converted.push(beat);
+        }
+        return converted;
+    }
+
+    const convertedMelodies = [];
+
+    for (let i = 0; i < 16; i += 1) {
+        const genre = Object.keys(melodies)[i % 4];
+        const song = melodies[genre][Math.floor(i/4)];
+
+        // 将旋律转换成二维矩阵
+        const convertedMelody = convertMelody(song);
+
+        // 将矩阵转换成二维张量
+        const tensor = tf.tensor2d(convertedMelody);
+        console.log(tensor);
+        convertedMelodies.push(tensor);
+    }
+
+    const firstLayer = tf.layers.dense({
+        units: 96,
+        inputShape: [8, 12],
+        activation: 'relu', //线性整流函数
+    });
+
+    const flatten = tf.layers.flatten();
+
+    const thirdLayer = tf.layers.dense({
+        units: 4,
+        activation: 'softmax',
+    });
+
+    const model = tf.sequential();
+
+    model.add(firstLayer);
+    model.add(flatten);
+    model.add(thirdLayer);
+
+    const LEARNING_RATE = 0.2;
+
+    //随机梯度下降
+    const optimizer = tf.train.sgd(LEARNING_RATE);
+
+    model.compile({
+        optimizer: optimizer,
+        loss: 'categoricalCrossentropy',
+        metrics: ['accuracy'], // include accuracy metrics in result
+    });
+    async function train() {
+        for (let i = 0; i < convertedMelodies.length; i += 1) {
+
+            // the 1 at the front means this is a batch of size 1
+            const batch = convertedMelodies[i].reshape([1, 8, 12]);
+
+            // what is the correct category?
+            const labelIndex = i % 4;
+            let label = new Array(4).fill(0);
+            label[labelIndex] = 1;
+            label = tf.tensor1d(label).reshape([1, 4]);
+
+            // 训练
+            const hist = await model.fit(
+                batch,
+                label,
+                {
+                    batchSize: 1,
+                    epochs: 1,
+                }
+            );
+
+            // 输出相关参数
+            const loss = hist.history.loss[0];
+            const accuracy = hist.history.acc[0];
+            console.log(loss, accuracy)
+        }
+    }
+    const test = [1, 3, 5, 1, 6, 5, 3, 1];
+    const convertedTest = convertMelody(test);
+    const tensorTest = tf.tensor2d(convertedTest);
+    console.log(model.predict(tensorTest.reshape([1, 8, 12])).print())
+
+</script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        *{margin: 0; padding: 0}
+    </style>
+</head>
+<body>
+<div id="block"></div>
+
+
+<script src="../js/tf.min.js"></script>
+<script src="../js/echarts.js"></script>
+<script>
+    // Utility
+    const getRandomNum = function(min, max) {
+        return min + Math.random() * (max - min);
+    }
+</script>
+<script>
+    // echarts part
+    let data = [];
+    for (let i = 0; i < 20; i++) {
+        data.push([getRandomNum(-10, 10), getRandomNum(-10, 10), 0]);
+        data.push([getRandomNum(10, 30), getRandomNum(10, 30), 1]);
+    }
+    data.sort((a, b)=>{return a[2] - b[2]});
+
+    let EData0 = data.slice(0, data.length / 2), EData1 = data.slice(data.length / 2, data.length);
+
+    const block = document.getElementById('block');
+    block.style.height = '500px'; block.style.width = '500px';
+    const chart = echarts.init(block);
+    let option = {
+        xAxis: {},
+        yAxis: {},
+        series: [{
+            type: 'scatter',
+            data: EData0,
+            itemStyle: {color: '#F00'}
+        },{
+            type: 'scatter',
+            data: EData1,
+            itemStyle: {color: '#00F'}
+        }]
+    };
+    chart.setOption(option);
+</script>
+
+
+<script>
+    const binaryActivation = function(x) {
+        return (x >= 0) * 1;
+    };
+
+    // 神经元
+    class Neuron{
+        constructor(inputShape, weights, bias, activation) {
+            this.inputShape = inputShape || 2;
+            this.weights = weights || [];
+            this.bias = bias || Math.random();
+            this.activation = activation || binaryActivation;
+
+            this.input = [];
+            this.output = void 0;
+        }
+        calc(input) {
+            for (let i = 0; i < this.inputShape; i++) this.input[i] = input[i];
+            this.output = 0;
+            for (let i = 0; i < this.inputShape; i++) this.output += this.weights[i] * this.input[i];
+            this.output -= this.bias;
+            this.output = this.activation(this.output);
+        }
+    }
+
+    // 层
+    class Layer{
+        constructor(neuronsNum, inputShape){
+            this.neuronNum = neuronsNum;
+
+            this.outputs = [];
+            // 添加神经元
+            this.neurons = [];
+            for (let i = 0; i < neuronsNum; i++) {
+                this.neurons[i] = new Neuron(inputShape);
+                for (let j = 0; j < this.inputShape; j++) this.neurons[i].weights[j] = Math.random();
+
+            }
+        }
+        calc(inputData){
+            for (let i = 0; i < this.neuronNum; i++) {
+                this.outputs.push(this.neurons[i].calc(inputData));
+            }
+        }
+    }
+
+    // 单层感知器
+    class MonoLayerPerceptron{
+        constructor(neuronNum, inputShape, eta) {
+            this.neuronNum = neuronNum || 1;        // 单层神经元个数
+            this.inputShape = inputShape || 2;      // 输入尺寸
+            this.eta = eta || 0.5;
+
+            this.neurons = [];
+
+            // 构造神经元
+            for (let i = 0; i < this.neuronNum; i++) {
+                this.neurons[i] = new Neuron(this.inputShape);
+                for (let j = 0; j < this.inputShape; j++) this.neurons[i].weights[j] = Math.random();
+            }
+        }
+        // 训练
+        train(data) {
+            for (let i = 0; i < data.length; i++) {
+                let predicts = [];
+                for (let j = 0; j < this.neuronNum; j++) {
+                    this.neurons[j].calc(data[i].slice(0, 2));
+                    predicts[j] = this.neurons[j].output;
+
+                    for (let k = 0; k < this.inputShape; k++) this.neurons[j].weights[k] += this.eta * (data[i].slice(-1) - predicts[j]) * data[i][k];
+                    this.neurons[j].bias += this.eta * (data[i].slice(-1) - predicts[j]) * (-1);
+                }
+            }
+        }
+        // 预测
+        predict(newData) {
+            let predicts = [];
+            for (let i = 0; i < this.neuronNum; i++) {
+                this.neurons[i].calc(newData);
+                predicts[i] = this.neurons[i].output;
+            }
+            return predicts;
+        };
+    }
+
+    let perceptron = new MonoLayerPerceptron();
+    perceptron.train(data);
+    console.log(perceptron.predict([0, 0])[0]);
+</script>
+</body>
+</html>

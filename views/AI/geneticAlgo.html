@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>遗传算法</title>
+    <style>
+        *{margin: 0; padding: 0}
+        body{background-color: #000}
+    </style>
+</head>
+<body>
+<div id="bestValues"></div>
+
+<script src="../../js/jquery-3.3.1.min.js"></script>
+<script src="../../js/echarts.js"></script>
+<script>
+    // 目标函数
+    const targetFunc = function (x) {return Math.sin(x) / x};
+
+    // 种群
+    class Population{
+        constructor(config){
+            this.size = config.size;                             // 种群规模
+            this.chromosome_length = config.chromosome_length;   // 染色体长度
+            this.crossover_rate = config.crossover_rate;         // 交叉率
+            this.mutation_rate = config.mutation_rate;           // 变异率
+            this.max_iter = config.max_iter;                     // 最大迭代次数
+
+            this.allBestValues = [];                             // 历代最大适应度
+
+            this.fit = [];                                       // 适应度集合
+            this.group = new Array(this.size).fill([]);          // 个体集合
+            for (let i in this.group) {
+                this.group[i] = new Array(this.chromosome_length).fill(0);
+                for (let j in this.group[i]) this.group[i][j] = Math.round(Math.random());
+            }
+        }
+
+        // 打印当前种群
+        printPop(){
+            for (let i = 0; i < this.size; i++)
+                console.log(this.group[i].join('') + ', 适应度: '+ this.fit[i]);
+        }
+
+        // 由目标函数计算适应度
+        calcFitValue(func, min, max) {
+            this.fit = [];
+            for (let indiv of this.group) {
+                let decimal = 0;
+                for (let i in indiv) decimal += indiv[i] * Math.pow(2, i);
+                decimal = func(decimal / (Math.pow(2, indiv.length) - 1) * (max - min) + min);
+                this.fit.push(decimal);
+            }
+            return this.fit;
+        }
+
+        // 获取最大和最小的适应度值
+        getMaxMinFit(){
+            let maxFit = Number.NEGATIVE_INFINITY, minFit = Number.POSITIVE_INFINITY;
+            for (let i = 0; i < this.size; i++) {
+                if (maxFit < this.fit[i]) maxFit = this.fit[i];
+                if (minFit > this.fit[i]) minFit = this.fit[i];
+            }
+            return [maxFit, minFit];
+        }
+
+        // 选择复制（轮盘赌）
+        select() {
+            console.log('选择…');
+            let fit = Array.from(this.fit),
+                maxMinFit = this.getMaxMinFit();
+            if (maxMinFit[0] === maxMinFit[1])        // 适应度都相同的场合
+                for (let i in fit) fit[i] = 1;
+            else
+                for (let i in fit) fit[i] = (fit[i] - maxMinFit[1]) / (maxMinFit[0] - maxMinFit[1]);    // 适应度归一化
+
+            this.allBestValues.push(maxMinFit[0]);
+            let fit_sum = eval(fit.join('+'));
+            for (let i in fit) fit[i] /= fit_sum;
+            for (let i = this.size - 1; i >= 0; i--)
+                for (let j = i-1; j >= 0; j--) fit[i] += fit[j];
+            let ms = [];
+            for (let i = 0; i < this.size; i++) ms[i] = Math.random();
+            ms.sort((a,b)=>{return a-b});
+            let fiti = 0, newi = 0, newGroup = [];
+            while (newi < this.size){
+                if (ms[newi] < fit[fiti]) {
+                    newGroup[newi] = Array.from(this.group[fiti]);
+                    newi++;
+                } else{
+                    fiti++;
+                }
+            }
+
+            for (let i = 0; i < this.size; i++)
+                for (let j = 0; j < this.chromosome_length; j++)
+                    this.group[i][j] = newGroup[i][j];
+
+            return this.group;
+        }
+
+        // 交叉
+        crossover() {
+            console.log('交叉…');
+            let tempGroup = [];
+            for (let i = 0; i < this.size; i++) {
+                tempGroup[i] = Array.from(this.group[i]);
+            }
+
+            for (let i = 0; i < this.size - 1; i+=2) {     // 两两配对
+                let p = Math.random();
+                if (p < this.crossover_rate) {           // 根据交叉率决定是否交叉
+                    let q = [];                 // 交叉向量，值为1的基因发生交叉
+                    for (let j = 0; j < this.chromosome_length; j++) q[j] = Math.round(Math.random());
+                    for (let j = 0; j < this.chromosome_length; j++) {
+                        if (q[j]) {
+                            let temp = tempGroup[i+1][j];
+                            tempGroup[i+1][j] = tempGroup[i][j];
+                            tempGroup[i][j] = temp;
+                        }
+                    }
+                }
+            }
+
+            for (let i = 0; i < this.size; i++)
+                for (let j = 0; j < this.chromosome_length; j++)
+                    this.group[i][j] = tempGroup[i][j];
+
+            return this.group;
+        }
+
+        // 变异
+        mutation() {
+            console.log('变异…');
+            for (let i = 0; i < this.size; i++) {
+                if (Math.random() < this.mutation_rate) {
+                    let varyGeneIndex = Math.floor(Math.random() * this.chromosome_length);
+                    this.group[i][varyGeneIndex] = (this.group[i][varyGeneIndex] === 1) ? 0 : 1;
+                }
+            }
+            return this.group;
+        }
+
+        // 迭代进化
+        evolve(config) {
+            for (let iter = 0; iter < this.max_iter; iter++) {
+                console.log('==========================================================');
+                console.log('第' + (iter + 1) + '代：');
+                console.log('==========================================================');
+                this.calcFitValue(config.func, config.minValue, config.maxValue);        // 计算各个体适应度
+
+                let best = this.group[this.fit.indexOf(this.getMaxMinFit()[0])];
+
+                this.select();              // 选择复制
+                this.crossover();           // 交叉
+                this.mutation();            // 变异
+
+                this.printPop();
+                // 保留最优个体
+                this.group[0] = best;
+            }
+        }
+    }
+
+    // Main
+    let myGroup = new Population({
+        size: 5,
+        chromosome_length: 20,
+        crossover_rate: 0.5,
+        mutation_rate: 0.1,
+        max_iter: 100
+    });
+
+    myGroup.evolve({
+        func: targetFunc,
+        minValue: -15,
+        maxValue: 15
+    });
+</script>
+<script>
+    let xData = [];
+    for (let i = 0; i < myGroup.max_iter; i++) xData[i] = i;
+    const bestValuesBlock = $('#bestValues').css({'width': '512px', 'height': '512px'}).get(0);
+    const bestValuesChart = echarts.init(bestValuesBlock);
+    let bestValuesOption = {
+        title: {
+            text: '历代最优适应度',
+            textStyle: {
+                color: '#FFF',
+                fontWeight: 'lighter',
+                fontSize: 16
+            }
+        },
+        xAxis: {
+            data: xData,
+            name: 'x',
+            axisTick: {show: false},
+            axisLine: {lineStyle: {color: '#FFF'}},
+            splitLine: {lineStyle: {color: '#333'}}
+        },
+        yAxis: {
+            name: 'y',
+            axisTick: {show: false},
+            axisLine: {lineStyle: {color: '#FFF'}},
+            splitLine: {lineStyle: {color: '#333'}}
+        },
+        series: {
+            type: 'line',
+            showSymbol: false,
+            smooth: false,
+            data: myGroup.allBestValues,
+            lineStyle: {
+                color: '#FFF',
+                width: 1
+            }
+        }
+    };
+    bestValuesChart.setOption(bestValuesOption);
+</script>
+</body>
+</html>

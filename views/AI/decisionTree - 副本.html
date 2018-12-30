@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>决策树</title>
+</head>
+<body>
+<script>
+    // 决策树构造函数
+    function DecisionTree(config) {
+        if (typeof config === "object" && !Array.isArray(config)) this.training(config);
+    }
+
+    // 属性
+    DecisionTree.prototype = {
+        _predicates: {                                       // 分割函数
+            '==': function (a, b) { return a === b },        // 针对非数字值的比较
+            '>=': function (a, b) { return a >= b }          // 针对数值的比较
+        },
+
+        //统计属性值在数据集中的次数
+        countUniqueValues(items, attr) {
+            let counter = {};// 获取不同的结果值 与出现次数
+            for (let i of items) {
+                if (!counter[i[attr]]) counter[i[attr]] = 0;
+                counter[i[attr]] += 1;
+            }
+            return counter;
+        },
+
+        //获取对象中值最大的Key  假设 counter={a:9,b:2} 得到 "a"
+        getMaxKey(counter) {
+            let mostFrequentValue;
+            for (let k in counter) {
+                if (!mostFrequentValue) mostFrequentValue = k;
+                if (counter[k] > counter[mostFrequentValue]) {
+                    mostFrequentValue = k;
+                }
+            }
+            return mostFrequentValue;
+        },
+
+        //寻找最频繁的特定属性值
+        mostFrequentValue(items, attr) {
+            return this.getMaxKey(this.countUniqueValues(items, attr));//计算值的出现数
+        },
+
+        //根据属性切割数据集
+        split(items, attr, predicate, pivot) {
+            let data = {
+                match: [],              //适合的数据集
+                notMatch: []            //不适合的数据集
+            };
+            for (let item of items) {                       //遍历训练集
+                if (predicate(item[attr], pivot)) {         //比较是否满足条件
+                    data.match.push(item);
+                } else {
+                    data.notMatch.push(item);
+                }
+            }
+            return data;
+        },
+
+        //计算信息熵
+        entropy(items, attr) {                  // 数据集 属性
+            let counter = this.countUniqueValues(items, attr);      // 该属性中各值分别出现的次数，除以总次数可以计算概率
+            let p, entropy = 0;
+            for (let i in counter) {
+                p = counter[i] / items.length;//P(Xi)概率值
+                entropy += -p * Math.log2(p);
+            }
+            return entropy;
+        },
+
+        // 构建决策树
+        buildDecisionTree(config) {
+            let trainingSet = config.trainingSet;               // 训练集
+            let minItemsCount = config.minItemsCount;           // 训练集项数
+            let categoryAttr = config.categoryAttr;             // 用于区分的类别属性
+            let entropyThrehold = config.entropyThrehold;       // 熵阈值
+            let maxTreeDepth = config.maxTreeDepth;             // 递归深度
+            let ignoredAttributes = config.ignoredAttributes;   // 忽略的属性
+
+            // 树最大深度为0 或训练集的大小 小于指定项数 终止树的构建过程
+            if ((maxTreeDepth === 0) || (trainingSet.length <= minItemsCount)) {
+                return { category: this.mostFrequentValue(trainingSet, categoryAttr) };
+            }
+
+            //初始计算 训练集的熵
+            let initialEntropy = this.entropy(trainingSet, categoryAttr);   //<===H(S)
+
+            //训练集熵太小 终止
+            if (initialEntropy <= entropyThrehold) {
+                return { category: this.mostFrequentValue(trainingSet, categoryAttr) };
+            }
+            let alreadyChecked = [];            //标识已经计算过了
+            let bestSplit = { gain: 0 };        //储存当前最佳的分割节点数据信息
+            //遍历数据集
+            for (let item of trainingSet) {
+                // 遍历项中的所有属性
+                for (let attr in item) {
+                    //跳过区分属性与忽略属性
+                    if ((attr === categoryAttr) || (ignoredAttributes.indexOf(attr) >= 0)) continue;
+                    let pivot = item[attr];// 当前属性的值
+                    let predicateName = ((typeof pivot === 'number') ? '>=' : '=='); //根据数据类型选择判断条件
+                    let attrPredPivot = attr + predicateName + pivot;
+                    if (alreadyChecked.indexOf(attrPredPivot) >= 0) continue;   //已经计算过则跳过
+                    alreadyChecked.push(attrPredPivot);                         //记录
+                    let predicate = this._predicates[predicateName];            //匹配分割方式
+                    let currSplit = this.split(trainingSet, attr, predicate, pivot);
+                    let matchEntropy = this.entropy(currSplit.match, categoryAttr);//  H(match) 计算分割后合适的数据集的熵
+                    let notMatchEntropy = this.entropy(currSplit.notMatch, categoryAttr);// H(on match) 计算分割后不合适的数据集的熵
+                    //计算信息增益:
+                    // IG(A,S)=H(S)-(∑P(t)H(t)))
+                    // t为分裂的子集match(匹配),on match(不匹配)
+                    // P(match)=match的长度/数据集的长度
+                    // P(on match)=on match的长度/数据集的长度
+                    let iGain = initialEntropy - ((matchEntropy * currSplit.match.length
+                        + notMatchEntropy * currSplit.notMatch.length) / trainingSet.length);
+                    //不断匹配最佳增益值对应的节点信息
+                    if (iGain > bestSplit.gain) {
+                        bestSplit = currSplit;
+                        bestSplit.predicateName = predicateName;
+                        bestSplit.predicate = predicate;
+                        bestSplit.attribute = attr;
+                        bestSplit.pivot = pivot;
+                        bestSplit.gain = iGain;
+                    }
+                }
+            }
+
+            // 找不到最优分割
+            if (!bestSplit.gain) {
+                return { category: this.mostFrequentValue(trainingSet, categoryAttr) };
+            }
+            // 递归绑定子树枝
+            config.maxTreeDepth = maxTreeDepth - 1;                 // 减小1深度
+            config.trainingSet = bestSplit.match;                   // 将切割 match 训练集作为下一节点的训练集
+            let matchSubTree = this.buildDecisionTree(config);      // 递归匹配子树节点
+            config.trainingSet = bestSplit.notMatch;                // 将切割 notMatch 训练集作为下一节点的训练集
+            let notMatchSubTree = this.buildDecisionTree(config);   // 递归匹配子树节点
+            return  {
+                attribute: bestSplit.attribute,
+                predicate: bestSplit.predicate,
+                predicateName: bestSplit.predicateName,
+                pivot: bestSplit.pivot,
+                match: matchSubTree,
+                notMatch: notMatchSubTree,
+                matchedCount: bestSplit.match.length,
+                notMatchedCount: bestSplit.notMatch.length
+            };
+        },
+
+        training(config) {
+            this.root = this.buildDecisionTree({
+                trainingSet: config.trainingSet,                        // 训练集
+                ignoredAttributes: config.ignoredAttributes || [],      // 被忽略的属性比如:姓名、名称之类的
+                categoryAttr: config.categoryAttr || 'category',        // 用于区分的类别属性
+                minItemsCount: config.minItemsCount || 1,               // 最小项数量
+                entropyThrehold: config.entropyThrehold || 0.01,        // 熵阈值
+                maxTreeDepth: config.maxTreeDepth || 70                 // 递归的最大深度
+            });
+        },
+
+        //预测 测试
+        predict(data) {
+            let attr, value, predicate, pivot;
+            let tree = this.root;
+            while (true) {
+                if (tree.category) {
+                    return tree.category;
+                }
+                attr = tree.attribute;
+                value = data[attr];
+                predicate = tree.predicate;
+                pivot = tree.pivot;
+                if (predicate(value, pivot)) {
+                    tree = tree.match;
+                } else {
+                    tree = tree.notMatch;
+                }
+            }
+        }
+    };
+</script>
+<script>
+    let data =
+        [
+            { "姓名": "余夏", "年龄": 29, "长相": "帅", "体型": "瘦", "收入": "高", 见面: "见" },
+            { "姓名": "豆豆", "年龄": 25, "长相": "帅", "体型": "瘦", "收入": "高", 见面: "见" },
+            { "姓名": "帅常荣", "年龄": 26, "长相": "帅", "体型": "胖", "收入": "高", 见面: "见" },
+            { "姓名": "王涛", "年龄": 22, "长相": "帅", "体型": "瘦", "收入": "高", 见面: "见" },
+            { "姓名": "李东", "年龄": 23, "长相": "帅", "体型": "瘦", "收入": "高", 见面: "见" },
+            { "姓名": "王五五", "年龄": 23, "长相": "帅", "体型": "瘦", "收入": "低", 见面: "见" },
+            { "姓名": "王小涛", "年龄": 22, "长相": "帅", "体型": "瘦", "收入": "低", 见面: "见" },
+            { "姓名": "李缤", "年龄": 21, "长相": "帅", "体型": "胖", "收入": "高", 见面: "见" },
+            { "姓名": "刘明", "年龄": 21, "长相": "帅", "体型": "胖", "收入": "低", 见面: "不见" },
+            { "姓名": "红鹤", "年龄": 21, "长相": "不帅", "体型": "胖", "收入": "高", 见面: "不见" },
+            { "姓名": "李理", "年龄": 32, "长相": "帅", "体型": "瘦", "收入": "高", 见面: "不见" },
+            { "姓名": "周州", "年龄": 31, "长相": "帅", "体型": "瘦", "收入": "高", 见面: "不见" },
+            { "姓名": "李乐", "年龄": 27, "长相": "不帅", "体型": "胖", "收入": "高", 见面: "不见" },
+            { "姓名": "韩明", "年龄": 24, "长相": "不帅", "体型": "瘦", "收入": "高", 见面: "不见" },
+            { "姓名": "小吕", "年龄": 28, "长相": "帅", "体型": "瘦", "收入": "低", 见面: "不见" },
+            { "姓名": "李四", "年龄": 25, "长相": "帅", "体型": "瘦", "收入": "低", 见面: "不见" },
+            { "姓名": "王鹏", "年龄": 30, "长相": "帅", "体型": "瘦", "收入": "低", 见面: "不见" },
+        ];
+    let decisionTree = new DecisionTree();
+    console.log("函数 countUniqueValues 测试:");
+    console.log("   长相", decisionTree.countUniqueValues(data, "长相"));//测试
+    console.log("   年龄", decisionTree.countUniqueValues(data, "年龄"));//测试
+    console.log("   收入", decisionTree.countUniqueValues(data, "收入"));//测试
+    console.log("函数 entropy 测试:");
+    console.log("   长相", decisionTree.entropy(data, "长相"));//测试
+    console.log("   年龄", decisionTree.entropy(data, "年龄"));//测试
+    console.log("   收入", decisionTree.entropy(data, "收入"));//测试
+    console.log("函数 mostFrequentValue 测试:");
+    console.log("   年龄", decisionTree.mostFrequentValue(data, "年龄"));//测试
+    console.log("   长相", decisionTree.mostFrequentValue(data, "长相"));//测试
+    console.log("   收入", decisionTree.mostFrequentValue(data, "收入"));//测试
+    console.log("函数 split 测试:");
+    console.log("   长相", decisionTree.split(data, "长相", (a, b) => { return a == b }, "不帅"));//测试
+    console.log("   年龄", decisionTree.split(data, "年龄", (a, b) => { return a >= b }, 30));//测试
+    console.log("   年龄", decisionTree.split(data, "年龄", (a, b) => { return a < b }, 25));//测试
+
+    decisionTree.training({
+        trainingSet: data,//训练集
+        categoryAttr: '见面',//用于区分的类别属性
+        ignoredAttributes: ['姓名']//被忽略的属性
+    });
+    // 测试决策树与随机森林
+    let comic = { "姓名": "刘建1", "年龄": 21, "长相": "帅", "体型": "瘦", "收入": "高" };
+    console.log(comic,  decisionTree.predict(comic));
+
+    comic = { "姓名": "刘建2", "年龄": 22, "长相": "不帅", "体型": "瘦", "收入": "高" };
+    console.log(comic,  decisionTree.predict(comic));
+
+    comic = { "姓名": "刘建3", "年龄": 27, "长相": "帅", "体型": "瘦", "收入": "低" };
+    console.log(comic,  decisionTree.predict(comic));
+
+    comic = { "姓名": "刘建4", "年龄": 30, "长相": "帅", "体型": "瘦", "收入": "高" };
+    console.log(comic,  decisionTree.predict(comic));
+
+    comic = { "姓名": "刘建5", "年龄": 29, "长相": "帅", "体型": "胖", "收入": "高" };
+    console.log(comic,  decisionTree.predict(comic));
+
+    comic = { "姓名": "刘建6", "年龄": 29, "长相": "帅", "体型": "胖", "收入": "低" };
+    console.log(comic,  decisionTree.predict(comic));
+
+    comic = { "姓名": "刘建7", "年龄": 40, "长相": "帅", "体型": "瘦", "收入": "低" };
+    console.log(comic,  decisionTree.predict(comic));
+</script>
+<script>
+    console.log('选课测试');
+    let courseData = [
+        {'学历层次': '研究生', '专业类别': '电信类', '学习基础': '修过AI', '选课方案': '不修'},
+        {'学历层次': '研究生', '专业类别': '电信类', '学习基础': '未修AI', '选课方案': '必修'},
+        {'学历层次': '研究生', '专业类别': '机电类', '学习基础': '修过AI', '选课方案': '不修'},
+        {'学历层次': '研究生', '专业类别': '机电类', '学习基础': '未修AI', '选课方案': '选修'},
+        {'学历层次': '本科', '专业类别': '电信类', '学习基础': '修过AI', '选课方案': '不修'},
+        {'学历层次': '本科', '专业类别': '电信类', '学习基础': '未修AI', '选课方案': '选修'},
+        {'学历层次': '本科', '专业类别': '机电类', '学习基础': '修过AI', '选课方案': '不修'},
+        {'学历层次': '本科', '专业类别': '机电类', '学习基础': '未修AI', '选课方案': '不修'}
+    ];
+    let course_decisionTree = new DecisionTree({
+        trainingSet: courseData,                          //训练集
+        categoryAttr: '选课方案',                         //用于区分的类别属性
+    });
+
+    let test = {'学历层次': '本科', '专业类别': '电信类', '学习基础': '未修AI'};
+    console.log(test, course_decisionTree.predict(test));
+</script>
+</body>
+</html>

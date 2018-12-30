@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    class BPNet{
+        constructor(layernum, n, fn, fd, learningRate, iter ,eps){
+            this.layernum = layernum;                                           // 层数
+            this.n = n;                                                         // 各层神经元数
+            this.fn = fn || function (x) {return 1.0/(1.0 + Math.exp(-x))};     // 输出函数
+            this.fd = fd || function(x) {return x * (1 - x)};                   // 误差函数
+            this.learningRate = learningRate || 0.5;                            // 学习率
+            this.iter = iter || 500;                                            // 迭代次数
+            this.eps = eps || 0.0001;                                           // 误差阈值
+
+            this.w = [];                                                        // 权值矩阵
+            this.b = [];                                                        // 偏置矩阵
+            this.e = 0.0;                                                       // 误差
+
+            // 随机初始化权值和偏置
+            for(let l = 1; l < this.layernum; l++) {
+                let item = [];
+                let bitem = [];
+                for(let j = 0; j < n[l]; j++) {
+                    let temp = [];
+                    for(let i = 0; i < n[l - 1]; i++) {
+                        temp[i] = Math.random()
+                    }
+                    item.push(temp);
+                    bitem.push(Math.random())
+                }
+                this.w[l] = item;
+                this.b[l] = bitem;
+            }
+        }
+
+        // 预测函数，计算各神经元的输出
+        predict(x) {
+            let y = [];
+            y[0] = x;
+            for(let l = 1; l < this.layernum; l++) {
+                y[l] = [];
+                for(let j = 0; j < this.n[l]; j++) {
+                    let u = 0.0;
+                    for(let i = 0; i < this.n[l - 1]; i++) u = u + this.w[l][j][i] * y[l - 1][i];
+                    u += this.b[l][j];
+                    y[l][j] = this.fn(u);
+                }
+            }
+            return y;
+        }
+
+        // 计算误差（期望输出，实际输出）
+        calcDelta(d, y) {
+            let delta = [];
+            let last = [];
+            for(let j = 0; j < this.n[this.layernum - 1]; j++){
+                last[j] = (d[j] - y[this.layernum - 1][j]) * this.fd(y[this.layernum - 1][j]);
+            }
+            delta[this.layernum - 1] = last;
+            for(let l = this.layernum - 2; l > 0; l--) {
+                delta[l] = [];
+                for(let j = 0; j < this.n[l]; j++) {
+                    delta[l][j] = 0.0;
+                    for(let i = 0; i < this.n[l + 1]; i++) {
+                        delta[l][j] += delta[l + 1][i] * this.w[l+1][i][j];
+                    }
+                    delta[l][j] = this.fd(y[l][j]) * delta[l][j];
+                }
+            }
+            return delta;
+        }
+
+        //调整权值和偏置（实际输出，误差）
+        updateWeightsAndBias(y, delta) {
+            // 逐层
+            for(let l = 0; l < this.layernum;l++)
+                for(let j = 0; j < this.n[l]; j++)
+                    for(let i = 0;i < this.n[l - 1];i++) {
+                        this.w[l][j][i] += this.learningRate * delta[l][j] * y[l-1][i];
+                        this.b[l][j] += this.learningRate * delta[l][j];
+                    }
+        }
+
+        // 样本训练（输入，期望输出）
+        train(x, d) {
+            for(let p = 0; p < this.iter; p++) {
+                this.e = 0;
+                for(let i = 0; i < x.length; i++) {
+                    let y = this.predict(x[i]);              // 获得各神经元的输出
+                    let delta = this.calcDelta(d[i], y);     // 计算误差
+                    this.updateWeightsAndBias(y, delta);     // 反向传播，调整权重和偏置
+
+                    let ep = 0.0;
+                    let l1 = this.layernum - 1;
+                    for(let l = 0;l < this.n[l1];l++) ep += (d[i][l] - y[l1][l]) * (d[i][l] - y[l1][l]);
+                    this.e += ep/2.0;
+                }
+                if(this.e < this.eps) break;
+            }
+        }
+    }
+
+
+    // Main
+    let x = [[0,0],[0,1],[1,0],[1,1]];      // 输入样本
+    let d = [[0],[1],[1],[0]];              // 期望输出
+
+    let bp = new BPNet(3, [2, 60, 1], undefined, undefined, 0.5, 5000 ,0.0001);
+    bp.train(x, d);
+    let y1 = bp.predict([0, 1]);
+    let y2 = bp.predict([0, 0]);
+    let y3 = bp.predict([1, 1]);
+    let y4 = bp.predict([1, 0]);
+
+    console.log(y1[2][0]);
+    console.log(y2[2][0]);
+    console.log(y3[2][0]);
+    console.log(y4[2][0]);
+</script>
+</body>
+</html>
