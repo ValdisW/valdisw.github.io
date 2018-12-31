@@ -7,7 +7,13 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>op</title>
     <style>
-        *{margin: 0; padding: 0}
+        *{
+            margin: 0; padding: 0;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
         body{overflow-y: hidden}
         input{outline: none}
         img{display: none}
@@ -26,7 +32,6 @@
             text-align: center;
             font-size: 18px;
             z-index: 100;
-            user-select: none;
             overflow: hidden;
         }
         #addPic:hover{
@@ -47,6 +52,9 @@
             border: 1.5px solid #000;
             text-align: center;
         }
+        .controlOption{
+            margin-top: 10px;
+        }
         #p5canvas{
             z-index: 1;
             border: 1.5px solid #000;
@@ -64,17 +72,24 @@
 
 <div id="controlPanel">
     <form action="">
-        <div>
+        <div class="controlOption">
             <label for="point_gap">点间距</label>
-            <input id="point_gap" type=number>
+            <input id="point_gap" type=number value="10">
         </div>
-        <div>
+        <div class="controlOption">
             <label for="min_radius">最小半径</label>
-            <input id="min_radius" type=number>
+            <input id="min_radius" type=number value="1">
         </div>
-        <div>
+        <div class="controlOption">
             <label for="max_radius">最大半径</label>
-            <input id="max_radius" type=number>
+            <input id="max_radius" type=number value="13">
+        </div>
+        <div class="controlOption">
+            <label for="matrix_color">点阵颜色</label>
+            <select name="" id="matrix_color">
+                <option value="color_black">黑色</option>
+                <option value="color_random">随机色</option>
+            </select>
         </div>
     </form>
 </div>
@@ -89,69 +104,105 @@
     let p5canvas = void 0;
     let canvasHeight = void 0, canvasWidth = void 0;
     let pointGap = 10;
-    let pointNum_x = Math.ceil(window.innerWidth / pointGap);
-    let pointNum_y = Math.ceil(window.innerHeight / pointGap);
-    let pointMatrix = new Array(pointNum_y);
-
-
-    // 初始化矩阵
-    for (let i = 0; i < pointNum_y; i++) pointMatrix[i] = new Array(pointNum_x).fill(0);
-
-    // 响应表单变化
-    $('#point_gap').change(()=>{
-        pointGap = $('#point_gap').val();
-    });
+    let pointNum_x = void 0,
+        pointNum_y = void 0;
+    let pointMatrix = void 0;
+    let minRadius = 0,
+        maxRadius = 13;
+    let matrixColorMode = 'color_black';
 
     // 图像处理
     const srcImg = $('#srcImg')[0];           // 原图的img标签
     $('#srcImgInputButton').change(function(e) {
         srcImg.src = URL.createObjectURL(e.target.files[0]);    // 更新img标签
     });
-    srcImg.onload = function () {
+    srcImg.onload = function () {                               // 上传图片时响应
         let aspect_ratio = srcImg.width / srcImg.height;        // 图像宽高比
-        console.log(srcImg);
-        srcImg.width = window.innerWidth;
+        srcImg.width = canvasWidth;
         srcImg.height = srcImg.width / aspect_ratio;
 
         // 调整宽高，适应屏幕
-        while (srcImg.height > window.innerHeight || srcImg.width > window.innerWidth) {
-            if (srcImg.width > window.innerWidth) {
-                srcImg.width = window.innerWidth * 0.9;
+        while (srcImg.height > canvasHeight || srcImg.width > canvasWidth) {
+            if (srcImg.width > canvasWidth) {
+                srcImg.width = canvasWidth * 0.9;
                 srcImg.height = srcImg.width / aspect_ratio;
             }
-            else if (srcImg.height > window.innerHeight) {
-                srcImg.height = window.innerHeight * 0.9;
+            else if (srcImg.height > canvasHeight) {
+                srcImg.height = canvasHeight * 0.9;
                 srcImg.width = srcImg.height * aspect_ratio;
             }
         }
 
-        // 实际像素操作
+        // 实际像素操作，更新点矩阵
         let srcMat = cv.imread(srcImg);
-        cv.cvtColor(srcMat, srcMat, cv.COLOR_RGBA2GRAY, 0);
-        for (let i = 0; i < pointNum_y; i++) for (let j = 0; j < pointNum_x; j++) pointMatrix[i][j] = 0;
+        cv.cvtColor(srcMat, srcMat, cv.COLOR_RGBA2GRAY, 0);         // 获取完整单通道矩阵
+        for (let i = 0; i < pointNum_y; i++) for (let j = 0; j < pointNum_x; j++) pointMatrix[i][j] = 0;    // 清空点矩阵
         for(let i = 0, r = 0; r < srcMat.rows; r += pointGap, i++)              // 行
             for (let j = 0, c = 0; c < srcMat.cols; c += pointGap, j++) {       // 列
                 let grayData = srcMat.ucharPtr(r, c)[0];                        // 灰度采样
-                pointMatrix[i][j] = ((255 - grayData) / 255) * pointGap;        // 灰度映射为点的大小
+                pointMatrix[i][j] = minRadius + ((255 - grayData) / 255) * (maxRadius - minRadius);        // 灰度映射为点的大小
             }
     };
 
+    // 根据点矩阵更新画布
     const updateCanvasFromMatrix = function (matrix) {
         for (let i = 0; i < pointNum_x; i++)
             for (let j = 0; j < pointNum_y; j++) {
                 strokeWeight(matrix[j][i]);
-                point(i * pointGap, j * pointGap);
+                switch (matrixColorMode) {
+                    case 'color_black':
+                        stroke(0);
+                        break;
+                    case 'color_random':
+                        stroke(Math.round(Math.random() * 255), Math.round(Math.random() * 255), Math.round(Math.random() * 255));
+                        break;
+                }
+                point(i * pointGap, j * pointGap);      // 实际绘制
             }
     };
 
+    // 画布初始化
     function setup() {
+        // 添加DOM元素
         p5canvas = createCanvas(window.innerWidth - 400, window.innerHeight - 40);
         p5canvas.id('p5canvas');
-        frameRate(60);
+
+        // 初始化点矩阵
+        canvasHeight = p5canvas.height;
+        canvasWidth = p5canvas.width;
+        pointNum_x = Math.ceil(canvasWidth / pointGap);
+        pointNum_y = Math.ceil(canvasHeight / pointGap);
+        pointMatrix = new Array(pointNum_y);
+        for (let i = 0; i < pointNum_y; i++) pointMatrix[i] = new Array(pointNum_x).fill(0);
+
+        frameRate(60);      // 帧速率
         updateCanvasFromMatrix(pointMatrix);
     }
-    
+
+    // 渲染内容
     function draw() {
+        background(255);
+        // 响应表单变化
+        $('#point_gap').change(()=>{            // 点间距，点矩阵重置
+            pointGap = parseInt($('#point_gap').val());
+            pointNum_x = Math.ceil(canvasWidth / pointGap);
+            pointNum_y = Math.ceil(canvasHeight / pointGap);
+            pointMatrix = new Array(pointNum_y);
+            for (let i = 0; i < pointNum_y; i++) pointMatrix[i] = new Array(pointNum_x).fill(0);
+        });
+
+        $('#min_radius').change(()=>{           // 最小半径
+            minRadius = parseInt($('#min_radius').val());
+        });
+
+        $('#max_radius').change(()=>{           // 最大半径
+            maxRadius = parseInt($('#max_radius').val());
+        });
+
+        $('#matrix_color').change(()=>{         // 点阵颜色
+            matrixColorMode = $('#matrix_color').val();
+        });
+
         updateCanvasFromMatrix(pointMatrix);
     }
 </script>
