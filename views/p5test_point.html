@@ -89,6 +89,7 @@
             <select name="" id="matrix_color">
                 <option value="color_black">黑色</option>
                 <option value="color_random">随机色</option>
+                <option value="color_origin">原色</option>
             </select>
         </div>
     </form>
@@ -100,19 +101,19 @@
 <script src="../js/p5.js"></script>
 <script src="../js/opencv.js"></script>
 <script>
-    // 变量
+    // 全局变量
     let p5canvas = void 0;
     let canvasHeight = void 0, canvasWidth = void 0;
-    let pointGap = 10;
+    let pointGap = void 0;
     let pointNum_x = void 0,
         pointNum_y = void 0;
     let pointMatrix = void 0;
-    let minRadius = 0,
-        maxRadius = 13;
+    let minRadius = void 0,
+        maxRadius = void 0;
     let matrixColorMode = 'color_black';
 
     // 图像处理
-    const srcImg = $('#srcImg')[0];           // 原图的img标签
+    const srcImg = $('#srcImg')[0];           // 原图的img标签，初始时没有图像
     $('#srcImgInputButton').change(function(e) {
         srcImg.src = URL.createObjectURL(e.target.files[0]);    // 更新img标签
     });
@@ -132,23 +133,41 @@
                 srcImg.width = srcImg.height * aspect_ratio;
             }
         }
-
-        // 实际像素操作，更新点矩阵
-        let srcMat = cv.imread(srcImg);
-        cv.cvtColor(srcMat, srcMat, cv.COLOR_RGBA2GRAY, 0);         // 获取完整单通道矩阵
-        for (let i = 0; i < pointNum_y; i++) for (let j = 0; j < pointNum_x; j++) pointMatrix[i][j] = 0;    // 清空点矩阵
-        for(let i = 0, r = 0; r < srcMat.rows; r += pointGap, i++)              // 行
-            for (let j = 0, c = 0; c < srcMat.cols; c += pointGap, j++) {       // 列
-                let grayData = srcMat.ucharPtr(r, c)[0];                        // 灰度采样
-                pointMatrix[i][j] = minRadius + ((255 - grayData) / 255) * (maxRadius - minRadius);        // 灰度映射为点的大小
-            }
+        // 至此，img已准备就绪
+        background(255);
+        updateMatrixFromImg();
+        updateCanvasFromMatrix(pointMatrix);
     };
 
+    // 根据图像更新点矩阵
+    const updateMatrixFromImg = function () {
+        let srcMat = cv.imread(srcImg);
+        let grayMat = new cv.Mat();
+        cv.cvtColor(srcMat, grayMat, cv.COLOR_RGBA2GRAY, 0);         // 转换成灰度
+        for (let i = 0; i < pointNum_y; i++) {
+            for (let j = 0; j < pointNum_x; j++) {
+                pointMatrix[i][j] = {x: 0, y: 0, value: 0, color: 0};       // 清空点矩阵
+            }
+        }
+        for(let i = 0, r = 0; r < srcMat.rows; r += pointGap, i++) {            // 行
+            for (let j = 0, c = 0; c < srcMat.cols; c += pointGap, j++) {       // 列
+                let grayData = grayMat.ucharPtr(r, c)[0];                        // 灰度采样
+                pointMatrix[i][j].x = c;                                        // 矩阵第i行第j列点对应的x坐标
+                pointMatrix[i][j].y = r;                                        // 矩阵第i行第j列点对应的y坐标
+                pointMatrix[i][j].color = (matrixColorMode === 'color_origin') ? 'rgb(' + srcMat.ucharPtr(r, c).slice(0, 3).toString() + ')' : grayData;        // 灰度映射为点的大小
+                pointMatrix[i][j].value = minRadius + ((255 - grayData) / 255) * (maxRadius - minRadius);        // 灰度映射为点的大小
+            }
+        }
+        grayMat.delete();
+        srcMat.delete();
+    };
+    
     // 根据点矩阵更新画布
     const updateCanvasFromMatrix = function (matrix) {
-        for (let i = 0; i < pointNum_x; i++)
+        console.log('更新画布');
+        for (let i = 0; i < pointNum_x; i++) {
             for (let j = 0; j < pointNum_y; j++) {
-                strokeWeight(matrix[j][i]);
+                strokeWeight(matrix[j][i].value);       // 设置每个点的大小
                 switch (matrixColorMode) {
                     case 'color_black':
                         stroke(0);
@@ -156,9 +175,14 @@
                     case 'color_random':
                         stroke(Math.round(Math.random() * 255), Math.round(Math.random() * 255), Math.round(Math.random() * 255));
                         break;
+                    case 'color_origin':
+                        updateMatrixFromImg(false);
+                        stroke(matrix[j][i].color);
+                        break;
                 }
-                point(i * pointGap, j * pointGap);      // 实际绘制
+                point(matrix[j][i].x, matrix[j][i].y);      // 实际绘制
             }
+        }
     };
 
     // 画布初始化
@@ -170,40 +194,88 @@
         // 初始化点矩阵
         canvasHeight = p5canvas.height;
         canvasWidth = p5canvas.width;
+        pointGap = parseInt($('#point_gap').val());
+        minRadius = parseInt($('#min_radius').val());
+        maxRadius = parseInt($('#max_radius').val());
         pointNum_x = Math.ceil(canvasWidth / pointGap);
         pointNum_y = Math.ceil(canvasHeight / pointGap);
-        pointMatrix = new Array(pointNum_y);
-        for (let i = 0; i < pointNum_y; i++) pointMatrix[i] = new Array(pointNum_x).fill(0);
+        pointMatrix = new Array(pointNum_y);            // 点矩阵
+        for (let i = 0; i < pointNum_y; i++) {
+            pointMatrix[i] = new Array(pointNum_x).fill({x: 0, y: 0, value: 0, color: 0});
+        }
+        for (let i = 0; i < pointNum_y; i++) {
+            for (let j = 0; j < pointNum_x; j++) {
+                pointMatrix[i][j].x = j * pointGap;
+                pointMatrix[i][j].y = i * pointGap;
+                console.log(pointMatrix[i][j], pointMatrix[i][j]);
+            }
+        }
+        for (let i = 0; i < pointNum_y; i++) {
+            for (let j = 0; j < pointNum_x; j++) {
+                console.log(pointMatrix[i][j].x, pointMatrix[i][j].y);
+            }
+        }
 
         frameRate(60);      // 帧速率
-        updateCanvasFromMatrix(pointMatrix);
+        //updateCanvasFromMatrix(pointMatrix);
     }
 
     // 渲染内容
     function draw() {
-        background(255);
         // 响应表单变化
         $('#point_gap').change(()=>{            // 点间距，点矩阵重置
             pointGap = parseInt($('#point_gap').val());
             pointNum_x = Math.ceil(canvasWidth / pointGap);
             pointNum_y = Math.ceil(canvasHeight / pointGap);
             pointMatrix = new Array(pointNum_y);
-            for (let i = 0; i < pointNum_y; i++) pointMatrix[i] = new Array(pointNum_x).fill(0);
+            for (let i = 0; i < pointNum_y; i++) {
+                pointMatrix[i] = new Array(pointNum_x).fill({x: 0, y: 0, value: 0, color: 0});
+            }
         });
 
         $('#min_radius').change(()=>{           // 最小半径
             minRadius = parseInt($('#min_radius').val());
+            updateMatrixFromImg();
+            updateCanvasFromMatrix(pointMatrix);
         });
 
         $('#max_radius').change(()=>{           // 最大半径
             maxRadius = parseInt($('#max_radius').val());
+            updateMatrixFromImg();
+            updateCanvasFromMatrix(pointMatrix);
         });
 
         $('#matrix_color').change(()=>{         // 点阵颜色
             matrixColorMode = $('#matrix_color').val();
+            updateMatrixFromImg();
+            updateCanvasFromMatrix(pointMatrix);
         });
 
-        updateCanvasFromMatrix(pointMatrix);
+        //updateCanvasFromMatrix(pointMatrix);
+
+    }
+
+    // 鼠标交互
+    function mouseMoved() {
+        let mouseRadius = 20;
+        let fakeX = 0,
+            fakeY = 0;
+        if (mouseX >= 0 && mouseX < canvasWidth && mouseY >= 0 && mouseY < canvasHeight) {      // 鼠标在canvas内
+            let minDist = 1e10,
+                mini = 0,
+                minj = 0;
+            for (let i = 0; i < pointNum_y; i++) {
+                for (let j = 0; j < pointNum_x; j++) {
+                    let currDist = dist(pointMatrix[i][j].x, pointMatrix[i][j].y, mouseX, mouseY);
+                    if (currDist < minDist) {
+                        minDist = currDist;
+                        mini = i;
+                        minj = j;
+                    }
+                }
+            }
+            console.log(mini, minj);
+        }
     }
 </script>
 </body>

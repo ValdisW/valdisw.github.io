@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Splash</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            outline: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        .controlOption{
+            margin-top: 20px;
+        }
+        label, span{
+            font-size: 14px;
+        }
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 40%;
+            background-color: #F1939C;
+            border: 1px solid #F1939C;
+            border-radius: 10px;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            height: 1px;
+            border-radius: 10px;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 15px; width: 15px;
+            margin-top: -8px;
+            background: #D11A2D;
+            border-radius: 50%;
+            border: solid 0.125em #611A2D;
+        }
+        html, body{
+            height: 100%;
+            width: 100%;
+        }
+        body{
+            overflow-y: hidden;
+        }
+        #canvas{
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            cursor: none;
+        }
+        #trueCanvas{
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        #controlPanel{
+            position: relative;
+            top: 10%;
+            height: 80%;
+            width: 20%;
+            float: right;
+            color: #333;
+            border-left: 2px dashed #D11A2D;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<script src="../js/jquery-3.3.1.min.js"></script>
+<script src="../js/p5.js"></script>
+<canvas id="canvas"></canvas>
+<canvas id="trueCanvas"></canvas>
+<div id="controlPanel">
+    <div class="controlOption">
+        <label for="input_color">选择颜色：</label>
+        <input id="input_color" type="color" value="#0080ff">
+    </div>
+    <div class="controlOption">
+        <label for="input_colorRange">颜色变化范围：</label>
+        <input id="input_colorRange" type="range" min="0" max="255" step="1" value="100">
+        <span id="input_colorRange_val">100</span>
+    </div>
+    <div class="controlOption">
+        <label for="input_pointNum">点的个数：</label>
+        <input id="input_pointNum" type="range" min="0" max="100" step="1" value="20">
+        <span id="input_pointNum_val">20</span>
+    </div>
+    <div class="controlOption">
+        <label for="input_pointSize">点的大小：</label>
+        <input id="input_pointSize" type="range" min="0" max="80" step="1" value="20">
+        <span id="input_pointSize_val">60</span>
+    </div>
+    <div class="controlOption">
+        <label for="input_deviation">位置偏移：</label>
+        <input id="input_deviation" type="range" min="0" max="600" step="1" value="80">
+        <span id="input_deviation_val">60</span>
+    </div>
+</div>
+<script>
+    // 更方便地获取随机数
+    const getRandom = function (min, max) {
+        return min + Math.random() * (max - min);
+    };
+
+    // 两位十六进制转换为十进制
+    const hToD = function (str) {
+        let firstLetter = str[0],
+            lastLetter = str[1];
+        switch (firstLetter) {
+            case 'a':
+                firstLetter = '10';
+                break;
+            case 'b':
+                firstLetter = '11';
+                break;
+            case 'c':
+                firstLetter = '12';
+                break;
+            case 'd':
+                firstLetter = '13';
+                break;
+            case 'e':
+                firstLetter = '14';
+                break;
+            case 'f':
+                firstLetter = '15';
+                break;
+        }
+        switch (lastLetter) {
+            case 'a':
+                lastLetter = '10';
+                break;
+            case 'b':
+                lastLetter = '11';
+                break;
+            case 'c':
+                firstLetter = '12';
+                break;
+            case 'd':
+                lastLetter = '13';
+                break;
+            case 'e':
+                lastLetter = '14';
+                break;
+            case 'f':
+                lastLetter = '15';
+                break;
+        }
+        firstLetter = parseInt(firstLetter);
+        lastLetter = parseInt(lastLetter);
+        return firstLetter * 16 + lastLetter;
+    };
+
+    // 六位十六进制颜色转rgb
+    const hexToRgb = function (str) {
+        let rgbVal = new Array(3);
+        let cStr = {r: str.slice(1, 3), g: str.slice(3, 5), b: str.slice(5, 7)};
+        rgbVal[0] = hToD(cStr.r);
+        rgbVal[1] = hToD(cStr.g);
+        rgbVal[2] = hToD(cStr.b);
+
+        return {r: rgbVal[0], g: rgbVal[1], b: rgbVal[2]};
+    };
+
+
+    // 全局变量和常量
+    let mouseX = void 0,
+        mouseY = void 0;
+    let colorRange = parseInt($('#input_colorRange').val());
+    let pointNum = parseInt($('#input_pointNum').val());
+    let deviation = parseInt($('#input_deviation').val());
+    let pointSize = parseInt($('#input_pointSize').val());
+    let userColor = {r: 0, g: 128, b: 255};
+
+    const canvas = $('#canvas')[0];
+    const trueCanvas = $('#trueCanvas')[0];
+    const ctx_hover = canvas.getContext('2d');
+    const ctx = trueCanvas.getContext('2d');
+
+    // canvas尺寸设定
+    $(canvas).attr({
+        height: window.innerHeight,
+        width: window.innerWidth * 0.8
+    });
+
+    $(trueCanvas).attr({
+        height: window.innerHeight,
+        width: window.innerWidth * 0.8
+    });
+
+    // 获取鼠标坐标
+    $(canvas).mousemove(function(e) {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+    });
+
+    canvas.onmousewheel = function(e){
+        if (e.deltaY < 0) {     // 向上滚动
+            pointSize++;
+        }else {
+            pointSize--;
+        }
+        $('#input_pointSize_val').html(pointSize);
+        $('#input_pointSize').val(pointSize);
+    };
+
+    // 更新参数
+    $('#input_color').change(function(){
+        userColor = hexToRgb($('#input_color').val());
+    });
+
+    $('#input_colorRange').change(function(){
+        colorRange = parseInt($('#input_colorRange').val());
+        $('#input_colorRange_val').html(colorRange);
+    });
+
+    $('#input_pointNum').change(function(){
+        pointNum = parseInt($('#input_pointNum').val());
+        $('#input_pointNum_val').html(pointNum);
+    });
+
+    $('#input_pointSize').change(function(){
+        pointSize = parseInt($('#input_pointSize').val());
+        $('#input_pointSize_val').html(pointSize);
+    });
+
+    $('#input_deviation').change(function(){
+        deviation = parseInt($('#input_deviation').val());
+        $('#input_deviation_val').html(deviation);
+    });
+
+    $('#canvas').click(function () {
+        ctx.fillStyle = 'rgb(' + userColor.r + ',' + userColor.g + ',' + userColor.b + ')';
+        ctx.beginPath();
+        ctx.arc(mouseX, mouseY, pointSize, 0, Math.PI * 2);
+        ctx.fill();
+
+        for (let i = 0; i < pointNum; i++) {
+            ctx.fillStyle = 'rgb(' + (userColor.r + getRandom(-colorRange, colorRange)) + ',' + (userColor.g + getRandom(-colorRange, colorRange)) + ',' + (userColor.b + getRandom(-colorRange, colorRange)) + ')';
+            ctx.beginPath();
+            ctx.arc(mouseX + getRandom(-deviation, deviation), mouseY + getRandom(-deviation, deviation), getRandom(0, pointSize * 0.7), 0, Math.PI * 2);
+            ctx.fill();
+        }
+    });
+
+    const render = function () {
+        requestAnimationFrame(render);
+        ctx_hover.clearRect(0, 0, $(canvas).attr('width'), $(canvas).attr('height'));
+
+        ctx_hover.fillStyle = 'rgb(' + userColor.r + ',' + userColor.g + ',' + userColor.b + ')';
+        ctx_hover.beginPath();
+        ctx_hover.arc(mouseX, mouseY, pointSize, 0, Math.PI * 2);
+        ctx_hover.stroke();
+    };
+    render();
+</script>
+</body>
+</html>

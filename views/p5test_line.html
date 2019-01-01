@@ -58,20 +58,22 @@
 
     }
 
+    // 背景线条
     class BackgroundLine{
         constructor(x) {
             this.x = x;
         }
 
+        // 移动
         move(step) {
             this.x = (this.x + step) % window.innerWidth;
         }
 
+        // 绘制
         draw() {
             line(this.x, 0, this.x, window.innerHeight);
         }
     }
-
 
 
     function setup() {
