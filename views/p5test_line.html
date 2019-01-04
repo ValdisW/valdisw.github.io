@@ -48,14 +48,11 @@
         }
 
         draw(pointCouples) {
-            //ellipse(this.x, this.y, this.radius, this.radius);
-
             strokeWeight(14);
             for(let i = 0; i < pointCouples.length; i++) {
                 line(pointCouples[i][0][0], pointCouples[i][0][1], pointCouples[i][1][0], pointCouples[i][1][1]);
             }
         }
-
     }
 
     // 背景线条

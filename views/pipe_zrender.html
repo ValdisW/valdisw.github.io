@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>pipe_zrender</title>
+    <style>
+        *{margin: 0; padding: 0}
+        html, body, #main{width: 100%; height: 100%}
+        body{overflow-y: hidden}
+    </style>
+</head>
+<body>
+<div id="main"></div>
+
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/zrender/4.0.5/zrender.js"></script>
+<script>
+    const localWidth = 462, localHeight = 454;                      // 测量展示范围宽高
+    const blocks_data = [                                           // 各方块测量数据
+        {id: '1', name: '提标硝化滤池', font: '16px Arial', x: 0, y: 0, w: 96, h: 62},
+        {id: '1_attach', name: '', font: '16px Arial', x: 95, y: 0, w: 5, h: 10},
+        {id: '2', name: '提标反硝化池', font: '16px Arial', x: 116, y: 0, w: 96, h: 62},
+        {id: '2_attach', name: '', font: '16px Arial', x: 211, y: 0, w: 5, h: 10},
+        {id: '3', name: '提标\n滤布\n滤池', font: '12px Arial', x: 232, y: 0, w: 22, h: 62},
+        {id: '4', name: '扩建工程调节池', font: '16px Arial', x: 195, y: 428, w: 236, h: 26},
+        {id: '4_attach', name: '', font: '16px Arial', x: 305, y: 424, w: 20, h: 5},
+        {id: '5', name: '扩建\n滤布\n滤池', font: '12px Arial', x: 282, y: 91, w: 22, h: 36},
+        {id: '6', name: '扩建硝化车间', font: '16px Arial', x: 134, y: 161, w: 120, h: 135},
+        {id: '6', name: '扩建反硝化池', font: '16px Arial', x: 342, y: 161, w: 120, h: 135},
+        {id: '7', name: '提标泵房\n及臭氧', font: '14px Arial', x: 268, y: -1, w: 42, h: 63},
+        {id: '8', name: '曝气活性炭池', font: '16px Arial', x: 16, y: 91, w: 238, h: 51},
+        {id: '9', name: '臭氧发生器', font: '16px Arial', x: 327, y: 90, w: 63, h: 41},
+        {id: '10', name: '污泥浓缩池', font: '14px Arial', x: 323, y: 41, w: 43, h: 21},
+        {id: '11', name: '脱水机房加\n药除臭系统', font: '14px Arial', x: 390, y: 4, w: 72, h: 57},
+        {id: '12', name: '变电站', font: '16px Arial', x: 412, y: 89, w: 52, h: 54},
+        {id: '13', name: '液氧站', font: '14px Arial', x: 344, y: 9, w: 16, h: 16},
+        {id: '14_17', name: '综合控制室&综合进出水池', font: '16px Arial', x: 14, y: 338, w: 138, h: 66},
+        {id: '14_17_attach', name: '', font: '16px Arial', x: 14, y: 329.5, w: 40, h: 10},
+        {id: '15', name: '超滤车间', font: '16px Arial', x: 16, y: 163, w: 88, h: 135},
+        {id: '16', name: '高效\n沉淀\n滤池', font: '14px Arial', x: 282, y: 161, w: 37, h: 75},
+        {id: 'undefined', name: '', font: '14px Arial', x: 164, y: 148, w: 92, h: 5},
+        {id: 'undefined', name: '', font: '14px Arial', x: 278, y: 148, w: 165, h: 5},
+
+    ];
+    const pipe_radius = 2;
+    const pipes_segment_data = [
+        // 1
+        {x: -5, y: 31, w: 5.5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: -5, y: 31, w: pipe_radius, h: 296, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: -5, y: 326, w: 24, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 18, y: 326, w: 6, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 23, y: 326, w: pipe_radius, h: 4, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 23, y: 326, w: 6, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 28, y: 326, w: pipe_radius, h: 4, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 28, y: 326, w: 6, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 33, y: 326, w: pipe_radius, h: 4, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 33, y: 326, w: 6, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 38, y: 326, w: pipe_radius, h: 4, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 38, y: 326, w: 6, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 43, y: 326, w: pipe_radius, h: 4, color: '#FF0', time: 1000, flow_direction: 0},
+
+        // 2
+        {x: -4, y: 67.5, w: 108, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 102, y: 31, w: pipe_radius, h: 37, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 102, y: 67.5, w: 117.5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 218, y: 31, w: pipe_radius, h: 37, color: '#FF0', time: 1000, flow_direction: 0},
+
+        // 3
+        {x: 96, y: 31, w: 21, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+
+        // 4
+        {x: 211.5, y: 31, w: 21, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+
+        // 5
+        {x: 235, y: 62, w: pipe_radius, h: 10, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 9, y: 71, w: 227, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 9, y: 71, w: pipe_radius, h: 86, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 9, y: 156, w: 92, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 100, y: 156, w: pipe_radius, h: 7, color: '#FF0', time: 1000, flow_direction: 0},
+
+        // 6
+        {x: 254, y: 19, w: 14, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+
+        // 7
+        {x: 257.5, y: 34, w: 10.5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 257.5, y: 34, w: pipe_radius, h: 54, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 12.5, y: 86, w: 246, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 12.5, y: 86, w: pipe_radius, h: 31, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 13, y: 116, w: 4, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 12.5, y: 116, w: pipe_radius, h: 30, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 12.5, y: 146, w: 72, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 84, y: 146, w: pipe_radius, h: 18, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 84, y: 146, w: 67, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 149, y: 141, w: pipe_radius, h: 6, color: '#FF0', time: 1000, flow_direction: 0},
+
+        // 8
+        {x: 93, y: 301, w: 28.5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 120, y: 146, w: pipe_radius, h: 156, color: '#FF0', time: 1000, flow_direction: 0},
+
+        // 9
+        {x: 261.5, y: 57, w: 6.5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 261, y: 57, w: pipe_radius, h: 59, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 253.5, y: 116, w: 8, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 261, y: 116, w: pipe_radius, h: 30, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 159, y: 144.5, w: 103, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+
+        // 10
+        {x: 284, y: 61.5, w: pipe_radius, h: 29.5, color: '#FF0', time: 1000, flow_direction: 0},
+
+        // 14
+        {x: 159, y: 141, w: pipe_radius, h: 10, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 112, y: 150, w: 48.5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 112, y: 150, w: pipe_radius, h: 80, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 104, y: 230, w: 9, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 112, y: 230, w: pipe_radius, h: 62, color: '#FF0', time: 1000, flow_direction: 0},
+
+        // 17
+        {x: 304, y: 108, w: 3, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 306, y: 108, w: pipe_radius, h: 48, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 108, y: 154, w: 199, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 108, y: 154, w: pipe_radius, h: 39, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 104, y: 192, w: 6, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+
+        // 18
+        {x: 104, y: 291, w: 29, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 131, y: 291, w: pipe_radius, h: 47, color: '#FF0', time: 1000, flow_direction: 0},
+
+        // 19
+        {x: 93, y: 297, w: pipe_radius, h: 41, color: '#FF0', time: 1000, flow_direction: 0},
+
+        // 20
+        {x: 5, y: 120, w: 11, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 5, y: 120, w: pipe_radius, h: 232, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 5, y: 351, w: 9, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+
+        // 23
+        {x: 254, y: 19, w: 14, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+
+        // 24
+        {x: 254, y: 19, w: 14, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+
+        // 25
+        {x: 254, y: 19, w: 14, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+
+        // 26
+        {x: 254, y: 19, w: 14, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+
+        // 27
+        {x: 254, y: 19, w: 14, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+
+
+        // 无数据
+        // 1
+        {x: 99.5, y: 3, w: 3.5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 102, y: 3, w: pipe_radius, h: 4, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 99.5, y: 6, w: 3.5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 102, y: 6, w: pipe_radius, h: 12, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 102, y: 17, w: 9, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 110, y: 17, w: pipe_radius, h: 49, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 110, y: 64, w: 169, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 278, y: 64, w: pipe_radius, h: 37, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 278, y: 100, w: 5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 278, y: 100, w: pipe_radius, h: 14, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 278, y: 113, w: 5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 278, y: 113, w: pipe_radius, h: 30.5, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 278, y: 142, w: 15, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 291, y: 142, w: pipe_radius, h: 19.5, color: '#FF0', time: 1000, flow_direction: 0},
+
+        // 2
+        {x: 215.5, y: 3, w: 4, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 218, y: 3, w: pipe_radius, h: 4, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 215.5, y: 6, w: 4, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 218, y: 6, w: pipe_radius, h: 12, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 218, y: 17, w: 10, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 226, y: 17, w: pipe_radius, h: 49, color: '#FF0', time: 1000, flow_direction: 0},
+
+        // 3
+        {x: 253.5, y: 9, w: 2, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 255, y: 9, w: pipe_radius, h: 19, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 253.5, y: 27, w: 2, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 255, y: 27, w: pipe_radius, h: 19, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 253.5, y: 45, w: 2, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 255, y: 45, w: pipe_radius, h: 21, color: '#FF0', time: 1000, flow_direction: 0},
+
+        // 4
+        {x: 334, y: 37, w: pipe_radius, h: 4.5, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 334, y: 37, w: 21, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 355, y: 37, w: pipe_radius, h: 4.5, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 355, y: 37, w: 35, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+
+        // 5
+        {x: 318.5, y: 209, w: 6.5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 323, y: 66, w: pipe_radius, h: 144, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 323, y: 66, w: 12, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 334, y: 66, w: 22.5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 334, y: 61.5, w: pipe_radius, h: 6.5, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 355, y: 61.5, w: pipe_radius, h: 6.5, color: '#FF0', time: 1000, flow_direction: 0},
+
+        // 6
+        {x: 167, y: 142, w: pipe_radius, h: 6.5, color: '#FF0', time: 1000, flow_direction: 0},
+
+        // 7
+        {x: 171, y: 152.5, w: pipe_radius, h: 9, color: '#FF0', time: 1000, flow_direction: 0},
+
+        // 8
+        {x: 231, y: 152.5, w: pipe_radius, h: 9, color: '#FF0', time: 1000, flow_direction: 0},
+
+        // 9
+        {x: 288, y: 152, w: pipe_radius, h: 9.5, color: '#FF0', time: 1000, flow_direction: 0},
+
+        // 10
+        {x: 256, y: 150, w: 23, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+
+        // 11
+        {x: 379, y: 152, w: pipe_radius, h: 9.5, color: '#FF0', time: 1000, flow_direction: 0},
+
+        // 12
+        {x: 439, y: 152, w: pipe_radius, h: 9.5, color: '#FF0', time: 1000, flow_direction: 0},
+
+
+        // 13
+        {x: 340, y: 158, w: 38, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 339, y: 158, w: pipe_radius, h: 140, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 376, y: 158, w: pipe_radius, h: 3.5, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 376, y: 158, w: 52, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 426, y: 158, w: pipe_radius, h: 3.5, color: '#FF0', time: 1000, flow_direction: 0},
+
+        // 14 （原11）
+        {x: 264, y: 160, w: pipe_radius, h: 138, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 264, y: 296.5, w: 210, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 473, y: 296.5, w: pipe_radius, h: 136, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 431, y: 432, w: 43.5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+
+        // 15 （原16）
+        {x: 302, y: 156, w: 89.5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 390, y: 157, w: pipe_radius, h: 5, color: '#FF0', time: 1000, flow_direction: 0},
+
+        // 16 （原21）
+        {x: 160, y: 295.5, w: pipe_radius, h: 7, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 160, y: 301, w: 8, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 168, y: 295.5, w: pipe_radius, h: 7, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 168, y: 301, w: 52, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 220, y: 295.5, w: pipe_radius, h: 7, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 220, y: 301, w: 8, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 228, y: 295.5, w: pipe_radius, h: 7, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 228, y: 301, w: 140, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 368, y: 295.5, w: pipe_radius, h: 7, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 368, y: 301, w: 8, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 376, y: 295.5, w: pipe_radius, h: 7, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 376, y: 301, w: 52, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 428, y: 295.5, w: pipe_radius, h: 7, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 428, y: 301, w: 8, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 436, y: 295.5, w: pipe_radius, h: 7, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 436, y: 301, w: 22, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 458, y: 301, w: pipe_radius, h: 119, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 313, y: 420, w: 145, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 313, y: 421, w: pipe_radius, h: 3, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 317, y: 421, w: pipe_radius, h: 3, color: '#FF0', time: 1000, flow_direction: 0},
+        {x: 321, y: 421, w: pipe_radius, h: 3, color: '#FF0', time: 1000, flow_direction: 0},
+
+        // 17 （原22）
+        {x: 160, y: 295.5, w: pipe_radius, h: 7, color: '#FF0', time: 1000, flow_direction: 0},
+
+    ];
+    const pipe_arc = [
+        {x: 110, y: 31, r: 2, begin: -Math.PI / 2, end: Math.PI / 2},
+        /*        {x: 218, y: 64.5, r: 3, begin: 0, end: Math.PI * 2},
+                {x: 225.5, y: 31, r: 3, begin: 0, end: Math.PI * 2},
+                {x: 233.5, y: 64, r: 3, begin: 0, end: Math.PI * 2},
+                {x: 255, y: 19.5, r: 3, begin: 0, end: Math.PI * 2},
+                {x: 257, y: 64.5, r: 3, begin: 0, end: Math.PI * 2},
+                {x: 260, y: 64.5, r: 3, begin: 0, end: Math.PI * 2},
+                {x: 10, y: 119.5, r: 3, begin: 0, end: Math.PI * 2},
+                {x: 14, y: 119.5, r: 3, begin: 0, end: Math.PI * 2},
+                {x: 169, y: 143, r: 8, begin: 0, end: Math.PI * 2},
+                {x: 260, y: 119.5, r: 3, begin: 0, end: Math.PI * 2},
+                {x: 264, y: 150.5, r: 9, begin: 0, end: Math.PI * 2},
+                {x: 264, y: 157.5, r: 3, begin: 0, end: Math.PI * 2},
+                {x: 89.5, y: 156, r: 7, begin: 0, end: Math.PI * 2},
+                {x: 112, y: 152.5, r: 5, begin: 0, end: Math.PI * 2},
+                {x: 120, y: 152, r: 6, begin: 0, end: Math.PI * 2},
+                {x: 230, y: 154, r: 8, begin: 0, end: Math.PI * 2},
+                {x: 286.5, y: 154, r: 5, begin: 0, end: Math.PI * 2},
+                {x: 291, y: 154, r: 2, begin: 0, end: Math.PI * 2},
+                {x: 288, y: 157, r: 2, begin: 0, end: Math.PI * 2},
+                {x: 291, y: 157, r: 2, begin: 0, end: Math.PI * 2},
+                {x: 302, y: 150, r: 8, begin: 0, end: Math.PI * 2},
+                {x: 322.5, y: 157, r: 3, begin: 0, end: Math.PI * 2},
+                {x: 379, y: 159, r: 4, begin: 0, end: Math.PI * 2},
+                {x: 120, y: 291.5, r: 3, begin: 0, end: Math.PI * 2},
+                {x: 171, y: 154, r: 2, begin: 0, end: Math.PI * 2},
+                {x: 171, y: 160.5, r: 1, begin: 0, end: Math.PI * 2},
+                {x: 205.5, y: 160, r: 3, begin: 0, end: Math.PI * 2},
+                {x: 230, y: 157, r: 8, begin: 0, end: Math.PI * 2},
+                {x: 390, y: 160, r: 2, begin: 0, end: Math.PI * 2},
+                {x: 231, y: 160, r: 2, begin: 0, end: Math.PI * 2},
+                {x: 278, y: 299, r: 4, begin: 0, end: Math.PI * 2},
+                {x: 278, y: 301, r: 4, begin: 0, end: Math.PI * 2},
+                {x: 368, y: 299, r: 2, begin: 0, end: Math.PI * 2},
+                {x: 376, y: 299, r: 2, begin: 0, end: Math.PI * 2},
+                {x: 428, y: 299, r: 2, begin: 0, end: Math.PI * 2},
+                {x: 436, y: 299, r: 2, begin: 0, end: Math.PI * 2},
+                {x: 8, y: 326, r: 2, begin: 0, end: Math.PI * 2},
+                {x: 458, y: 307.5, r: 3, begin: 0, end: Math.PI * 2},*/
+    ];
+
+
+
+    // 将测量数据转化成绘制用数据
+    const magnification = (Math.floor(window.innerHeight) - 150) / localHeight;     // 缩放(一般是放大)倍数
+    const draw_blocks_data = [],
+        draw_pipes_segment_data = [],
+        draw_pipes_arc = [],
+        draw_localHeight = localHeight * magnification,
+        draw_localWidth = localWidth * magnification;
+    for (let i = 0; i < blocks_data.length; i++) {          // 方块数据
+        draw_blocks_data[i] = {};
+        draw_blocks_data[i].id = blocks_data[i].id;
+        draw_blocks_data[i].name = blocks_data[i].name;
+        draw_blocks_data[i].font = blocks_data[i].font;
+        draw_blocks_data[i].x = (window.innerWidth - draw_localWidth) / 2 + Math.floor(blocks_data[i].x * magnification);
+        draw_blocks_data[i].y = 50 + (window.innerHeight - draw_localHeight) / 2 + Math.floor(blocks_data[i].y * magnification);
+        draw_blocks_data[i].w = Math.floor(blocks_data[i].w * magnification);
+        draw_blocks_data[i].h = Math.floor(blocks_data[i].h * magnification);
+    }
+    for (let i = 0; i < pipes_segment_data.length; i++) {       // 管道数据
+        draw_pipes_segment_data[i] = {};
+        draw_pipes_segment_data[i].color = pipes_segment_data[i].color;
+        draw_pipes_segment_data[i].time = pipes_segment_data[i].time;
+        draw_pipes_segment_data[i].flow_direction = pipes_segment_data[i].flow_direction;
+        draw_pipes_segment_data[i].x = (window.innerWidth - draw_localWidth) / 2 + Math.floor(pipes_segment_data[i].x * magnification);
+        draw_pipes_segment_data[i].y = 50 + (window.innerHeight - draw_localHeight) / 2 + Math.floor(pipes_segment_data[i].y * magnification);
+        draw_pipes_segment_data[i].w = Math.floor(pipes_segment_data[i].w * magnification);
+        draw_pipes_segment_data[i].h = Math.floor(pipes_segment_data[i].h * magnification);
+    }
+    for (let i = 0; i < pipe_arc.length; i++) {
+        draw_pipes_arc[i] = {};
+        draw_pipes_arc[i].x = (window.innerWidth - draw_localWidth) / 2 + pipe_arc[i].x * magnification;
+        draw_pipes_arc[i].y = (window.innerHeight - draw_localHeight) / 2 + pipe_arc[i].y * magnification;
+        draw_pipes_arc[i].r = pipe_arc[i].r * magnification;
+        draw_pipes_arc[i].begin = pipe_arc[i].begin;
+        draw_pipes_arc[i].end = pipe_arc[i].end;
+    }
+
+    // 向管道中添加流动效果
+    const addPipeFLow = function (pipe) {
+        if (pipe.w > pipe.h) {      // 管道为横向
+            let flow_num = Math.ceil(pipe.w / 3);
+            let rect_flow = [];
+            for (let i = 0; i < flow_num; i++) {
+                rect_flow[i] = new zrender.Rect({
+                    shape: {
+                        x: pipe.x + 10 * i, y: pipe.y+0.5,
+                        width: 5, height: pipe.h-1,
+                    },
+                    style: {
+                        fill: '#282c34'
+                    }
+                });
+                zr.add(rect_flow[i]);
+                rect_flow[i].animate('shape', true).when(pipe.time, {x: pipe.x + 10 * i + 10}).done(function () {}).start();
+            }
+        }
+        else {              // 管道为纵向
+            let flow_num = Math.ceil(pipe.h / 10);
+            let rect_flow = [];
+            for (let i = 0; i < flow_num; i++) {
+                rect_flow[i] = new zrender.Rect({
+                    shape: {
+                        x: pipe.x+0.5, y: pipe.y + 10 * i,
+                        width: pipe.w-1, height: 5,
+                    },
+                    style: {
+                        fill: '#282c34'
+                    }
+                });
+                zr.add(rect_flow[i]);
+                rect_flow[i].animate('shape', true).when(pipe.time, {y: pipe.y + 10 * i + 10}).done(function () {}).start();
+            }
+        }
+    };
+
+    let zr = zrender.init(document.getElementById('main'));
+    let backgroundBlock = new zrender.Rect({
+        shape: {
+            x: 0, y: 0,
+            width: window.innerWidth, height: window.innerHeight,
+        },
+        cursor: 'default',
+        style: {
+            fill: '#282C34'
+        }
+    });
+    zr.add(backgroundBlock);
+
+    let title = new zrender.Rect({
+        shape: {
+            cx: 0,
+            cy: 0,
+            width: window.innerWidth,
+            height: 140,
+        },
+        style: {
+            fill: 'transparent',
+            text: '管网计算与预警系统',
+            textFill: '#7bfff8',
+            font: '36px LEXUS 简粗黑 U',
+            fontWeight: 'lighter',
+            textAlign: 'center'
+        },
+
+    });
+    zr.add(title);
+
+    let blocks = new Array(blocks_data.length);
+
+    // 提示框
+    let infoBlock = new zrender.Rect({
+        shape: {
+            x: 0,
+            y: 0,
+            width: 130,
+            height: 200,
+            r: [10]
+        },
+        style: {
+            fill: '#000',
+            shadowBlur: 20,
+            shadowColor: '#000',
+
+            opacity: 0,
+        },
+        zlevel: 2
+    });
+
+    zr.add(infoBlock);
+
+    let temperature_icon = new zrender.Image({
+        style: {
+            x: 0, y: 0,
+            width: 35, height: 35,
+            image: './temperature.png',
+            opacity: 0,
+        },
+        zlevel: 3
+    });
+    zr.add(temperature_icon);
+
+    let velocity_icon = new zrender.Image({
+        style: {
+            x: 0, y: 0,
+            width: 35, height: 35,
+            image: './velocity.png',
+            opacity: 0,
+        },
+        zlevel: 3
+    });
+    zr.add(velocity_icon);
+
+    let pressure_icon = new zrender.Image({
+        style: {
+            x: 0, y: 0,
+            width: 35, height: 35,
+            image: './pressure.png',
+            opacity: 0,
+        },
+        zlevel: 3
+    });
+    zr.add(pressure_icon);
+
+
+    // 绘制方块
+    for (let i = 0; i < draw_blocks_data.length; i++) {
+        blocks[i] = new zrender.Rect({
+            shape: {
+                x: draw_blocks_data[i].x,
+                y: draw_blocks_data[i].y,
+                width: draw_blocks_data[i].w,
+                height: draw_blocks_data[i].h,
+            },
+            style: {
+                lineWidth: 4,
+                stroke: '#3a66b6',
+                fill: '#282c34',
+                text: draw_blocks_data[i].name,
+                textFill: '#7bfff8',
+                font: draw_blocks_data[i].font,
+                textLineHeight: 200,
+                textRect: {
+                    x: draw_blocks_data[i].x,
+                    y: draw_blocks_data[i].y,
+                    width: draw_blocks_data[i].w/1,
+                    height: draw_blocks_data[i].h,
+                }
+            },
+            zlevel: 1,
+        });
+        zr.add(blocks[i]);
+        blocks[i].on('mousemove', function (e) {
+            infoBlock.attr({shape: {x: e.offsetX, y: e.offsetY}, style: {opacity: 0.5}});
+        }).on('mouseout', function () {
+            infoBlock.attr({style: {opacity: 0}});
+        });
+    }
+
+    // 绘制管道
+    for (let i = 0; i < draw_pipes_segment_data.length; i++) {
+        blocks[i] = new zrender.Rect({
+            shape: {
+                x: draw_pipes_segment_data[i].x,
+                y: draw_pipes_segment_data[i].y,
+                width: draw_pipes_segment_data[i].w,
+                height: draw_pipes_segment_data[i].h,
+            },
+            style: {
+                fill: pipes_segment_data[i].color
+            }
+        });
+        zr.add(blocks[i]);
+        blocks[i].on('mousemove', function (e) {
+            blocks[i].attr({
+                style: {
+                    shadowBlur: 20,
+                    shadowColor: pipes_segment_data[i].color
+                }
+            });
+            infoBlock.attr({
+                    shape: {x: e.offsetX, y: e.offsetY},
+                    style: {
+                        opacity: 0.8,
+                    }
+                });
+            temperature_icon.attr({
+                style: {
+                    x: e.offsetX + 15, y: e.offsetY + 100,
+                    opacity: 1
+                }
+            });
+            velocity_icon.attr({
+                style: {
+                    x: e.offsetX + 15, y: e.offsetY + 50,
+                    opacity: 1
+                }
+            });
+            pressure_icon.attr({
+                style: {
+                    x: e.offsetX + 15, y: e.offsetY + 150,
+                    opacity: 1
+                }
+            });
+        }).on('mouseout', function () {
+            blocks[i].attr({
+                style: {
+                    shadowBlur: 0,
+                }
+            });
+            infoBlock.attr({style: {opacity: 0}});
+            temperature_icon.attr({style: {opacity: 0}});
+            velocity_icon.attr({style: {opacity: 0}});
+            pressure_icon.attr({style: {opacity: 0}});
+        });
+
+
+        addPipeFLow(draw_pipes_segment_data[i]);      // 添加流动
+    }
+
+
+</script>
+</body>
+</html>

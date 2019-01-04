@@ -56,7 +56,7 @@ $('#canvas').mousedown(
         if (isClicked) {        // 鼠标做“拖拽”运动的场合
             // 画笔粗细
             let currentTime = new Date();
-            speed = Math.ceil(getDistance(mouseX, mouseY, previousX, previousY)*100/(currentTime.getTime() - previousTime));
+            speed = Math.ceil(getDistance(mouseX, mouseY, previousX, previousY) * 100/(currentTime.getTime() - previousTime));
             ctx.lineWidth = speed / 10;
 
             // 颜色随机
