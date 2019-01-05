@@ -9,7 +9,7 @@
     <style>
         *{margin: 0; padding: 0}
         html, body, #main{width: 100%; height: 100%}
-        body{overflow-y: hidden}
+        body{overflow-y: hidden; background-color: #282C34}
     </style>
 </head>
 <body>
@@ -18,6 +18,9 @@
 <script src="../js/jquery-3.3.1.min.js"></script>
 <script src="https://cdn.bootcss.com/zrender/4.0.5/zrender.js"></script>
 <script>
+    /*==========================================================================================
+     *  ** 数据
+     *==========================================================================================*/
     const localWidth = 462, localHeight = 454;                      // 测量展示范围宽高
     const blocks_data = [                                           // 各方块测量数据
         {id: '1', name: '提标硝化滤池', font: '16px Arial', x: 0, y: 0, w: 96, h: 62},
@@ -265,47 +268,6 @@
         {x: 160, y: 295.5, w: pipe_radius, h: 7, color: '#FF0', time: 1000, flow_direction: 0},
 
     ];
-    const pipe_arc = [
-        {x: 110, y: 31, r: 2, begin: -Math.PI / 2, end: Math.PI / 2},
-        /*        {x: 218, y: 64.5, r: 3, begin: 0, end: Math.PI * 2},
-                {x: 225.5, y: 31, r: 3, begin: 0, end: Math.PI * 2},
-                {x: 233.5, y: 64, r: 3, begin: 0, end: Math.PI * 2},
-                {x: 255, y: 19.5, r: 3, begin: 0, end: Math.PI * 2},
-                {x: 257, y: 64.5, r: 3, begin: 0, end: Math.PI * 2},
-                {x: 260, y: 64.5, r: 3, begin: 0, end: Math.PI * 2},
-                {x: 10, y: 119.5, r: 3, begin: 0, end: Math.PI * 2},
-                {x: 14, y: 119.5, r: 3, begin: 0, end: Math.PI * 2},
-                {x: 169, y: 143, r: 8, begin: 0, end: Math.PI * 2},
-                {x: 260, y: 119.5, r: 3, begin: 0, end: Math.PI * 2},
-                {x: 264, y: 150.5, r: 9, begin: 0, end: Math.PI * 2},
-                {x: 264, y: 157.5, r: 3, begin: 0, end: Math.PI * 2},
-                {x: 89.5, y: 156, r: 7, begin: 0, end: Math.PI * 2},
-                {x: 112, y: 152.5, r: 5, begin: 0, end: Math.PI * 2},
-                {x: 120, y: 152, r: 6, begin: 0, end: Math.PI * 2},
-                {x: 230, y: 154, r: 8, begin: 0, end: Math.PI * 2},
-                {x: 286.5, y: 154, r: 5, begin: 0, end: Math.PI * 2},
-                {x: 291, y: 154, r: 2, begin: 0, end: Math.PI * 2},
-                {x: 288, y: 157, r: 2, begin: 0, end: Math.PI * 2},
-                {x: 291, y: 157, r: 2, begin: 0, end: Math.PI * 2},
-                {x: 302, y: 150, r: 8, begin: 0, end: Math.PI * 2},
-                {x: 322.5, y: 157, r: 3, begin: 0, end: Math.PI * 2},
-                {x: 379, y: 159, r: 4, begin: 0, end: Math.PI * 2},
-                {x: 120, y: 291.5, r: 3, begin: 0, end: Math.PI * 2},
-                {x: 171, y: 154, r: 2, begin: 0, end: Math.PI * 2},
-                {x: 171, y: 160.5, r: 1, begin: 0, end: Math.PI * 2},
-                {x: 205.5, y: 160, r: 3, begin: 0, end: Math.PI * 2},
-                {x: 230, y: 157, r: 8, begin: 0, end: Math.PI * 2},
-                {x: 390, y: 160, r: 2, begin: 0, end: Math.PI * 2},
-                {x: 231, y: 160, r: 2, begin: 0, end: Math.PI * 2},
-                {x: 278, y: 299, r: 4, begin: 0, end: Math.PI * 2},
-                {x: 278, y: 301, r: 4, begin: 0, end: Math.PI * 2},
-                {x: 368, y: 299, r: 2, begin: 0, end: Math.PI * 2},
-                {x: 376, y: 299, r: 2, begin: 0, end: Math.PI * 2},
-                {x: 428, y: 299, r: 2, begin: 0, end: Math.PI * 2},
-                {x: 436, y: 299, r: 2, begin: 0, end: Math.PI * 2},
-                {x: 8, y: 326, r: 2, begin: 0, end: Math.PI * 2},
-                {x: 458, y: 307.5, r: 3, begin: 0, end: Math.PI * 2},*/
-    ];
 
     // 将测量数据转化成绘制用数据
     const magnification = (Math.floor(window.innerHeight) - 150) / localHeight;     // 缩放(一般是放大)倍数
@@ -334,13 +296,235 @@
         draw_pipes_segment_data[i].w = Math.floor(pipes_segment_data[i].w * magnification);
         draw_pipes_segment_data[i].h = Math.floor(pipes_segment_data[i].h * magnification);
     }
-    for (let i = 0; i < pipe_arc.length; i++) {
-        draw_pipes_arc[i] = {};
-        draw_pipes_arc[i].x = (window.innerWidth - draw_localWidth) / 2 + pipe_arc[i].x * magnification;
-        draw_pipes_arc[i].y = (window.innerHeight - draw_localHeight) / 2 + pipe_arc[i].y * magnification;
-        draw_pipes_arc[i].r = pipe_arc[i].r * magnification;
-        draw_pipes_arc[i].begin = pipe_arc[i].begin;
-        draw_pipes_arc[i].end = pipe_arc[i].end;
+
+
+    /*==========================================================================================
+     *  ** 工具
+     *==========================================================================================*/
+
+    // 提示框
+    class pipeInfoToolTip{
+        constructor() {
+            this.infoBlock = new zrender.Rect({
+                shape: {
+                    x: 0, y: 0,
+                    width: 200, height: 200,
+                    r: [10]
+                },
+                style: {
+                    fill: '#000',
+                    shadowBlur: 20,
+                    shadowColor: '#000',
+                    opacity: 0,
+                },
+                zlevel: 2
+            });
+            zr.add(this.infoBlock);
+            // 流速图标
+            this.velocity_icon = new zrender.Image({
+                style: {
+                    x: 0, y: 0,
+                    width: 35, height: 35,
+                    image: '../icons/velocity.png',
+                    opacity: 0,
+                },
+                zlevel: 3
+            });
+            zr.add(this.velocity_icon);
+
+            // 流速标签
+            this.velocity_label = new zrender.Rect({
+                shape: {
+                    x: 0, y: 0,
+                    width: 30, height: 20,
+                },
+                style: {
+                    fill: 'transparent',
+                    text: '流速：',
+                    textFill: '#259DDE',
+                    font: '14px Arial',
+                    textAlign: 'center',
+                    opacity: 0,
+                },
+                zlevel: 3
+            });
+            zr.add(this.velocity_label);
+
+            // 流速数值
+            this.velocity_value = new zrender.Rect({
+                shape: {
+                    x: 0, y: 0,
+                    width: 30, height: 20,
+                },
+                style: {
+                    fill: 'transparent',
+                    text: 'null',
+                    textFill: '#0F0',
+                    font: '14px Arial',
+                    textAlign: 'center',
+                    opacity: 0,
+                },
+                zlevel: 3
+            });
+            zr.add(this.velocity_value);
+
+            // 温度图标
+            this.temperature_icon = new zrender.Image({
+                style: {
+                    x: 0, y: 0,
+                    width: 35, height: 35,
+                    image: '../icons/temperature.png',
+                    opacity: 0,
+                },
+                zlevel: 3
+            });
+            zr.add(this.temperature_icon);
+
+            // 温度标签
+            this.temperature_label = new zrender.Rect({
+                shape: {
+                    x: 0, y: 0,
+                    width: 30, height: 20,
+                },
+                style: {
+                    fill: 'transparent',
+                    text: '温度：',
+                    textFill: '#F87115',
+                    font: '14px Arial',
+                    textAlign: 'center',
+                    opacity: 0,
+                },
+                zlevel: 3
+            });
+            zr.add(this.temperature_label);
+
+            // 温度数值
+            this.temperature_value = new zrender.Rect({
+                shape: {
+                    x: 0, y: 0,
+                    width: 30, height: 20,
+                },
+                style: {
+                    fill: 'transparent',
+                    text: 'null',
+                    textFill: '#0F0',
+                    font: '14px Arial',
+                    textAlign: 'center',
+                    opacity: 0,
+                },
+                zlevel: 3
+            });
+            zr.add(this.temperature_value);
+
+
+            // 压力图标
+            this.pressure_icon = new zrender.Image({
+                style: {
+                    x: 0, y: 0,
+                    width: 35, height: 35,
+                    image: '../icons/pressure.png',
+                    opacity: 0,
+                },
+                zlevel: 3
+            });
+            zr.add(this.pressure_icon);
+
+            // 压力标签
+            this.pressure_label = new zrender.Rect({
+                shape: {
+                    x: 0, y: 0,
+                    width: 30, height: 20,
+                },
+                style: {
+                    fill: 'transparent',
+                    text: '压力：',
+                    textFill: '#2EE8B6',
+                    font: '14px Arial',
+                    textAlign: 'center',
+                    opacity: 0,
+                },
+                zlevel: 3
+            });
+            zr.add(this.pressure_label);
+
+            // 压力数值
+            this.pressure_value = new zrender.Rect({
+                shape: {
+                    x: 0, y: 0,
+                    width: 30, height: 20,
+                },
+                style: {
+                    fill: 'transparent',
+                    text: 'null',
+                    textFill: '#F00',
+                    font: '14px Arial',
+                    textAlign: 'center',
+                    opacity: 0,
+                },
+                zlevel: 3
+            });
+            zr.add(this.pressure_value);
+        }
+        display(x, y, velocity, temperature, pressure) {
+            this.infoBlock.attr({            // 显示提示框
+                shape: {x: x+5, y: y+5},
+                style: {opacity: 0.7}
+            });
+            this.velocity_icon.attr({        // 显示流速图标
+                style: {
+                    x: x + 20, y: y + 55,
+                    opacity: 1
+                }
+            });
+            this.velocity_label.attr({       // 显示流速标签
+                shape: {x: x + 70, y: y + 65,},
+                style: {opacity: 1}
+            });
+            this.velocity_value.attr({       // 显示流速数值
+                shape: {x: x + 110, y: y + 65,},
+                style: {text: velocity, opacity: 1}
+            });
+            this.temperature_icon.attr({     // 显示温度图标
+                style: {
+                    x: x + 20, y: y + 105,
+                    opacity: 1
+                }
+            });
+            this.temperature_label.attr({    // 显示温度标签
+                shape: {x: x + 70, y: y + 115,},
+                style: {opacity: 1}
+            });
+            this.temperature_value.attr({    // 显示温度数值
+                shape: {x: x + 110, y: y + 115,},
+                style: {text: temperature, opacity: 1}
+            });
+            this.pressure_icon.attr({        // 显示压力图标
+                style: {
+                    x: x + 20, y: y + 155,
+                    opacity: 1
+                }
+            });
+            this.pressure_label.attr({       // 显示压力标签
+                shape: {x: x + 70, y: y + 165,},
+                style: {opacity: 1}
+            });
+            this.pressure_value.attr({       // 显示压力数值
+                shape: {x: x + 110, y: y + 165,},
+                style: {text: pressure, opacity: 1}
+            });
+        }
+        vanish() {
+            this.infoBlock.attr({style: {opacity: 0}});
+            this.temperature_icon.attr({style: {opacity: 0}});
+            this.temperature_label.attr({style: {opacity: 0}});
+            this.temperature_value.attr({style: {opacity: 0}});
+            this.velocity_icon.attr({style: {opacity: 0}});
+            this.velocity_label.attr({style: {opacity: 0}});
+            this.velocity_value.attr({style: {opacity: 0}});
+            this.pressure_icon.attr({style: {opacity: 0}});
+            this.pressure_label.attr({style: {opacity: 0}});
+            this.pressure_value.attr({style: {opacity: 0}});
+        }
     }
 
     // 向管道中添加流动效果
@@ -381,27 +565,19 @@
         }
     };
 
+
+    /*==========================================================================================
+     *  ** 实际处理
+     *==========================================================================================*/
+
     // ZRender初始化
     let zr = zrender.init(document.getElementById('main'));
-    let backgroundBlock = new zrender.Rect({
-        shape: {
-            x: 0, y: 0,
-            width: window.innerWidth, height: window.innerHeight,
-        },
-        cursor: 'default',
-        style: {
-            fill: '#282C34'
-        }
-    });
-    zr.add(backgroundBlock);
 
     // 标题文字
     let title = new zrender.Rect({
         shape: {
-            cx: 0,
-            cy: 0,
-            width: window.innerWidth,
-            height: 140,
+            x: 0, y: 0,
+            width: window.innerWidth, height: 140,
         },
         style: {
             fill: 'transparent',
@@ -416,172 +592,7 @@
 
 
     // 提示框
-    let infoBlock = new zrender.Rect({
-        shape: {
-            x: 0,
-            y: 0,
-            width: 200,
-            height: 200,
-            r: [10]
-        },
-        style: {
-            fill: '#000',
-            shadowBlur: 20,
-            shadowColor: '#000',
-            opacity: 0,
-        },
-        zlevel: 2
-    });
-    zr.add(infoBlock);
-
-    // 流速图标
-    let velocity_icon = new zrender.Image({
-        style: {
-            x: 0, y: 0,
-            width: 35, height: 35,
-            image: '../icons/velocity.png',
-            opacity: 0,
-        },
-        zlevel: 3
-    });
-    zr.add(velocity_icon);
-
-    // 流速标签
-    let velocity_label = new zrender.Rect({
-        shape: {
-            cx: 0, cy: 0,
-            width: 30, height: 20,
-        },
-        style: {
-            fill: 'transparent',
-            text: '流速：',
-            textFill: '#7bfff8',
-            font: '14px Arial',
-            fontWeight: 'lighter',
-            textAlign: 'center',
-            opacity: 0,
-
-        },
-        zlevel: 3
-    });
-    zr.add(velocity_label);
-
-    // 流速数值
-    let velocity_value = new zrender.Rect({
-        shape: {
-            cx: 0, cy: 0,
-            width: 30, height: 20,
-        },
-        style: {
-            fill: 'transparent',
-            text: 'null',
-            textFill: '#7bfff8',
-            font: '14px Arial',
-            textAlign: 'center',
-            opacity: 0,
-        },
-        zlevel: 3
-    });
-    zr.add(velocity_value);
-
-    // 温度图标
-    let temperature_icon = new zrender.Image({
-        style: {
-            x: 0, y: 0,
-            width: 35, height: 35,
-            image: '../icons/temperature.png',
-            opacity: 0,
-        },
-        zlevel: 3
-    });
-    zr.add(temperature_icon);
-
-    // 温度标签
-    let temperature_label = new zrender.Rect({
-        shape: {
-            cx: 0, cy: 0,
-            width: 30, height: 20,
-        },
-        style: {
-            fill: 'transparent',
-            text: '温度：',
-            textFill: '#7bfff8',
-            font: '14px Arial',
-            fontWeight: 'lighter',
-            textAlign: 'center',
-            opacity: 0,
-        },
-        zlevel: 3
-    });
-    zr.add(temperature_label);
-
-    // 温度数值
-    let temperature_value = new zrender.Rect({
-        shape: {
-            cx: 0, cy: 0,
-            width: 30, height: 20,
-        },
-        style: {
-            fill: 'transparent',
-            text: 'null',
-            textFill: '#7bfff8',
-            font: '14px Arial',
-            textAlign: 'center',
-            opacity: 0,
-        },
-        zlevel: 3
-    });
-    zr.add(temperature_value);
-
-
-    // 压力图标
-    let pressure_icon = new zrender.Image({
-        style: {
-            x: 0, y: 0,
-            width: 35, height: 35,
-            image: '../icons/pressure.png',
-            opacity: 0,
-        },
-        zlevel: 3
-    });
-    zr.add(pressure_icon);
-
-    // 压力标签
-    let pressure_label = new zrender.Rect({
-        shape: {
-            cx: 0, cy: 0,
-            width: 30, height: 20,
-        },
-        style: {
-            fill: 'transparent',
-            text: '压力：',
-            textFill: '#7bfff8',
-            font: '14px Arial',
-            fontWeight: 'lighter',
-            textAlign: 'center',
-            opacity: 0,
-        },
-        zlevel: 3
-    });
-    zr.add(pressure_label);
-
-    // 压力数值
-    let pressure_value = new zrender.Rect({
-        shape: {
-            cx: 0, cy: 0,
-            width: 30, height: 20,
-        },
-        style: {
-            fill: 'transparent',
-            text: 'null',
-            textFill: '#7bfff8',
-            font: '14px Arial',
-            textAlign: 'center',
-            opacity: 0,
-        },
-        zlevel: 3
-    });
-    zr.add(pressure_value);
+    let pipeInfoBlock =　new pipeInfoToolTip();
 
     // 绘制方块
     let blocks = new Array(blocks_data.length);
@@ -612,9 +623,9 @@
         });
         zr.add(blocks[i]);
         blocks[i].on('mousemove', function (e) {
-            infoBlock.attr({shape: {x: e.offsetX+5, y: e.offsetY+5}, style: {opacity: 0.7}});
+            //infoBlock.attr({shape: {x: e.offsetX+5, y: e.offsetY+5}, style: {opacity: 0.7}});
         }).on('mouseout', function () {
-            infoBlock.attr({style: {opacity: 0}});
+            //infoBlock.attr({style: {opacity: 0}});
         });
     }
 
@@ -632,6 +643,7 @@
             }
         });
         zr.add(blocks[i]);
+
         // 鼠标交互
         blocks[i].on('mousemove', function (e) {
             blocks[i].attr({            // 发光
@@ -640,88 +652,14 @@
                     shadowColor: pipes_segment_data[i].color
                 }
             });
-            infoBlock.attr({            // 显示提示框
-                shape: {x: e.offsetX+5, y: e.offsetY+5},
-                style: {
-                    opacity: 0.7,
-                }
-            });
-            velocity_icon.attr({        // 显示流速图标
-                style: {
-                    x: e.offsetX + 20, y: e.offsetY + 55,
-                    opacity: 1
-                }
-            });
-            velocity_label.attr({       // 显示流速标签
-                shape: {
-                    x: e.offsetX + 70,
-                    y: e.offsetY + 65,
-                },
-                style: {opacity: 1}
-            });
-            velocity_value.attr({       // 显示流速数值
-                shape: {
-                    x: e.offsetX + 110,
-                    y: e.offsetY + 65,
-                },
-                style: {opacity: 1}
-            });
-            temperature_icon.attr({     // 显示温度图标
-                style: {
-                    x: e.offsetX + 20, y: e.offsetY + 105,
-                    opacity: 1
-                }
-            });
-            temperature_label.attr({    // 显示温度标签
-                shape: {
-                    x: e.offsetX + 70,
-                    y: e.offsetY + 115,
-                },
-                style: {opacity: 1}
-            });
-            temperature_value.attr({    // 显示温度数值
-                shape: {
-                    x: e.offsetX + 110,
-                    y: e.offsetY + 115,
-                },
-                style: {opacity: 1}
-            });
-            pressure_icon.attr({        // 显示压力图标
-                style: {
-                    x: e.offsetX + 20, y: e.offsetY + 155,
-                    opacity: 1
-                }
-            });
-            pressure_label.attr({       // 显示压力标签
-                shape: {
-                    x: e.offsetX + 70,
-                    y: e.offsetY + 165,
-                },
-                style: {opacity: 1}
-            });
-            pressure_value.attr({    // 显示压力数值
-                shape: {
-                    x: e.offsetX + 110,
-                    y: e.offsetY + 165,
-                },
-                style: {opacity: 1}
-            });
+            pipeInfoBlock.display(e.offsetX, e.offsetY, '10 km/h', '89 °C', '8000 N');
         }).on('mouseout', function () {
             blocks[i].attr({
                 style: {
                     shadowBlur: 0,
                 }
             });
-            infoBlock.attr({style: {opacity: 0}});
-            temperature_icon.attr({style: {opacity: 0}});
-            temperature_label.attr({style: {opacity: 0}});
-            temperature_value.attr({style: {opacity: 0}});
-            velocity_icon.attr({style: {opacity: 0}});
-            velocity_label.attr({style: {opacity: 0}});
-            velocity_value.attr({style: {opacity: 0}});
-            pressure_icon.attr({style: {opacity: 0}});
-            pressure_label.attr({style: {opacity: 0}});
-            pressure_value.attr({style: {opacity: 0}});
+            pipeInfoBlock.vanish();
         });
 
         addPipeFLow(draw_pipes_segment_data[i]);      // 添加流动
