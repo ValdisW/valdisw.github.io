@@ -2,7 +2,20 @@
  *  ** 工具
  *==========================================================================================*/
 
-// 提示框
+// 方块提示框 池内液体高度
+class blockInfoTooltip{
+    constructor() {
+
+    }
+    display() {
+
+    }
+    vanish () {
+
+    }
+}
+
+// 管道提示框
 class pipeInfoToolTip{
     constructor() {
         this.infoBlock = new zrender.Rect({
@@ -20,6 +33,25 @@ class pipeInfoToolTip{
             zlevel: 2
         });
         zr.add(this.infoBlock);
+
+        // 标题
+        this.title = new zrender.Rect({
+            shape: {
+                x: 0, y: 0,
+                width: 200, height: 20,
+            },
+            style: {
+                fill: 'transparent',
+                text: '管道信息',
+                textFill: '#DDD',
+                font: '16px Microsoft YaHei',
+                textAlign: 'center',
+                opacity: 0,
+            },
+            zlevel: 3
+        });
+        zr.add(this.title);
+
         // 流速图标
         this.velocity_icon = new zrender.Image({
             style: {
@@ -166,8 +198,12 @@ class pipeInfoToolTip{
     }
     display(x, y, velocity, temperature, pressure) {
         this.infoBlock.attr({            // 显示提示框
-            shape: {x: x+5, y: y+5},
+            shape: {x: x + 5, y: y + 5},
             style: {opacity: 0.7}
+        });
+        this.title.attr({       // 显示提示框标题
+            shape: {x: x + 5, y: y + 21},
+            style: {opacity: 1}
         });
         this.velocity_icon.attr({        // 显示流速图标
             style: {
@@ -214,6 +250,7 @@ class pipeInfoToolTip{
     }
     vanish() {
         this.infoBlock.attr({style: {opacity: 0}});
+        this.title.attr({style: {opacity: 0}});
         this.temperature_icon.attr({style: {opacity: 0}});
         this.temperature_label.attr({style: {opacity: 0}});
         this.temperature_value.attr({style: {opacity: 0}});
@@ -256,7 +293,9 @@ const addPipeFLow = function (pipe, blockWidth, blockGap) {
                 },
                 style: {
                     fill: '#282c34'
-                }
+                },
+                rectHover: true,
+                silent: true,
             });
             zr.add(rect_flow[i]);
             rect_flow[i].animate('shape', true).when(pipe.time, {y: pipe.y + (blockWidth + blockGap)*(i + pipe.flow_direction)}).done(function () {}).start();

@@ -104,7 +104,8 @@
             },
             style: {
                 fill: pipes_segment_data[i].color
-            }
+            },
+            zlevel: 0,
         });
         zr.add(blocks_pipe[i]);
 
@@ -126,7 +127,7 @@
             pipeInfoBlock.vanish();
         });
 
-        addPipeFLow(draw_pipes_segment_data[i], 5, 5);      // 添加流动
+        addPipeFLow(draw_pipes_segment_data[i], 6, 2);      // 添加流动
     }
 
 
