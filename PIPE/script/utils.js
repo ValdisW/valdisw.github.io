@@ -274,9 +274,8 @@ const addPipeFLow = function (pipe, blockWidth, blockGap) {
                     x: pipe.x + (blockWidth + blockGap) * i, y: pipe.y + 0.5,
                     width: blockWidth, height: pipe.h - 1,
                 },
-                style: {
-                    fill: '#282c34'
-                }
+                style: {fill: '#282c34'},
+                silent: true,
             });
             zr.add(rect_flow[i]);
             rect_flow[i].animate('shape', true).when(pipe.time, {x: pipe.x + (blockWidth + blockGap)*(i + pipe.flow_direction)}).done(function () {}).start();
@@ -291,10 +290,7 @@ const addPipeFLow = function (pipe, blockWidth, blockGap) {
                     x: pipe.x + 0.5, y: pipe.y + (blockWidth + blockGap) * i,
                     width: pipe.w - 1, height: blockWidth,
                 },
-                style: {
-                    fill: '#282c34'
-                },
-                rectHover: true,
+                style: {fill: '#282c34'},
                 silent: true,
             });
             zr.add(rect_flow[i]);

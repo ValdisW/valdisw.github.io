@@ -223,8 +223,8 @@ const pipes_segment_data = [
     {x: 220, y: 205, w: pipe_radius, h: 6, color: '#FF0', time: 1000, flow_direction: -1},
 
     // 15 （原16）
-    {x: 208, y: 196, w: 92, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 300, y: 196, w: 131.5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: -1},
+    {x: 208, y: 196, w: 132, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {x: 340, y: 196, w: 90, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: -1},
     {x: 338, y: 137, w: pipe_radius, h: 60, color: '#FF0', time: 1000, flow_direction: -1},
     {x: 208, y: 196, w: pipe_radius, h: 15, color: '#FF0', time: 1000, flow_direction: -1},
     {x: 430, y: 196, w: pipe_radius, h: 15, color: '#FF0', time: 1000, flow_direction: -1},
