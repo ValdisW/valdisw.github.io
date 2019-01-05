@@ -438,6 +438,7 @@
 
     zr.add(infoBlock);
 
+    // 温度图标
     let temperature_icon = new zrender.Image({
         style: {
             x: 0, y: 0,
@@ -449,6 +450,7 @@
     });
     zr.add(temperature_icon);
 
+    // 流速图标
     let velocity_icon = new zrender.Image({
         style: {
             x: 0, y: 0,
@@ -460,6 +462,7 @@
     });
     zr.add(velocity_icon);
 
+    // 压力图标
     let pressure_icon = new zrender.Image({
         style: {
             x: 0, y: 0,
@@ -500,7 +503,7 @@
         });
         zr.add(blocks[i]);
         blocks[i].on('mousemove', function (e) {
-            infoBlock.attr({shape: {x: e.offsetX, y: e.offsetY}, style: {opacity: 0.5}});
+            infoBlock.attr({shape: {x: e.offsetX+5, y: e.offsetY+5}, style: {opacity: 0.5}});
         }).on('mouseout', function () {
             infoBlock.attr({style: {opacity: 0}});
         });
@@ -528,26 +531,26 @@
                 }
             });
             infoBlock.attr({
-                    shape: {x: e.offsetX, y: e.offsetY},
-                    style: {
-                        opacity: 0.8,
-                    }
-                });
+                shape: {x: e.offsetX+5, y: e.offsetY+5},
+                style: {
+                    opacity: 0.8,
+                }
+            });
             temperature_icon.attr({
                 style: {
-                    x: e.offsetX + 15, y: e.offsetY + 100,
+                    x: e.offsetX + 20, y: e.offsetY + 105,
                     opacity: 1
                 }
             });
             velocity_icon.attr({
                 style: {
-                    x: e.offsetX + 15, y: e.offsetY + 50,
+                    x: e.offsetX + 20, y: e.offsetY + 55,
                     opacity: 1
                 }
             });
             pressure_icon.attr({
                 style: {
-                    x: e.offsetX + 15, y: e.offsetY + 150,
+                    x: e.offsetX + 20, y: e.offsetY + 155,
                     opacity: 1
                 }
             });
