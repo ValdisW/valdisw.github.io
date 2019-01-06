@@ -2,6 +2,11 @@
  *  ** 工具
  *==========================================================================================*/
 
+// 阈值函数
+const thresholdFunc = function (x) {
+    return (x>=0)?(1):(-1)
+}
+
 // 方块提示框 池内液体高度
 class blockInfoTooltip{
     constructor() {
@@ -91,9 +96,9 @@ class pipeInfoToolTip{
             style: {
                 fill: 'transparent',
                 text: 'null',
-                textFill: '#0F0',
+                textFill: '#DDD',
                 font: '14px Microsoft YaHei',
-                textAlign: 'center',
+                textAlign: 'left',
                 opacity: 0,
             },
             zlevel: 3
@@ -139,9 +144,9 @@ class pipeInfoToolTip{
             style: {
                 fill: 'transparent',
                 text: 'null',
-                textFill: '#0F0',
+                textFill: '#DDD',
                 font: '14px Microsoft YaHei',
-                textAlign: 'center',
+                textAlign: 'left',
                 opacity: 0,
             },
             zlevel: 3
@@ -187,9 +192,9 @@ class pipeInfoToolTip{
             style: {
                 fill: 'transparent',
                 text: 'null',
-                textFill: '#F00',
+                textFill: '#DDD',
                 font: '14px Microsoft YaHei',
-                textAlign: 'center',
+                textAlign: 'left',
                 opacity: 0,
             },
             zlevel: 3
@@ -216,7 +221,7 @@ class pipeInfoToolTip{
             style: {opacity: 1}
         });
         this.velocity_value.attr({       // 显示流速数值
-            shape: {x: x + 110, y: y + 65,},
+            shape: {x: x + 96, y: y + 65,},
             style: {text: velocity, opacity: 1}
         });
         this.temperature_icon.attr({     // 显示温度图标
@@ -230,7 +235,7 @@ class pipeInfoToolTip{
             style: {opacity: 1}
         });
         this.temperature_value.attr({    // 显示温度数值
-            shape: {x: x + 110, y: y + 115,},
+            shape: {x: x + 96, y: y + 115,},
             style: {text: temperature, opacity: 1}
         });
         this.pressure_icon.attr({        // 显示压力图标
@@ -244,7 +249,7 @@ class pipeInfoToolTip{
             style: {opacity: 1}
         });
         this.pressure_value.attr({       // 显示压力数值
-            shape: {x: x + 110, y: y + 165,},
+            shape: {x: x + 96, y: y + 165,},
             style: {text: pressure, opacity: 1}
         });
     }
@@ -266,10 +271,9 @@ class pipeInfoToolTip{
 // 向管道中添加流动效果
 const addPipeFLow = function (pipe, blockWidth, blockGap) {
     if (pipe.w > pipe.h) {      // 管道为横向
-        let flow_num = Math.ceil(pipe.w / (blockWidth + blockGap));
-        let rect_flow = [];
+        let flow_num = Math.ceil(pipe.w / (blockWidth + blockGap));     // 先计算管道片段内的流动方块数
         for (let i = 0; i < flow_num; i++) {
-            rect_flow[i] = new zrender.Rect({
+            pipe.flows[i] = new zrender.Rect({
                 shape: {
                     x: pipe.x + (blockWidth + blockGap) * i, y: pipe.y + 0.5,
                     width: blockWidth, height: pipe.h - 1,
@@ -277,15 +281,14 @@ const addPipeFLow = function (pipe, blockWidth, blockGap) {
                 style: {fill: '#282c34'},
                 silent: true,
             });
-            zr.add(rect_flow[i]);
-            rect_flow[i].animate('shape', true).when(pipe.time, {x: pipe.x + (blockWidth + blockGap)*(i + pipe.flow_direction)}).done(function () {}).start();
+            zr.add(pipe.flows[i]);
+            pipe.flows[i].animate('shape', true).when(pipe.time, {x: pipe.x + (blockWidth + blockGap)*(i + pipe.flow_direction)}).done(function () {}).start();
         }
     }
     else {              // 管道为纵向
         let flow_num = Math.ceil(pipe.h / (blockWidth + blockGap));
-        let rect_flow = [];
         for (let i = 0; i < flow_num; i++) {
-            rect_flow[i] = new zrender.Rect({
+            pipe.flows[i] = new zrender.Rect({
                 shape: {
                     x: pipe.x + 0.5, y: pipe.y + (blockWidth + blockGap) * i,
                     width: pipe.w - 1, height: blockWidth,
@@ -293,8 +296,8 @@ const addPipeFLow = function (pipe, blockWidth, blockGap) {
                 style: {fill: '#282c34'},
                 silent: true,
             });
-            zr.add(rect_flow[i]);
-            rect_flow[i].animate('shape', true).when(pipe.time, {y: pipe.y + (blockWidth + blockGap)*(i + pipe.flow_direction)}).done(function () {}).start();
+            zr.add(pipe.flows[i]);
+            pipe.flows[i].animate('shape', true).when(pipe.time, {y: pipe.y + (blockWidth + blockGap)*(i + pipe.flow_direction)}).done(function () {}).start();
         }
     }
 };

@@ -1,7 +1,7 @@
 /*==========================================================================================
  *  ** 数据
  *==========================================================================================*/
-const localWidth = 462, localHeight = 454;                      // 测量展示范围宽高
+const localWidth = 500, localHeight = 454;                      // 测量展示范围宽高
 const blocks_data = [                                           // 各方块测量数据
     {id: '1', name: '提标硝化滤池', font: '16px Microsoft YaHei', x: 0, y: 0, w: 96, h: 62},
     {id: '1_attach', name: '', font: '16px Microsoft YaHei', x: 95, y: 0, w: 5, h: 20},
@@ -100,163 +100,147 @@ const pipes_segment_data = [
     {group: 11, x: -29, y: 444, w: 140, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: -1},
 
     // 13
-    {group: 11, x: 128, y: 434, w: pipe_radius, h: 25, color: '#FF0', time: 1000, flow_direction: 1},
-    {group: 11, x: 85, y: 457, w: 46, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: -1},
-    {group: 11, x: 85, y: 444, w: pipe_radius, h: 15, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 12, x: 128, y: 434, w: pipe_radius, h: 25, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 12, x: 85, y: 457, w: 46, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 12, x: 85, y: 444, w: pipe_radius, h: 15, color: '#FF0', time: 1000, flow_direction: -1},
 
     // 14
-    {x: 159, y: 151, w: pipe_radius, h: 31, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 114, y: 180, w: 48, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 114, y: 180, w: pipe_radius, h: 132, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 104, y: 260, w: 11, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 13, x: 159, y: 151, w: pipe_radius, h: 31, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 13, x: 114, y: 180, w: 48, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 13, x: 114, y: 180, w: pipe_radius, h: 132, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 13, x: 104, y: 260, w: 11, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
 
     // 17
-    {x: 346, y: 118, w: 9, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: -1},
-    {x: 354, y: 118, w: pipe_radius, h: 72, color: '#FF0', time: 1000, flow_direction: -1},
-    {x: 108, y: 188, w: 247, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 108, y: 188, w: pipe_radius, h: 39, color: '#FF0', time: 1000, flow_direction: -1},
-    {x: 104, y: 226, w: 7, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 16, x: 346, y: 118, w: 9, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 16, x: 354, y: 118, w: pipe_radius, h: 72, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 16, x: 108, y: 188, w: 247, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 16, x: 108, y: 188, w: pipe_radius, h: 39, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 16, x: 104, y: 226, w: 7, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
 
     // 18
-    {x: 104, y: 311, w: 26, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 128, y: 311, w: pipe_radius, h: 57, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 17, x: 104, y: 311, w: 26, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 17, x: 128, y: 311, w: pipe_radius, h: 57, color: '#FF0', time: 1000, flow_direction: 1},
 
     // 19
-    {x: 93, y: 330.5, w: pipe_radius, h: 38, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 18, x: 93, y: 330.5, w: pipe_radius, h: 38, color: '#FF0', time: 1000, flow_direction: 1},
 
     // 20
-    {x: -10, y: 135, w: 26, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: -10, y: 135, w: pipe_radius, h: 255, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: -10, y: 388, w: 24, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-
-    // 23
-    //{x: 254, y: 19, w: 14, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-
-    // 24
-    //{x: 254, y: 19, w: 14, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-
-    // 25
-    //{x: 254, y: 19, w: 14, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-
-    // 26
-    //{x: 254, y: 19, w: 14, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-
-    // 27
-   //{x: 254, y: 19, w: 14, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 19, x: -10, y: 135, w: 26, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 19, x: -10, y: 135, w: pipe_radius, h: 255, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 19, x: -10, y: 388, w: 24, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
 
 
     // 无数据
     // 1
-    {x: 99.5, y: 3, w: 5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 99.5, y: 15, w: 5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 104, y: 3, w: pipe_radius, h: 20, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 104, y: 22, w: 7, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 110, y: 22, w: pipe_radius, h: 44, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 110, y: 64, w: 199, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 308, y: 64, w: pipe_radius, h: 80, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 308.5, y: 110, w: 12, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 308.5, y: 123, w: 12, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 308, y: 142, w: 20, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 328, y: 142, w: pipe_radius, h: 69, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 20, x: 99.5, y: 3, w: 5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 20, x: 99.5, y: 15, w: 5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 20, x: 104, y: 3, w: pipe_radius, h: 20, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 20, x: 104, y: 22, w: 7, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 20, x: 110, y: 22, w: pipe_radius, h: 44, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 20, x: 110, y: 64, w: 199, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 20, x: 308, y: 64, w: pipe_radius, h: 80, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 20, x: 308.5, y: 110, w: 12, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 20, x: 308.5, y: 123, w: 12, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 20, x: 308, y: 142, w: 20, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 20, x: 328, y: 142, w: pipe_radius, h: 69, color: '#FF0', time: 1000, flow_direction: 1},
 
     // 2
-    {x: 215.5, y: 3, w: 5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 215.5, y: 15, w: 5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 220, y: 3, w: pipe_radius, h: 21, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 220, y: 22, w: 12, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 230, y: 22, w: pipe_radius, h: 44, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 21, x: 215.5, y: 3, w: 5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 21, x: 215.5, y: 15, w: 5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 21, x: 220, y: 3, w: pipe_radius, h: 21, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 21, x: 220, y: 22, w: 12, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 21, x: 230, y: 22, w: pipe_radius, h: 44, color: '#FF0', time: 1000, flow_direction: 1},
 
     // 3
-    {x: 270, y: 9, w: pipe_radius, h: 57, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 264, y: 9, w: 7, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 264, y: 27, w: 7, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 264, y: 45, w: 7, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    //  {x: 255, y: 45, w: pipe_radius, h: 21, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 22, x: 270, y: 9, w: pipe_radius, h: 57, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 22, x: 264, y: 9, w: 7, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 22, x: 264, y: 27, w: 7, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 22, x: 264, y: 45, w: 7, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
 
     // 4
-    {x: 374, y: 35, w: 46, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 374, y: 36, w: pipe_radius, h: 6, color: '#FF0', time: 1000, flow_direction: -1},
-    {x: 395, y: 36, w: pipe_radius, h: 6, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 23, x: 374, y: 35, w: 46, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 23, x: 374, y: 36, w: pipe_radius, h: 6, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 23, x: 395, y: 36, w: pipe_radius, h: 6, color: '#FF0', time: 1000, flow_direction: -1},
 
     // 5
-    {x: 348.5, y: 229, w: 13, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 360, y: 77, w: pipe_radius, h: 154, color: '#FF0', time: 1000, flow_direction: -1},
-    {x: 361, y: 77, w: 35.5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 374, y: 71.5, w: pipe_radius, h: 6.5, color: '#FF0', time: 1000, flow_direction: -1},
-    {x: 395, y: 71.5, w: pipe_radius, h: 6.5, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 24, x: 348.5, y: 229, w: 13, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 24, x: 360, y: 77, w: pipe_radius, h: 154, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 24, x: 361, y: 77, w: 35.5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 24, x: 374, y: 71.5, w: pipe_radius, h: 6.5, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 24, x: 395, y: 71.5, w: pipe_radius, h: 6.5, color: '#FF0', time: 1000, flow_direction: -1},
 
     // 6
-    {x: 177, y: 152, w: pipe_radius, h: 26.5, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 25, x: 177, y: 152, w: pipe_radius, h: 26.5, color: '#FF0', time: 1000, flow_direction: 1},
 
     // 7
-    {x: 181, y: 182.5, w: pipe_radius, h: 29, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 26, x: 181, y: 182.5, w: pipe_radius, h: 29, color: '#FF0', time: 1000, flow_direction: 1},
 
     // 8
-    {x: 231, y: 182.5, w: pipe_radius, h: 29, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 27, x: 231, y: 182.5, w: pipe_radius, h: 29, color: '#FF0', time: 1000, flow_direction: 1},
 
     // 9
-    {x: 316, y: 182.5, w: pipe_radius, h: 28.5, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 28, x: 316, y: 182.5, w: pipe_radius, h: 28.5, color: '#FF0', time: 1000, flow_direction: 1},
 
     // 10
-    {x: 266.5, y: 180, w: 41.5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 29, x: 266.5, y: 180, w: 41.5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
 
     // 11
-    {x: 469, y: 182, w: pipe_radius, h: 29.5, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 30, x: 469, y: 182, w: pipe_radius, h: 29.5, color: '#FF0', time: 1000, flow_direction: 1},
 
     // 12
   //  {x: 469, y: 154.5, w: pipe_radius, h: 23.5, color: '#F00', time: 1000, flow_direction: -1},
 
     // 13
-    {x: 365, y: 205, w: pipe_radius, h: 145, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 366, y: 205, w: 91.5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 406, y: 206, w: pipe_radius, h: 6, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 456, y: 206, w: pipe_radius, h: 6, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 31, x: 365, y: 205, w: pipe_radius, h: 145, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 31, x: 366, y: 205, w: 91.5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 31, x: 406, y: 206, w: pipe_radius, h: 6, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 31, x: 456, y: 206, w: pipe_radius, h: 6, color: '#FF0', time: 1000, flow_direction: 1},
 
     // 14 （原11）
-    {x: 431, y: 410, w: 63, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: -1},
-    {x: 493, y: 349, w: pipe_radius, h: 63, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 274, y: 349, w: 220, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 264, y: 140, w: 11, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 274, y: 140, w: pipe_radius, h: 210, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 167, y: 205, w: 108, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 167, y: 205, w: pipe_radius, h: 6, color: '#FF0', time: 1000, flow_direction: -1},
-    {x: 220, y: 205, w: pipe_radius, h: 6, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 32, x: 431, y: 410, w: 63, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 32, x: 493, y: 349, w: pipe_radius, h: 63, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 32, x: 274, y: 349, w: 220, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 32, x: 264, y: 140, w: 11, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 32, x: 274, y: 140, w: pipe_radius, h: 210, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 32, x: 167, y: 205, w: 108, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 32, x: 167, y: 205, w: pipe_radius, h: 6, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 32, x: 220, y: 205, w: pipe_radius, h: 6, color: '#FF0', time: 1000, flow_direction: -1},
 
     // 15 （原16）
-    {x: 208, y: 196, w: 132, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 340, y: 196, w: 90, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: -1},
-    {x: 338, y: 137, w: pipe_radius, h: 60, color: '#FF0', time: 1000, flow_direction: -1},
-    {x: 208, y: 196, w: pipe_radius, h: 15, color: '#FF0', time: 1000, flow_direction: -1},
-    {x: 430, y: 196, w: pipe_radius, h: 15, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 33, x: 208, y: 196, w: 132, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 33, x: 340, y: 196, w: 90, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 33, x: 338, y: 137, w: pipe_radius, h: 60, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 33, x: 208, y: 196, w: pipe_radius, h: 15, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 33, x: 430, y: 196, w: pipe_radius, h: 15, color: '#FF0', time: 1000, flow_direction: -1},
 
     // 16 （原21）
-    {x: 160, y: 359, w: 300, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: -1},
-    {x: 160, y: 345.5, w: pipe_radius, h: 15, color: '#FF0', time: 1000, flow_direction: -1},
-    {x: 168, y: 345.5, w: pipe_radius, h: 15, color: '#FF0', time: 1000, flow_direction: -1},
-    {x: 220, y: 345.5, w: pipe_radius, h: 15, color: '#FF0', time: 1000, flow_direction: -1},
-    {x: 228, y: 345.5, w: pipe_radius, h: 15, color: '#FF0', time: 1000, flow_direction: -1},
-    {x: 378, y: 345.5, w: pipe_radius, h: 15, color: '#FF0', time: 1000, flow_direction: -1},
-    {x: 386, y: 345.5, w: pipe_radius, h: 15, color: '#FF0', time: 1000, flow_direction: -1},
-    {x: 438, y: 345.5, w: pipe_radius, h: 15, color: '#FF0', time: 1000, flow_direction: -1},
-    {x: 446, y: 345.5, w: pipe_radius, h: 15, color: '#FF0', time: 1000, flow_direction: -1},
-    {x: 458, y: 359, w: pipe_radius, h: 32.5, color: '#FF0', time: 1000, flow_direction: -1},
-    {x: 313, y: 390, w: 146, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 313, y: 391, w: pipe_radius, h: 3.5, color: '#FF0', time: 1000, flow_direction: -1},
-    {x: 317, y: 391, w: pipe_radius, h: 3.5, color: '#FF0', time: 1000, flow_direction: -1},
-    {x: 321, y: 391, w: pipe_radius, h: 3.5, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 34, x: 160, y: 359, w: 300, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 34, x: 160, y: 345.5, w: pipe_radius, h: 15, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 34, x: 168, y: 345.5, w: pipe_radius, h: 15, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 34, x: 220, y: 345.5, w: pipe_radius, h: 15, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 34, x: 228, y: 345.5, w: pipe_radius, h: 15, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 34, x: 378, y: 345.5, w: pipe_radius, h: 15, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 34, x: 386, y: 345.5, w: pipe_radius, h: 15, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 34, x: 438, y: 345.5, w: pipe_radius, h: 15, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 34, x: 446, y: 345.5, w: pipe_radius, h: 15, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 34, x: 458, y: 359, w: pipe_radius, h: 32.5, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 34, x: 313, y: 390, w: 146, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 34, x: 313, y: 391, w: pipe_radius, h: 3.5, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 34, x: 317, y: 391, w: pipe_radius, h: 3.5, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 34, x: 321, y: 391, w: pipe_radius, h: 3.5, color: '#FF0', time: 1000, flow_direction: -1},
 
     // 17 （原22）
-    {x: 431, y: 403, w: 44, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: -1},
-    {x: 473, y: 367, w: pipe_radius, h: 38, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 302, y: 367, w: 172, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 302, y: 234, w: pipe_radius, h: 134, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 302, y: 234, w: 10, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: -1},
-    {x: 302, y: 257, w: 10, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 35, x: 431, y: 403, w: 44, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 35, x: 473, y: 367, w: pipe_radius, h: 38, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 35, x: 302, y: 367, w: 172, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 35, x: 302, y: 234, w: pipe_radius, h: 134, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 35, x: 302, y: 234, w: 10, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 35, x: 302, y: 257, w: 10, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: -1},
 
 
     // 28
-    {x: 313, y: 424, w: pipe_radius, h: 8, color: '#FF0', time: 1000, flow_direction: 1},
-    {x: 313, y: 432, w: 162, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 36, x: 313, y: 424, w: pipe_radius, h: 8, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 36, x: 313, y: 432, w: 162, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
 
 ];
 
@@ -277,8 +261,9 @@ for (let i = 0; i < blocks_data.length; i++) {          // 方块数据
     draw_blocks_data[i].w = Math.floor(blocks_data[i].w * magnification);
     draw_blocks_data[i].h = Math.floor(blocks_data[i].h * magnification);
 }
-for (let i = 0; i < pipes_segment_data.length; i++) {       // 管道数据
+for (let i = 0; i < pipes_segment_data.length; i++) {       // 管道片段数据
     draw_pipes_segment_data[i] = {};
+    draw_pipes_segment_data[i].group = pipes_segment_data[i].group;
     draw_pipes_segment_data[i].color = pipes_segment_data[i].color;
     draw_pipes_segment_data[i].time = pipes_segment_data[i].time;
     draw_pipes_segment_data[i].flow_direction = pipes_segment_data[i].flow_direction;
@@ -286,4 +271,13 @@ for (let i = 0; i < pipes_segment_data.length; i++) {       // 管道数据
     draw_pipes_segment_data[i].y = 50 + (window.innerHeight - draw_localHeight) / 2 + Math.floor(pipes_segment_data[i].y * magnification);
     draw_pipes_segment_data[i].w = Math.floor(pipes_segment_data[i].w * magnification);
     draw_pipes_segment_data[i].h = Math.floor(pipes_segment_data[i].h * magnification);
+    draw_pipes_segment_data[i].flows = [];
 }
+
+// 整段管道数据
+let pipes = {};
+for (let i = 0; i < draw_pipes_segment_data.length; i++) {
+    pipes[draw_pipes_segment_data[i].group] = [];
+    pipes[draw_pipes_segment_data[i].group].push(draw_pipes_segment_data[i]);
+}
+console.log(pipes);
