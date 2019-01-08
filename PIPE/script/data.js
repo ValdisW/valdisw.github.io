@@ -60,8 +60,8 @@ const pipes_segment_data = [
     {group: 3, x: 211.5, y: 31, w: 31, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
 
     // 5
-    {group: 4, x: 245, y: 62, w: pipe_radius, h: 20, color: '#FF0', time: 1000, flow_direction: -1},
-    {group: 4, x: -1, y: 81, w: 248.5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 4, x: 245, y: 62, w: pipe_radius, h: 22, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 4, x: -1, y: 81, w: 249.5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
     {group: 4, x: -1, y: 81, w: pipe_radius, h: 116, color: '#FF0', time: 1000, flow_direction: -1},
     {group: 4, x: -1, y: 196, w: 102, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: -1},
     {group: 4, x: 100, y: 196, w: pipe_radius, h: 15, color: '#FF0', time: 1000, flow_direction: -1},
@@ -84,10 +84,11 @@ const pipes_segment_data = [
     {group: 7, x: 120, y: 151, w: pipe_radius, h: 191.5, color: '#FF0', time: 1000, flow_direction: 1},
 
     // 9
-    {group: 8, x: 264, y: 57, w: 26.5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    {group: 8, x: 289, y: 57, w: pipe_radius, h: 110, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 8, x: 289, y: 47, w: 9, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 8, x: 289, y: 47, w: pipe_radius, h: 120, color: '#FF0', time: 1000, flow_direction: 1},
+   // {group: 8, x: 264, y: 57, w: 26.5, h: pipe_radius, color: '#F00', time: 1000, flow_direction: -1},
     {group: 8, x: 263.5, y: 116, w: 28, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    {group: 8, x: 159, y: 165, w: 132.5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 8, x: 159, y: 165, w: 133.5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: -1},
 
     // 10
     {group: 9, x: 329, y: 62, w: pipe_radius, h: 39, color: '#FF0', time: 1000, flow_direction: -1},
@@ -96,7 +97,7 @@ const pipes_segment_data = [
     {group: 10, x: 29, y: 434, w: pipe_radius, h: 309, color: '#FF0', time: 1000, flow_direction: -1},
 
     // 12
-    {group: 11, x: 108, y: 434, w: pipe_radius, h: 12, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 11, x: 108, y: 434, w: pipe_radius, h: 12, color: '#FF0', time: 1000, flow_direction: 1},
     {group: 11, x: -29, y: 444, w: 140, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: -1},
 
     // 13
@@ -106,14 +107,14 @@ const pipes_segment_data = [
 
     // 14
     {group: 13, x: 159, y: 151, w: pipe_radius, h: 31, color: '#FF0', time: 1000, flow_direction: 1},
-    {group: 13, x: 114, y: 180, w: 48, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 13, x: 114, y: 180, w: 48.5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: -1},
     {group: 13, x: 114, y: 180, w: pipe_radius, h: 132, color: '#FF0', time: 1000, flow_direction: 1},
     {group: 13, x: 104, y: 260, w: 11, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
 
     // 17
     {group: 16, x: 346, y: 118, w: 9, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: -1},
     {group: 16, x: 354, y: 118, w: pipe_radius, h: 72, color: '#FF0', time: 1000, flow_direction: -1},
-    {group: 16, x: 108, y: 188, w: 247, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 16, x: 108, y: 188, w: 249.5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
     {group: 16, x: 108, y: 188, w: pipe_radius, h: 39, color: '#FF0', time: 1000, flow_direction: -1},
     {group: 16, x: 104, y: 226, w: 7, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
 
@@ -132,21 +133,21 @@ const pipes_segment_data = [
 
     // 无数据
     // 1
-    {group: 20, x: 99.5, y: 3, w: 5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    {group: 20, x: 99.5, y: 15, w: 5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 20, x: 99.5, y: 3, w: 6, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 20, x: 99.5, y: 15, w: 6, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
     {group: 20, x: 104, y: 3, w: pipe_radius, h: 20, color: '#FF0', time: 1000, flow_direction: 1},
     {group: 20, x: 104, y: 22, w: 7, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
     {group: 20, x: 110, y: 22, w: pipe_radius, h: 44, color: '#FF0', time: 1000, flow_direction: 1},
     {group: 20, x: 110, y: 64, w: 199, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
     {group: 20, x: 308, y: 64, w: pipe_radius, h: 80, color: '#FF0', time: 1000, flow_direction: 1},
-    {group: 20, x: 308.5, y: 110, w: 12, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    {group: 20, x: 308.5, y: 123, w: 12, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    {group: 20, x: 308, y: 142, w: 20, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 20, x: 308.5, y: 110, w: 12, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 20, x: 308.5, y: 123, w: 12, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 20, x: 308, y: 142, w: 21, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
     {group: 20, x: 328, y: 142, w: pipe_radius, h: 69, color: '#FF0', time: 1000, flow_direction: 1},
 
     // 2
-    {group: 21, x: 215.5, y: 3, w: 5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    {group: 21, x: 215.5, y: 15, w: 5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 21, x: 215.5, y: 3, w: 6, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 21, x: 215.5, y: 15, w: 6, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
     {group: 21, x: 220, y: 3, w: pipe_radius, h: 21, color: '#FF0', time: 1000, flow_direction: 1},
     {group: 21, x: 220, y: 22, w: 12, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
     {group: 21, x: 230, y: 22, w: pipe_radius, h: 44, color: '#FF0', time: 1000, flow_direction: 1},
@@ -163,9 +164,9 @@ const pipes_segment_data = [
     {group: 23, x: 395, y: 36, w: pipe_radius, h: 6, color: '#FF0', time: 1000, flow_direction: -1},
 
     // 5
-    {group: 24, x: 348.5, y: 229, w: 13, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 24, x: 348.5, y: 229, w: 15, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
     {group: 24, x: 360, y: 77, w: pipe_radius, h: 154, color: '#FF0', time: 1000, flow_direction: -1},
-    {group: 24, x: 361, y: 77, w: 35.5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 24, x: 361, y: 77, w: 37.5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
     {group: 24, x: 374, y: 71.5, w: pipe_radius, h: 6.5, color: '#FF0', time: 1000, flow_direction: -1},
     {group: 24, x: 395, y: 71.5, w: pipe_radius, h: 6.5, color: '#FF0', time: 1000, flow_direction: -1},
 
@@ -192,12 +193,12 @@ const pipes_segment_data = [
 
     // 13
     {group: 31, x: 365, y: 205, w: pipe_radius, h: 145, color: '#FF0', time: 1000, flow_direction: 1},
-    {group: 31, x: 366, y: 205, w: 91.5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 31, x: 366, y: 205, w: 93, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
     {group: 31, x: 406, y: 206, w: pipe_radius, h: 6, color: '#FF0', time: 1000, flow_direction: 1},
     {group: 31, x: 456, y: 206, w: pipe_radius, h: 6, color: '#FF0', time: 1000, flow_direction: 1},
 
     // 14 （原11）
-    {group: 32, x: 431, y: 410, w: 63, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 32, x: 431, y: 410, w: 65.5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: -1},
     {group: 32, x: 493, y: 349, w: pipe_radius, h: 63, color: '#FF0', time: 1000, flow_direction: 1},
     {group: 32, x: 274, y: 349, w: 220, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
     {group: 32, x: 264, y: 140, w: 11, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
@@ -208,7 +209,7 @@ const pipes_segment_data = [
 
     // 15 （原16）
     {group: 33, x: 208, y: 196, w: 132, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
-    {group: 33, x: 340, y: 196, w: 90, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 33, x: 339.5, y: 196, w: 92, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: -1},
     {group: 33, x: 338, y: 137, w: pipe_radius, h: 60, color: '#FF0', time: 1000, flow_direction: -1},
     {group: 33, x: 208, y: 196, w: pipe_radius, h: 15, color: '#FF0', time: 1000, flow_direction: -1},
     {group: 33, x: 430, y: 196, w: pipe_radius, h: 15, color: '#FF0', time: 1000, flow_direction: -1},
@@ -224,13 +225,13 @@ const pipes_segment_data = [
     {group: 34, x: 438, y: 345.5, w: pipe_radius, h: 15, color: '#FF0', time: 1000, flow_direction: -1},
     {group: 34, x: 446, y: 345.5, w: pipe_radius, h: 15, color: '#FF0', time: 1000, flow_direction: -1},
     {group: 34, x: 458, y: 359, w: pipe_radius, h: 32.5, color: '#FF0', time: 1000, flow_direction: -1},
-    {group: 34, x: 313, y: 390, w: 146, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 34, x: 313, y: 390, w: 149, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
     {group: 34, x: 313, y: 391, w: pipe_radius, h: 3.5, color: '#FF0', time: 1000, flow_direction: -1},
     {group: 34, x: 317, y: 391, w: pipe_radius, h: 3.5, color: '#FF0', time: 1000, flow_direction: -1},
     {group: 34, x: 321, y: 391, w: pipe_radius, h: 3.5, color: '#FF0', time: 1000, flow_direction: -1},
 
     // 17 （原22）
-    {group: 35, x: 431, y: 403, w: 44, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 35, x: 431, y: 403, w: 45.5, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: -1},
     {group: 35, x: 473, y: 367, w: pipe_radius, h: 38, color: '#FF0', time: 1000, flow_direction: 1},
     {group: 35, x: 302, y: 367, w: 172, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
     {group: 35, x: 302, y: 234, w: pipe_radius, h: 134, color: '#FF0', time: 1000, flow_direction: 1},
@@ -239,7 +240,7 @@ const pipes_segment_data = [
 
 
     // 28
-    {group: 36, x: 313, y: 424, w: pipe_radius, h: 8, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 36, x: 313, y: 424, w: pipe_radius, h: 10, color: '#FF0', time: 1000, flow_direction: 1},
     {group: 36, x: 313, y: 432, w: 162, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
 
 ];
