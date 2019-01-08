@@ -45,11 +45,21 @@
     zr.add(title);
 
     // 缩放功能按钮
+    let magnifierIcon = new zrender.Image({
+        style: {
+            x: window.innerWidth / 3 * 2 + 3, y: 30 + 3,
+            width: 30, height: 30,
+            image: './icons/magnifier.png',
+        },
+        silent: true,
+        zlevel: 3
+    });
+    zr.add(magnifierIcon);
     let magnifierButton = new zrender.Rect({
         shape: {
             x: window.innerWidth / 3 * 2, y: 30,
             width: 36, height: 36,
-            r: [5]
+            r: [8]
         },
         style: {
             fill: '#666'
@@ -200,7 +210,7 @@
             pipeInfoBlock.vanish();
         });
 
-        //addPipeFLow(draw_pipes_segment_data[i], 5, 5);      // 添加流动
+        addPipeFLow(draw_pipes_segment_data[i], 5, 5);      // 添加流动
     }
 
     $('#main').get(0).onmousewheel = (e)=>{

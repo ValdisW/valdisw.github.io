@@ -17,13 +17,13 @@ const blocks_data = [                                           // 各方块测�
 
     {id: '8', name: '曝气活性炭池', font: '16px Microsoft YaHei', x: 16, y: 101, w: 248, h: 51},
     {id: '5', name: '扩建\n滤布\n滤池', font: '12px Microsoft YaHei', x: 320, y: 101, w: 27, h: 36},
-    {id: '9', name: '臭氧发生器', font: '14px Microsoft YaHei', x: 367, y: 101, w: 63, h: 41},
+    {id: '9', name: '臭氧发生器', font: '14px Microsoft YaHei', x: 371, y: 101, w: 63, h: 41},
     {id: '12', name: '变电站', font: '16px Microsoft YaHei', x: 442, y: 101, w: 50, h: 54},
     {id: 'undefined', name: '', font: '14px Microsoft YaHei', x: 174, y: 178, w: 92, h: 5},
     {id: 'undefined', name: '', font: '14px Microsoft YaHei', x: 308, y: 178, w: 175, h: 5},
 
     {id: '13', name: '液氧站', font: '14px Microsoft YaHei', x: 364, y: 0, w: 30, h: 30},
-    {id: '10', name: '污泥浓缩池', font: '14px Microsoft YaHei', x: 363, y: 41, w: 53, h: 30},
+    {id: '10', name: '污泥浓缩池', font: '14px Microsoft YaHei', x: 359, y: 41, w: 53, h: 30},
     {id: '11', name: '脱水机房加\n药除臭系统', font: '13px Microsoft YaHei', x: 420, y: 4, w: 72, h: 57},
 
     {id: '14_17', name: '综合控制室\n综合进出水池', font: '14px Microsoft YaHei', x: 14, y: 368, w: 138, h: 66},
@@ -241,11 +241,11 @@ const pipes_segment_data = [
 
     // 28
     {group: 36, x: 313, y: 424, w: pipe_radius, h: 10, color: '#FF0', time: 1000, flow_direction: 1},
-    {group: 36, x: 313, y: 432, w: 162, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
+    {group: 36, x: 313, y: 432, w: 192, h: pipe_radius, color: '#FF0', time: 1000, flow_direction: 1},
 
 ];
 
-// 将测量数据转化成绘制用数据
+// zrender绘制数据
 const magnification = (Math.floor(window.innerHeight) - 150) / localHeight;     // 缩放(一般是放大)倍数
 const draw_blocks_data = [],
     draw_pipes_segment_data = [],
