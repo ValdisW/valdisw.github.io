@@ -10,13 +10,53 @@ const thresholdFunc = function (x) {
 // 方块提示框 池内液体高度
 class blockInfoTooltip{
     constructor() {
+        this.infoBlock = new zrender.Rect({
+            shape: {
+                x: 0, y: 0,
+                width: 200, height: 100,
+                r: [10]
+            },
+            style: {
+                fill: '#000',
+                shadowBlur: 20,
+                shadowColor: '#000',
+                opacity: 0,
+            },
+            zlevel: 2
+        });
+        zr.add(this.infoBlock);
 
+        // 标题
+        this.title = new zrender.Rect({
+            shape: {
+                x: 0, y: 0,
+                width: 200, height: 20,
+            },
+            style: {
+                fill: 'transparent',
+                text: '车间信息',
+                textFill: '#DDD',
+                font: '16px Microsoft YaHei',
+                textAlign: 'center',
+                opacity: 0,
+            },
+            zlevel: 3
+        });
+        zr.add(this.title);
     }
-    display() {
-
+    display(x, y, waterHeight) {
+        this.infoBlock.attr({            // 显示提示框
+            shape: {x: x + 5, y: y + 5},
+            style: {opacity: 0.7}
+        });
+        this.title.attr({       // 显示提示框标题
+            shape: {x: x + 5, y: y + 21},
+            style: {opacity: 1}
+        });
     }
     vanish () {
-
+        this.infoBlock.attr({style: {opacity: 0}});
+        this.title.attr({style: {opacity: 0}});
     }
 }
 
