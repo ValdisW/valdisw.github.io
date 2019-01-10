@@ -1,7 +1,7 @@
 // zrender实际绘图部分
 
 // 全局变量
-let magnify = 1;        // 缩放倍数
+let magnify = 2;        // 缩放倍数
 
 // ZRender初始化容器
 let zr = zrender.init(document.getElementById('main'));
@@ -73,40 +73,73 @@ magnifierButton.on('click', ()=>{
             zr.remove(selectFrame);    // 移除选框
 
 
-
-
             //===================绘制小窗内容↓============================
             newCanvasWindow = $('<canvas id="newCanvasWindow"></canvas>');
             newCanvasWindow.attr({
-                height: Math.abs(selectFrame.shape.height),
-                width: Math.abs(selectFrame.shape.width),
+                height: Math.abs(selectFrame.shape.height * magnify),
+                width: Math.abs(selectFrame.shape.width * magnify),
             }).css({
                 'background-color': '#282c34',
                 'position': 'fixed',
                 'top': 0, 'right': 0
             });
-            console.log(selectFrame.shape.width);
-            console.log(newCanvasWindow.get(0).width);
             $('body').append(newCanvasWindow);
 
             // 绘制新窗口内容
             let newWindow_zr = new zrender.init(newCanvasWindow[0]);
-            blocks_outer.eachChild(function (ele) {
+            // 重新绘制外框
+            for (let i = 0; i < blocks_outer.childCount(); i++) {
+                console.log('第i个块的x:', blocks_outer.children()[i].shape.x);
+                console.log('e.clientX=', e.clientX, ', e.clientY=', e.clientY);
                 let new_outer = new zrender.Rect({
-
+                    shape: {
+                        x: (blocks_outer.children()[i].shape.x - startX) * magnify,
+                        y: (blocks_outer.children()[i].shape.y - startY) * magnify,
+                        width: blocks_outer.children()[i].shape.width * magnify,
+                        height: blocks_outer.children()[i].shape.height * magnify,
+                    },
+                    style: {fill: '#3a66b6'},
+                    zlevel: 1,
                 });
-                console.log(ele);
-                newWindow_zr.add(ele);
-            });
-            blocks_inner.eachChild(function (ele) {
-                newWindow_zr.add(ele);
-            });
+                newWindow_zr.add(new_outer);
+            }
 
-            let index = 0;
-            blocks_pipe.eachChild(function (ele) {
-                newWindow_zr.add(ele);
-                index++;
-            });
+            // 重新绘制内框
+            for (let i = 0; i < blocks_inner.childCount(); i++) {
+                let new_inner = new zrender.Rect({
+                    shape: {
+                        x: (blocks_inner.children()[i].shape.x - startX) * magnify,
+                        y: (blocks_inner.children()[i].shape.y - startY) * magnify,
+                        width: blocks_inner.children()[i].shape.width * magnify,
+                        height: blocks_inner.children()[i].shape.height * magnify,
+                    },
+                    style: {
+                        fill: '#282c34',
+                        text: blocks_inner.children()[i].style.text,
+                        textFill: '#7bfff8',
+                        font: blocks_inner.children()[i].style.font,
+                        textLineHeight: 200,
+                        textRect: blocks_inner.children()[i].style.textRect,
+                    },
+                    zlevel: 1,
+                });
+                newWindow_zr.add(new_inner);
+            }
+
+            // 重新绘制管道
+            for (let i = 0; i < blocks_pipe.childCount(); i++) {
+                let new_pipe = new zrender.Rect({
+                    shape: {
+                        x: (blocks_pipe.children()[i].shape.x - startX) * magnify,
+                        y: (blocks_pipe.children()[i].shape.y - startY) * magnify,
+                        width: blocks_pipe.children()[i].shape.width * magnify,
+                        height: blocks_pipe.children()[i].shape.height * magnify,
+                    },
+                    style: blocks_pipe.children()[i].style,
+                    zlevel: 0,
+                });
+                newWindow_zr.add(new_pipe);
+            }
 
             newCanvasWindow.css({
                 'border': '2px solid #666',
@@ -117,64 +150,12 @@ magnifierButton.on('click', ()=>{
 
 
             // 执行放大，改的是实际zrender矩形对象的数据，而不是原来的数据
-            title.hide();       // 去掉碍眼的标题文字
             // 按钮变化
             magnifierButton.hide();
             magnifierIcon.hide();
             resetIcon.show();
             resetButton.show();
-            for (let i = 0; i < blocks_outer.length; i++) {         // 更新块的位置
-                blocks_outer[i].attr({
-                    shape: {
-                        x: (blocks_outer[i].shape.x - startX) * window.innerWidth / frameWidth,
-                        y: (blocks_outer[i].shape.y - startY) * window.innerHeight / frameHeight,
-                        width: blocks_outer[i].shape.width * window.innerWidth / frameWidth,
-                        height: blocks_outer[i].shape.height * window.innerHeight / frameHeight,
-                    }
-                });
-                blocks_inner[i].attr({
-                    shape: {
-                        x: (blocks_inner[i].shape.x - startX) * window.innerWidth / frameWidth,
-                        y: (blocks_inner[i].shape.y - startY) * window.innerHeight / frameHeight,
-                        width: blocks_inner[i].shape.width * window.innerWidth / frameWidth,
-                        height: blocks_inner[i].shape.height * window.innerHeight / frameHeight,
-                    },
-                    style: {
-                        fill: '#282c34',
-                        text: draw_blocks_data[i].name,
-                        textFill: '#7bfff8',
-                        font: draw_blocks_data[i].font,
-                        textLineHeight: 200,
-                        textRect: {
-                            x: draw_blocks_data[i].x,
-                            y: draw_blocks_data[i].y,
-                            width: draw_blocks_data[i].w/1,
-                            height: draw_blocks_data[i].h,
-                        }
-                    }
-                });
-            }
-            for (let i = 0; i < blocks_pipe.length; i++) {      // 更新管道的位置
-                blocks_pipe[i].attr({
-                    shape: {
-                        x: (blocks_pipe[i].shape.x - startX) * window.innerWidth / frameWidth,
-                        y: (blocks_pipe[i].shape.y - startY) * window.innerHeight / frameHeight,
-                        width: blocks_pipe[i].shape.width * window.innerWidth / frameWidth,
-                        height: blocks_pipe[i].shape.height * window.innerHeight / frameHeight,
-                    }
-                });
-                for (let j = 0; j < draw_pipes_segment_data[i].flows.length; j++) {
-                    console.log(draw_pipes_segment_data[i].flows);
-                    draw_pipes_segment_data[i].flows[i].attr({
-                        shape: {
-                            x: (draw_pipes_segment_data[i].flows[i].shape.x - startX) * window.innerWidth / frameWidth,
-                            y: (draw_pipes_segment_data[i].flows[i].shape.y - startY) * window.innerHeight / frameHeight,
-                            width: draw_pipes_segment_data[i].flows[i].shape.width * window.innerWidth / frameWidth,
-                            height: draw_pipes_segment_data[i].flows[i].shape.height * window.innerHeight / frameHeight,
-                        }
-                    });
-                }
-            }
+
             have_exec_mag = true;
         });
     }
@@ -205,7 +186,6 @@ let resetButton = new zrender.Rect({
 resetIcon.hide();
 resetButton.hide();
 resetButton.on('click', ()=>{
-    title.show();
     resetIcon.hide();
     resetButton.hide();
     magnifierIcon.show();
