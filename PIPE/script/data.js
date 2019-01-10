@@ -14,7 +14,6 @@ const blocks_data = [                                           // 各方块测�
     {id: '4', name: '扩建工程调节池', font: '16px Microsoft YaHei', x: 195, y: 398, w: 236, h: 26},
     {id: '4_attach', name: '', font: '16px Microsoft YaHei', x: 308, y: 394, w: 20, h: 6},
 
-
     {id: '8', name: '曝气活性炭池', font: '16px Microsoft YaHei', x: 16, y: 101, w: 248, h: 51},
     {id: '5', name: '扩建\n滤布\n滤池', font: '12px Microsoft YaHei', x: 320, y: 101, w: 27, h: 36},
     {id: '9', name: '臭氧发生器', font: '14px Microsoft YaHei', x: 371, y: 101, w: 63, h: 41},
@@ -33,8 +32,6 @@ const blocks_data = [                                           // 各方块测�
     {id: '6', name: '扩建硝化车间', font: '16px Microsoft YaHei', x: 134, y: 211, w: 120, h: 135},
     {id: '6', name: '扩建反硝化池', font: '16px Microsoft YaHei', x: 372, y: 211, w: 120, h: 135},
     {id: '16', name: '高效\n沉淀池', font: '14px Microsoft YaHei', x: 312, y: 211, w: 37, h: 75},
-
-
 ];
 const pipe_radius = 3;
 const pipes_segment_data = [

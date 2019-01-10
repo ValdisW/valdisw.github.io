@@ -25,6 +25,7 @@ let title = new zrender.Rect({
 zr.add(title);
 
 // 框选缩放功能按钮
+let newCanvasWindow = void 0;
 let magnifierIcon = new zrender.Image({
     style: {
         x: window.innerWidth / 3 * 2 + 3, y: 30 + 3,
@@ -63,23 +64,33 @@ magnifierButton.on('click', ()=>{
             selectFrame.attr({shape: {x: startX, y: startY, width: 0, height: 0}});
         }).mousemove(function (e) {
             selectFrame.attr({shape: {
-                    width: e.clientX - startX, height: (e.clientX - startX) * window.innerHeight / window.innerWidth
+                    width: e.clientX - startX, height: e.clientY - startY
                 }});
         }).mouseup(function (e) {        // 框选完毕
             //===================绘制小窗内容============================
-            let newCanvasWindow = $('<canvas id="newCanvasWindow"></canvas>');
+            newCanvasWindow = $('<canvas id="newCanvasWindow"></canvas>');
             newCanvasWindow.attr({
-                height: 500,
-                width: 500,
+                height: Math.abs(selectFrame.shape.height),
+                width: Math.abs(selectFrame.shape.width),
             }).css({
-                'border': '2px solid #FFF',
+                'background-color': '#282c34',
                 'position': 'fixed',
                 'top': 0, 'right': 0
             });
+            console.log(selectFrame.shape.width);
+            console.log(newCanvasWindow.get(0).width);
             $('body').append(newCanvasWindow);
 
-            let newWindow_zr = zrender.init(newCanvasWindow[0]);
-            newWindow_zr.add();
+            // 绘制新窗口内容
+            let newWindow_zr = new zrender.init(newCanvasWindow[0]);
+            blocks_outer.eachChild(function (ele) {newWindow_zr.add(ele);});
+            blocks_inner.eachChild(function (ele) {newWindow_zr.add(ele);});
+            blocks_pipe.eachChild(function (ele) {newWindow_zr.add(ele);});
+
+            newCanvasWindow.css({
+                'border': '2px solid #FFF',
+                'border-radius': 20
+            });
             //=========================================================
 
 
@@ -181,6 +192,7 @@ resetButton.on('click', ()=>{
     resetButton.hide();
     magnifierIcon.show();
     magnifierButton.show();
+    $('#newCanvasWindow').remove();
     for (let i = 0; i < blocks_outer.length; i++) {         // 更新块的位置
         blocks_outer[i].attr({
             shape: {
@@ -238,12 +250,12 @@ let pipeInfoBlock =　new pipeInfoToolTip();
 let blockInfoBlock = new blockInfoTooltip();
 
 // 绘制方块
-let blocks_outer = new Array(blocks_data.length);
-let blocks_inner = new Array(blocks_data.length);
+let blocks_outer = new zrender.Group();
+let blocks_inner = new zrender.Group();
 let blocks_outer_minimap = new Array(blocks_data.length);       // 小窗显示用
 let blocks_inner_minimap = new Array(blocks_data.length);       // 小窗显示用
-for (let i = 0; i < draw_blocks_data.length; i++) {
-    blocks_outer[i] = new zrender.Rect({
+for (let i = 0; i < draw_blocks_data.length; i++) {     // 访问所有方块数据
+    let blockRect_outer = new zrender.Rect({
         shape: {
             x: draw_blocks_data[i].x,
             y: draw_blocks_data[i].y,
@@ -253,15 +265,15 @@ for (let i = 0; i < draw_blocks_data.length; i++) {
         style: {fill: '#3a66b6'},
         zlevel: 1,
     });
-    blocks_outer_minimap[i] = zrender.util.clone(blocks_outer[i]);
-    zr.add(blocks_outer[i]);
-    blocks_outer[i].on('mousemove', function (e) {
+    blockRect_outer.on('mousemove', function (e) {
         blockInfoBlock.display(e.offsetX, e.offsetY, '26 km/h');
     }).on('mouseout', function () {
         blockInfoBlock.vanish();
     });
+    //blocks_outer_minimap[i] = zrender.util.clone(blockRect_outer);      // 拷贝数据
+    blocks_outer.add(blockRect_outer);
 
-    blocks_inner[i] = new zrender.Rect({
+    blockRect_inner = new zrender.Rect({
         shape: {
             x: draw_blocks_data[i].x + 4,
             y: draw_blocks_data[i].y + 4,
@@ -283,20 +295,22 @@ for (let i = 0; i < draw_blocks_data.length; i++) {
         },
         zlevel: 1,
     });
-    blocks_inner_minimap[i] = zrender.util.clone(blocks_inner[i]);
-    zr.add(blocks_inner[i]);
-    blocks_inner[i].on('mousemove', function (e) {
+    blockRect_inner.on('mousemove', function (e) {
         blockInfoBlock.display(e.offsetX, e.offsetY, '26 km/h');
     }).on('mouseout', function () {
         blockInfoBlock.vanish();
     });
+    //blocks_inner_minimap[i] = zrender.util.clone(blockRect_inner);      // 拷贝数据
+    blocks_inner.add(blockRect_inner);
 }
+zr.add(blocks_outer);
+zr.add(blocks_inner);
 
 // 绘制管道
-let blocks_pipe = new Array(draw_pipes_segment_data.length);
+let blocks_pipe = new zrender.Group();
 let blocks_pipe_minimap = new Array(draw_pipes_segment_data.length);        // 小窗中使用
-for (let i = 0; i < draw_pipes_segment_data.length; i++) {
-    blocks_pipe[i] = new zrender.Rect({
+for (let i = 0; i < draw_pipes_segment_data.length; i++) {              // 访问每段管道
+    let blockRect_pipe = new zrender.Rect({
         shape: {
             x: draw_pipes_segment_data[i].x, y: draw_pipes_segment_data[i].y,
             width: draw_pipes_segment_data[i].w, height: draw_pipes_segment_data[i].h,
@@ -304,12 +318,10 @@ for (let i = 0; i < draw_pipes_segment_data.length; i++) {
         style: {fill: pipes_segment_data[i].color},
         zlevel: 0,
     });
-    blocks_pipe_minimap[i] = zrender.util.clone(blocks_pipe[i]);
-    zr.add(blocks_pipe[i]);
 
     // 鼠标交互
-    blocks_pipe[i].on('mousemove', function (e) {
-        blocks_pipe[i].attr({            // 发光
+    blockRect_pipe.on('mousemove', function (e) {
+        blockRect_pipe.attr({            // 发光
             style: {
                 shadowBlur: 20,
                 shadowColor: pipes_segment_data[i].color
@@ -317,12 +329,16 @@ for (let i = 0; i < draw_pipes_segment_data.length; i++) {
         });
         pipeInfoBlock.display(e.offsetX, e.offsetY, '26 km/h', '89 °C', '8000 N');
     }).on('mouseout', function () {
-        blocks_pipe[i].attr({style: {shadowBlur: 0,}});
+        blockRect_pipe.attr({style: {shadowBlur: 0,}});
         pipeInfoBlock.vanish();
     });
-
-    addPipeFLow(draw_pipes_segment_data[i], 5, 5);      // 添加流动
+    //blocks_pipe_minimap[i] = zrender.util.clone(blocks_pipe[i]);        // 拷贝数据
+    blocks_pipe.add(blockRect_pipe);
+    //delete(blocks_pipe);
 }
+zr.add(blocks_pipe);
+for (let i = 0; i < draw_pipes_segment_data.length; i++) addPipeFLow(draw_pipes_segment_data[i], 5, 5);      // 添加流动
+
 
 /*
 $('#main').get(0).onmousewheel = (e)=>{
