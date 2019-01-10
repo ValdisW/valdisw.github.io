@@ -67,7 +67,15 @@ magnifierButton.on('click', ()=>{
                     width: e.clientX - startX, height: e.clientY - startY
                 }});
         }).mouseup(function (e) {        // 框选完毕
-            //===================绘制小窗内容============================
+
+            startSelect = false;
+            frameWidth = e.clientX - startX; frameHeight = (e.clientX - startX) * window.innerHeight / window.innerWidth;       // 获取选框最终宽高
+            zr.remove(selectFrame);    // 移除选框
+
+
+
+
+            //===================绘制小窗内容↓============================
             newCanvasWindow = $('<canvas id="newCanvasWindow"></canvas>');
             newCanvasWindow.attr({
                 height: Math.abs(selectFrame.shape.height),
@@ -83,20 +91,30 @@ magnifierButton.on('click', ()=>{
 
             // 绘制新窗口内容
             let newWindow_zr = new zrender.init(newCanvasWindow[0]);
-            blocks_outer.eachChild(function (ele) {newWindow_zr.add(ele);});
-            blocks_inner.eachChild(function (ele) {newWindow_zr.add(ele);});
-            blocks_pipe.eachChild(function (ele) {newWindow_zr.add(ele);});
+            blocks_outer.eachChild(function (ele) {
+                let new_outer = new zrender.Rect({
+
+                });
+                console.log(ele);
+                newWindow_zr.add(ele);
+            });
+            blocks_inner.eachChild(function (ele) {
+                newWindow_zr.add(ele);
+            });
+
+            let index = 0;
+            blocks_pipe.eachChild(function (ele) {
+                newWindow_zr.add(ele);
+                index++;
+            });
 
             newCanvasWindow.css({
-                'border': '2px solid #FFF',
-                'border-radius': 20
+                'border': '2px solid #666',
+                'border-radius': 20,
+                'box-shadow': '0 0 10px 0 #666',
             });
-            //=========================================================
+            //===================绘制小窗内容↑============================
 
-
-            startSelect = false;
-            frameWidth = e.clientX - startX; frameHeight = (e.clientX - startX) * window.innerHeight / window.innerWidth;       // 获取选框最终宽高
-            zr.remove(selectFrame);    // 移除选框
 
             // 执行放大，改的是实际zrender矩形对象的数据，而不是原来的数据
             title.hide();       // 去掉碍眼的标题文字
