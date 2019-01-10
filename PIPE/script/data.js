@@ -276,9 +276,15 @@ for (let i = 0; i < pipes_segment_data.length; i++) {       // 管道片段数�
 }
 
 // 整段管道数据
-let pipes = {};
+let group_id = [];          // 存放所有的group
+let pipes = [];
+for (let i = 0; i < draw_pipes_segment_data.length; i++) if (group_id.indexOf(draw_pipes_segment_data[i].group) === -1) group_id.push(draw_pipes_segment_data[i].group);
+for (let i = 0; i < group_id.length; i++) pipes[i] = {group_ID: group_id[i], all_pipes: []};
 for (let i = 0; i < draw_pipes_segment_data.length; i++) {
-    pipes[draw_pipes_segment_data[i].group] = [];
-    pipes[draw_pipes_segment_data[i].group].push(draw_pipes_segment_data[i]);
+    for (let j = 0; j < pipes.length; j++) {
+        if (pipes[j].group_ID === draw_pipes_segment_data[i].group) {
+            pipes[j].all_pipes.push(draw_pipes_segment_data[i]);
+            break;
+        }
+    }
 }
-console.log(pipes);
