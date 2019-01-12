@@ -89,8 +89,6 @@ magnifierButton.on('click', ()=>{
             let newWindow_zr = new zrender.init(newCanvasWindow[0]);
             // 重新绘制外框
             for (let i = 0; i < blocks_outer.childCount(); i++) {
-                console.log('第i个块的x:', blocks_outer.children()[i].shape.x);
-                console.log('e.clientX=', e.clientX, ', e.clientY=', e.clientY);
                 let new_outer = new zrender.Rect({
                     shape: {
                         x: (blocks_outer.children()[i].shape.x - startX) * magnify,
@@ -118,8 +116,8 @@ magnifierButton.on('click', ()=>{
                         text: blocks_inner.children()[i].style.text,
                         textFill: '#7bfff8',
                         font: blocks_inner.children()[i].style.font,
-                        textLineHeight: 200,
-                        textRect: blocks_inner.children()[i].style.textRect,
+                       // textLineHeight: 200,
+                       // textRect: blocks_inner.children()[i].style.textRect,
                     },
                     zlevel: 1,
                 });
@@ -127,6 +125,7 @@ magnifierButton.on('click', ()=>{
             }
 
             // 重新绘制管道
+            let draw_pipes_segment_data_newWindow = [];
             for (let i = 0; i < blocks_pipe.childCount(); i++) {
                 let new_pipe = new zrender.Rect({
                     shape: {
@@ -138,9 +137,24 @@ magnifierButton.on('click', ()=>{
                     style: blocks_pipe.children()[i].style,
                     zlevel: 0,
                 });
-                newWindow_zr.add(new_pipe);
-            }
 
+                draw_pipes_segment_data_newWindow[i] = {};
+                draw_pipes_segment_data_newWindow[i].time = pipes_segment_data[i].time;
+                draw_pipes_segment_data_newWindow[i].flow_direction = pipes_segment_data[i].flow_direction;
+                draw_pipes_segment_data_newWindow[i].x = new_pipe.shape.x;
+                draw_pipes_segment_data_newWindow[i].y = new_pipe.shape.y;
+                draw_pipes_segment_data_newWindow[i].w = new_pipe.shape.width;
+                draw_pipes_segment_data_newWindow[i].h = new_pipe.shape.height;
+                draw_pipes_segment_data_newWindow[i].flows = [];
+
+/*                new_pipe.on('mousemove', ()=>{
+                    console.log(23333);
+                    blockRect_pipe.trgger('mousemove');
+                });*/
+                newWindow_zr.add(new_pipe);
+                addPipeFLow(newWindow_zr, draw_pipes_segment_data_newWindow[i], 5 * magnify, 5 * magnify);
+            }
+            
             newCanvasWindow.css({
                 'border': '2px solid #666',
                 'border-radius': 20,
@@ -283,6 +297,7 @@ for (let i = 0; i < draw_blocks_data.length; i++) {     // 访问所有方块数
             text: draw_blocks_data[i].name,
             textFill: '#7bfff8',
             font: draw_blocks_data[i].font,
+/*
             textLineHeight: 200,
             textRect: {
                 x: draw_blocks_data[i].x,
@@ -290,6 +305,7 @@ for (let i = 0; i < draw_blocks_data.length; i++) {     // 访问所有方块数
                 width: draw_blocks_data[i].w/1,
                 height: draw_blocks_data[i].h,
             }
+*/
         },
         zlevel: 1,
     });
@@ -306,7 +322,6 @@ zr.add(blocks_inner);
 
 // 绘制管道
 let blocks_pipe = new zrender.Group();
-let blocks_pipe_minimap = new Array(draw_pipes_segment_data.length);        // 小窗中使用
 for (let i = 0; i < draw_pipes_segment_data.length; i++) {              // 访问每段管道
     let blockRect_pipe = new zrender.Rect({
         shape: {
@@ -335,7 +350,7 @@ for (let i = 0; i < draw_pipes_segment_data.length; i++) {              // 访�
     //delete(blocks_pipe);
 }
 zr.add(blocks_pipe);
-for (let i = 0; i < draw_pipes_segment_data.length; i++) addPipeFLow(draw_pipes_segment_data[i], 5, 5);      // 添加流动
+for (let i = 0; i < draw_pipes_segment_data.length; i++) addPipeFLow(zr, draw_pipes_segment_data[i], 5, 5);      // 添加流动
 
 
 /*

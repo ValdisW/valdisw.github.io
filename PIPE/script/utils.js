@@ -309,12 +309,52 @@ class pipeInfoToolTip{
 }
 
 //======================================================================
-//  ** 向管道中添加流动效果
+//  ** 【new version】向管道中添加流动效果
 //----------------------------------------------------------------------
 //  pipe是管道对象，至少包括x,y,w,h,flows属性，前四个是横纵坐标和宽高，
 //  最后一个flows数组用来保存流动方块的zrender.Rect对象
 //======================================================================
-const addPipeFLow = function (pipe, blockWidth, blockGap) {
+const addPipeFLowToZRRect = function (pipe, blockWidth, blockGap) {
+    pipe.flows = [];
+    if (pipe.shape.width > pipe.shape.height) {      // 管道为横向
+        let flow_num = Math.ceil(pipe.shape.width / (blockWidth + blockGap));     // 先计算管道片段内的流动方块数
+        for (let i = 0; i < flow_num; i++) {
+            pipe.flows[i] = new zrender.Rect({
+                shape: {
+                    x: pipe.shape.x + (blockWidth + blockGap) * i, y: pipe.shape.y + 0.5,
+                    width: blockWidth, height: pipe.shape.height - 1,
+                },
+                style: {fill: '#282c34'},
+                silent: true,
+            });
+            zr.add(pipe.flows[i]);
+            pipe.flows[i].animate('shape', true).when(pipe.time, {x: pipe.shape.x + (blockWidth + blockGap)*(i + pipe.flow_direction)}).done(function () {}).start();
+        }
+    }
+    else {              // 管道为纵向
+        let flow_num = Math.ceil(pipe.h / (blockWidth + blockGap));
+        for (let i = 0; i < flow_num; i++) {
+            pipe.flows[i] = new zrender.Rect({
+                shape: {
+                    x: pipe.x + 0.5, y: pipe.y + (blockWidth + blockGap) * i,
+                    width: pipe.w - 1, height: blockWidth,
+                },
+                style: {fill: '#282c34'},
+                silent: true,
+            });
+            zr.add(pipe.flows[i]);
+            pipe.flows[i].animate('shape', true).when(pipe.time, {y: pipe.y + (blockWidth + blockGap)*(i + pipe.flow_direction)}).done(function () {}).start();
+        }
+    }
+};
+
+//======================================================================
+//  ** 【traditional version】向管道中添加流动效果
+//----------------------------------------------------------------------
+//  pipe是管道对象，至少包括x,y,w,h,flows属性，前四个是横纵坐标和宽高，
+//  最后一个flows数组用来保存流动方块的zrender.Rect对象
+//======================================================================
+const addPipeFLow = function (zr, pipe, blockWidth, blockGap) {
     if (pipe.w > pipe.h) {      // 管道为横向
         let flow_num = Math.ceil(pipe.w / (blockWidth + blockGap));     // 先计算管道片段内的流动方块数
         for (let i = 0; i < flow_num; i++) {
