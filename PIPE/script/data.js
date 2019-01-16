@@ -285,4 +285,3 @@ for (let i = 0; i < draw_pipes_segment_data.length; i++) {
         }
     }
 }
-console.log(pipes)

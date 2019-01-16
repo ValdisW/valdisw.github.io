@@ -2,6 +2,7 @@
 
 // 全局变量
 let magnify = 1;        // 缩放倍数
+let totalMagnify = 1;
 
 // ZRender初始化容器
 let zr = zrender.init(document.getElementById('main'));
@@ -106,14 +107,23 @@ for (let i = 0; i < draw_pipes_segment_data.length; i++) {              // 访�
     //delete(blocks_pipe);
 }
 zr.add(blocks_pipe);
-for (let i = 0; i < draw_pipes_segment_data.length; i++) addPipeFLow(zr, draw_pipes_segment_data[i], 5, 5);      // 添加流动
-
+for (let i = 0; i < draw_pipes_segment_data.length; i++) {
+    addPipeFLow(                       // 添加流动
+        zr,
+        draw_pipes_segment_data[i],
+        blocks_pipe.children()[i],
+        5,
+        5,
+        0.5,
+        1
+    );
+}
 
 
 $('#main').get(0).onmousewheel = (e)=>{
     magnify = 1 + Math.round(e.zrDelta) * 0.06;     // 倍数更新
-
-    // 更新外框
+    totalMagnify *= magnify;
+    // 更新方块
     for (i = 0; i < blocks_outer.childCount(); i++) {
        blocks_outer.children()[i].attr({
            shape: {
@@ -132,6 +142,7 @@ $('#main').get(0).onmousewheel = (e)=>{
            }
        });
     }
+    // 更新管道
     for (i = 0; i < blocks_pipe.childCount(); i++) {
         blocks_pipe.children()[i].attr({
             shape: {
@@ -142,16 +153,18 @@ $('#main').get(0).onmousewheel = (e)=>{
             }
         });
     }
-    for (let i = 0; i < draw_pipes_segment_data.length; i++)
-        for (let j = 0; j < draw_pipes_segment_data[i].flows.length; j++) {
-            draw_pipes_segment_data[i].flows[j].attr({
-                shape: {
-                    x: magnify * ((draw_pipes_segment_data[i].flows[j].shape.x) - e.clientX) + e.clientX,
-                    y: magnify * ((draw_pipes_segment_data[i].flows[j].shape.y) - e.clientY) + e.clientY,
-                    width: (draw_pipes_segment_data[i].flows[j].shape.width) * magnify,
-                    height: (draw_pipes_segment_data[i].flows[j].shape.height) * magnify,
-                }
-            });
-
-        }
+    // 更新动画
+    for (let i = 0; i < draw_pipes_segment_data.length; i++) {
+        for (let j = 0; j < draw_pipes_segment_data[i].flows.length; j++) zr.remove(draw_pipes_segment_data[i].flows[j]);
+        addPipeFLow(                        // 添加流动
+            zr,                             // 容器对象
+            draw_pipes_segment_data[i],     // 流动方向、速度
+            blocks_pipe.children()[i],      // ZRender对象
+            5 * totalMagnify,               // 流动块宽度
+            5 * totalMagnify,               // 流动块间隔
+            0.5 * totalMagnify,             // 管壁间隙
+            totalMagnify                    // 速度
+        );
+    }
+    console.log(5 * totalMagnify);
 };

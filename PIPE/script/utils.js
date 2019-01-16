@@ -314,67 +314,49 @@ class pipeInfoToolTip{
 //  pipe是管道对象，至少包括x,y,w,h,flows属性，前四个是横纵坐标和宽高，
 //  最后一个flows数组用来保存流动方块的zrender.Rect对象
 //======================================================================
-const addPipeFLow = function (zr, pipe, blockWidth, blockGap) {
+const addPipeFLow = function (zr, pipe, pipe_zr, blockWidth, blockGap, sideGap, speed) {
     if (pipe.w > pipe.h) {      // 管道为横向
-        let flow_num = Math.ceil(pipe.w / (blockWidth + blockGap));     // 先计算管道片段内的流动方块数
+        let flow_num = Math.ceil(pipe_zr.shape.width / (blockWidth + blockGap));     // 先计算管道片段内的流动方块数
         for (let i = 0; i < flow_num; i++) {
             pipe.flows[i] = new zrender.Rect({
                 shape: {
-                    x: pipe.x + (blockWidth + blockGap) * i, y: pipe.y + 0.5,
-                    width: blockWidth, height: pipe.h - 1,
+                    x: pipe_zr.shape.x + (blockWidth + blockGap) * i, y: pipe_zr.shape.y + sideGap,
+                    width: blockWidth, height: pipe_zr.shape.height - sideGap*2,
                 },
-                style: {fill: '#282c34'},
+                style: {fill: '#282c34', opacity: 0.7},
                 silent: true,
             });
             zr.add(pipe.flows[i]);
-            pipe.flows[i].animate('shape', true).when(pipe.time, {x: pipe.x + (blockWidth + blockGap)*(i + pipe.flow_direction)}).done(function () {}).start();
+            pipe.flows[i].animate('shape', true).when(pipe.time, {x: pipe_zr.shape.x + (blockWidth + blockGap)*(i + pipe.flow_direction /** speed*/)}).done(function () {}).start();
         }
     }
     else {              // 管道为纵向
-        let flow_num = Math.ceil(pipe.h / (blockWidth + blockGap));
+        let flow_num = Math.ceil(pipe_zr.shape.height / (blockWidth + blockGap));
         for (let i = 0; i < flow_num; i++) {
             pipe.flows[i] = new zrender.Rect({
                 shape: {
-                    x: pipe.x + 0.5, y: pipe.y + (blockWidth + blockGap) * i,
-                    width: pipe.w - 1, height: blockWidth,
+                    x: pipe_zr.shape.x + sideGap, y: pipe_zr.shape.y + (blockWidth + blockGap) * i,
+                    width: pipe_zr.shape.width - sideGap*2, height: blockWidth,
                 },
-                style: {fill: '#282c34'},
+                style: {fill: '#282c34', opacity: 0.7},
                 silent: true,
             });
             zr.add(pipe.flows[i]);
-            pipe.flows[i].animate('shape', true).when(pipe.time, {y: pipe.y + (blockWidth + blockGap)*(i + pipe.flow_direction)}).done(function () {}).start();
+            pipe.flows[i].animate('shape', true).when(pipe.time, {y: pipe_zr.shape.y + (blockWidth + blockGap)*(i + pipe.flow_direction/* * speed*/)}).done(function () {}).start();
         }
     }
 };
 
-const updatePipeFlow = function (pipe, blockWidth, blockGap) {
+/*
+// 更新管道流动动画
+const updatePipeFlowAnimation = function (pipe, pipe_zr, blockWidth, blockGap, speed) {
     if (pipe.w > pipe.h) {      // 管道为横向
-        let flow_num = Math.ceil(pipe.w / (blockWidth + blockGap));     // 先计算管道片段内的流动方块数
-        for (let i = 0; i < flow_num; i++) {
-            pipe.flows[i] = new zrender.Rect({
-                shape: {
-                    x: pipe.x + (blockWidth + blockGap) * i, y: pipe.y + 0.5,
-                    width: blockWidth, height: pipe.h - 1,
-                },
-                style: {fill: '#282c34'},
-                silent: true,
-            });
-            zr.add(pipe.flows[i]);
-            pipe.flows[i].animate('shape', true).when(pipe.time, {x: pipe.x + (blockWidth + blockGap)*(i + pipe.flow_direction)}).done(function () {}).start();
-        }
+        for (let i = 0; i < pipe.flows.length; i++)
+            pipe.flows[i].animate('shape', true).when(pipe.time, {x: pipe_zr.shape.x + (blockWidth + blockGap)*(i)}).done(function () {}).start();
+            //pipe.flows[i].animate('shape', true).when(pipe.time, {x: pipe_zr.shape.x + (blockWidth + blockGap)*(i + pipe.flow_direction * speed)}).done(function () {}).start();
     }
     else {              // 管道为纵向
-        let flow_num = Math.ceil(pipe.h / (blockWidth + blockGap));
-        for (let i = 0; i < flow_num; i++) {
-            pipe.flows[i] = new zrender.Rect({
-                shape: {
-                    x: pipe.x + 0.5, y: pipe.y + (blockWidth + blockGap) * i,
-                    width: pipe.w - 1, height: blockWidth,
-                },
-                style: {fill: '#282c34'},
-                silent: true,
-            });
-            zr.add(pipe.flows[i]);
-            pipe.flows[i].animate('shape', true).when(pipe.time, {y: pipe.y + (blockWidth + blockGap)*(i + pipe.flow_direction)}).done(function () {}).start();
-        }
-    }}
+        for (let i = 0; i < pipe.flows.length; i++)
+            pipe.flows[i].animate('shape', true).when(pipe.time, {y: pipe_zr.shape.y + (blockWidth + blockGap)*(i + pipe.flow_direction * speed)}).done(function () {}).start();
+    }
+}*/
