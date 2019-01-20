@@ -140,6 +140,9 @@ $('#main').get(0).onmousewheel = (e)=>{
                y: magnify * ((blocks_inner.children()[i].shape.y) - e.clientY) + e.clientY,
                width: (blocks_inner.children()[i].shape.width) * magnify,
                height: (blocks_inner.children()[i].shape.height) * magnify,
+           },
+           style: {
+               font: parseInt(draw_blocks_data[i].font.slice(0, draw_blocks_data[i].font.indexOf('px')))*totalMagnify + draw_blocks_data[i].font.substr(draw_blocks_data[i].font.indexOf('px')),
            }
        });
     }
