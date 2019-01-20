@@ -8,21 +8,21 @@ const blocks_data = [                                           // 各方块测�
     {id: '2', name: '提标反硝化池', font: '16px Microsoft YaHei', x: 116, y: 0, w: 96, h: 62},
     {id: '2_attach', name: '', font: '16px Microsoft YaHei', x: 211, y: 0, w: 5, h: 20},
 
-    {id: '3', name: '提标\n滤布\n滤池', font: '12px Microsoft YaHei', x: 242, y: 0, w: 22, h: 62},
+    {id: '3', name: '提标\n滤布\n滤池', font: '10px Microsoft YaHei', x: 242, y: 0, w: 22, h: 62},
     {id: '7', name: '提标泵房\n及臭氧', font: '14px Microsoft YaHei', x: 298, y: -1, w: 52, h: 63},
 
-    {id: '4', name: '扩建工程调节池', font: '16px Microsoft YaHei', x: 195, y: 398, w: 236, h: 26},
+    {id: '4', name: '扩建工程调节池', font: '14px Microsoft YaHei', x: 195, y: 398, w: 236, h: 26},
     {id: '4_attach', name: '', font: '16px Microsoft YaHei', x: 308, y: 394, w: 20, h: 6},
 
     {id: '8', name: '曝气活性炭池', font: '16px Microsoft YaHei', x: 16, y: 101, w: 248, h: 51},
-    {id: '5', name: '扩建\n滤布\n滤池', font: '12px Microsoft YaHei', x: 320, y: 101, w: 27, h: 36},
+    {id: '5', name: '扩建\n滤布\n滤池', font: '11px Microsoft YaHei', x: 320, y: 101, w: 27, h: 36},
     {id: '9', name: '臭氧发生器', font: '14px Microsoft YaHei', x: 371, y: 101, w: 63, h: 41},
-    {id: '12', name: '变电站', font: '16px Microsoft YaHei', x: 442, y: 101, w: 50, h: 54},
+    {id: '12', name: '变电站', font: '14px Microsoft YaHei', x: 442, y: 101, w: 50, h: 54},
     {id: 'undefined', name: '', font: '14px Microsoft YaHei', x: 174, y: 178, w: 92, h: 5},
     {id: 'undefined', name: '', font: '14px Microsoft YaHei', x: 308, y: 178, w: 175, h: 5},
 
-    {id: '13', name: '液氧站', font: '14px Microsoft YaHei', x: 364, y: 0, w: 30, h: 30},
-    {id: '10', name: '污泥浓缩池', font: '14px Microsoft YaHei', x: 359, y: 41, w: 53, h: 30},
+    {id: '13', name: '液氧站', font: '12px Microsoft YaHei', x: 364, y: 0, w: 30, h: 30},
+    {id: '10', name: '污泥浓缩池', font: '12px Microsoft YaHei', x: 359, y: 41, w: 53, h: 30},
     {id: '11', name: '脱水机房加\n药除臭系统', font: '13px Microsoft YaHei', x: 420, y: 4, w: 72, h: 57},
 
     {id: '14_17', name: '综合控制室\n综合进出水池', font: '14px Microsoft YaHei', x: 14, y: 368, w: 138, h: 66},
