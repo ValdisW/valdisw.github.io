@@ -122,6 +122,7 @@ for (let i = 0; i < draw_pipes_segment_data.length; i++) {
 
 $('#main').get(0).onmousewheel = (e)=>{
     magnify = 1 + Math.round(e.zrDelta) * 0.06;     // 倍数更新
+    if (totalMagnify*magnify >= 3 || totalMagnify*magnify <= 0.8) magnify = 1;
     totalMagnify *= magnify;
     // 更新方块
     for (i = 0; i < blocks_outer.childCount(); i++) {
