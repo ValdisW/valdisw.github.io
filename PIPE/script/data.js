@@ -91,7 +91,7 @@ const pipes_segment_data = [
     {group: 9, x: 329, y: 62, w: pipe_radius, h: 39, color: '#FF0', time: 1000, flow_direction: -1},
 
     // 11
-    {group: 10, x: 29, y: 434, w: pipe_radius, h: 309, color: '#FF0', time: 1000, flow_direction: -1},
+    {group: 10, x: 29, y: 434, w: pipe_radius, h: 80, color: '#FF0', time: 1000, flow_direction: -1},
 
     // 12
     {group: 11, x: 108, y: 434, w: pipe_radius, h: 12, color: '#FF0', time: 1000, flow_direction: 1},
