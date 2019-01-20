@@ -4,6 +4,7 @@
 let magnify = 1;        // 缩放倍数
 let totalMagnify = 1;
 let magnifyMode = false;    // 框选放大模式
+let magnify_max = 6, magnify_min = 0.5;
 
 // ZRender初始化容器
 let zr = zrender.init(document.getElementById('main'));
@@ -76,24 +77,24 @@ magnifierButton.on('click', ()=>{
             frameHeight = (e.clientX - startX) * window.innerHeight / window.innerWidth;       // 获取选框最终宽高
             zr.remove(selectFrame);    // 移除选框
             magnifyMode = true;        // 放大模式
-            totalMagnify = window.innerWidth / frameWidth;
-            // 执行放大，改的是实际zrender矩形对象的数据，而不是原来的数据
+            totalMagnify = ((window.innerWidth / frameWidth) > magnify_max) ? magnify_max : (window.innerWidth / frameWidth);
+            // 执行放大
             // 更新方块
             for (i = 0; i < blocks_outer.childCount(); i++) {
                 blocks_outer.children()[i].attr({
                     shape: {
-                        x: (blocks_outer.children()[i].shape.x - startX) * window.innerWidth / frameWidth,
-                        y: (blocks_outer.children()[i].shape.y - startY) * window.innerHeight / frameHeight,
-                        width: blocks_outer.children()[i].shape.width * window.innerWidth / frameWidth,
-                        height: blocks_outer.children()[i].shape.height * window.innerHeight / frameHeight,
+                        x: (blocks_outer.children()[i].shape.x - startX) * totalMagnify,
+                        y: (blocks_outer.children()[i].shape.y - startY) * totalMagnify,
+                        width: blocks_outer.children()[i].shape.width * totalMagnify,
+                        height: blocks_outer.children()[i].shape.height * totalMagnify,
                     }
                 });
                 blocks_inner.children()[i].attr({
                     shape: {
-                        x: (blocks_inner.children()[i].shape.x - startX) * window.innerWidth / frameWidth,
-                        y: (blocks_inner.children()[i].shape.y - startY) * window.innerHeight / frameHeight,
-                        width: blocks_inner.children()[i].shape.width * window.innerWidth / frameWidth,
-                        height: blocks_inner.children()[i].shape.height * window.innerHeight / frameHeight,
+                        x: (blocks_inner.children()[i].shape.x - startX) * totalMagnify,
+                        y: (blocks_inner.children()[i].shape.y - startY) * totalMagnify,
+                        width: blocks_inner.children()[i].shape.width * totalMagnify,
+                        height: blocks_inner.children()[i].shape.height * totalMagnify,
                     },
                     style: {
                         font: parseInt(draw_blocks_data[i].font.slice(0, draw_blocks_data[i].font.indexOf('px')))*totalMagnify + draw_blocks_data[i].font.substr(draw_blocks_data[i].font.indexOf('px')),
@@ -105,10 +106,10 @@ magnifierButton.on('click', ()=>{
             for (i = 0; i < blocks_pipe.childCount(); i++) {
                 blocks_pipe.children()[i].attr({
                     shape: {
-                        x: (blocks_pipe.children()[i].shape.x - startX) * window.innerWidth / frameWidth,
-                        y: (blocks_pipe.children()[i].shape.y - startY) * window.innerHeight / frameHeight,
-                        width: blocks_pipe.children()[i].shape.width * window.innerWidth / frameWidth,
-                        height: blocks_pipe.children()[i].shape.height * window.innerHeight / frameHeight,
+                        x: (blocks_pipe.children()[i].shape.x - startX) * totalMagnify,
+                        y: (blocks_pipe.children()[i].shape.y - startY) * totalMagnify,
+                        width: blocks_pipe.children()[i].shape.width * totalMagnify,
+                        height: blocks_pipe.children()[i].shape.height * totalMagnify,
                     }
                 });
             }
@@ -189,7 +190,6 @@ resetButton.on('click', ()=>{
             style: {
                 font: parseInt(draw_blocks_data[i].font.slice(0, draw_blocks_data[i].font.indexOf('px')))*totalMagnify + draw_blocks_data[i].font.substr(draw_blocks_data[i].font.indexOf('px')),
             }
-
         });
     }
     // 更新管道
@@ -320,7 +320,7 @@ for (let i = 0; i < draw_pipes_segment_data.length; i++) {
 $('#main').get(0).onmousewheel = (e)=>{
     if (magnifyMode) {
         magnify = 1 + Math.round(e.zrDelta) * 0.06;     // 倍数更新
-        if (totalMagnify*magnify >= 5 || totalMagnify*magnify <= 0.8) magnify = 1;      // 缩放限制
+        if (totalMagnify*magnify >= magnify_max || totalMagnify*magnify <= magnify_min) magnify = 1;      // 缩放限制
         totalMagnify *= magnify;
         // 更新方块
         for (i = 0; i < blocks_outer.childCount(); i++) {
