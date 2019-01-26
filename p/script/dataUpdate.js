@@ -5,8 +5,8 @@
 //=====================================================
 setInterval(function () {
     for (let node in pipeVertexData) {
-        pipeVertexData[node].speed += randNum(-10, 10);
-        pipeVertexData[node].temperature += randNum(-10, 10);
-        pipeVertexData[node].pressure += randNum(-10, 10);
+        pipeVertexData[node].speed += randNum(-1, 1);
+        pipeVertexData[node].temperature += randNum(-1, 1);
+        pipeVertexData[node].pressure += randNum(-1, 1);
     }
 }, 1000);

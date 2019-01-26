@@ -7,3 +7,4 @@ const linearInterpolation = function (val1, val2, prop) {
 const randNum = function (min, max) {
     return min + Math.random() * (max - min);
 }
+

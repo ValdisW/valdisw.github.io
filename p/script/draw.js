@@ -52,9 +52,21 @@ for (let i = 0; i < pipe_num; i++) {
             style: { shadowBlur: 20, shadowColor: '#FF0'}     // 管线高亮（阴影）
         });
         // 计算鼠标指向位置的流速、温度、压力
-        let m_speed = linearInterpolation(pipeData_origin[i].vertices[0].speed, pipeData_origin[i].vertices[pipeData_origin[i].vertices.length - 1].speed, Math.abs(e.offsetY - pipeData_origin[i].vertices[0].coor[0]) / Math.abs(pipeData_origin[i].vertices[pipeData_origin[i].vertices.length - 1].coor[1] - pipeData_origin[i].vertices[0].coor[0])).toFixed(2);
-        let m_temperature = linearInterpolation(pipeData_origin[i].vertices[0].temperature, pipeData_origin[i].vertices[pipeData_origin[i].vertices.length - 1].temperature, Math.abs(e.offsetY - pipeData_origin[i].vertices[0].coor[0]) / Math.abs(pipeData_origin[i].vertices[pipeData_origin[i].vertices.length - 1].coor[1] - pipeData_origin[i].vertices[0].coor[0])).toFixed(2);
-        let m_pressure = linearInterpolation(pipeData_origin[i].vertices[0].pressure, pipeData_origin[i].vertices[pipeData_origin[i].vertices.length - 1].pressure, Math.abs(e.offsetY - pipeData_origin[i].vertices[0].coor[0]) / Math.abs(pipeData_origin[i].vertices[pipeData_origin[i].vertices.length - 1].coor[1] - pipeData_origin[i].vertices[0].coor[0])).toFixed(2);
+        let m_speed = linearInterpolation(
+            pipeData_origin[i].vertices[0].speed,
+            pipeData_origin[i].vertices[pipeData_origin[i].vertices.length - 1].speed,
+            zrender.vector.distance([e.offsetX, e.offsetY], [pipeData_origin[i].vertices[0].coor[0], pipeData_origin[i].vertices[0].coor[1]]) / zrender.vector.distance([pipeData_origin[i].vertices[pipeData_origin[i].vertices.length - 1].coor[0], pipeData_origin[i].vertices[pipeData_origin[i].vertices.length - 1].coor[1]], [pipeData_origin[i].vertices[0].coor[0], pipeData_origin[i].vertices[0].coor[1]])
+        ).toFixed(2);
+        let m_temperature = linearInterpolation(
+            pipeData_origin[i].vertices[0].temperature,
+            pipeData_origin[i].vertices[pipeData_origin[i].vertices.length - 1].temperature,
+            zrender.vector.distance([e.offsetX, e.offsetY], [pipeData_origin[i].vertices[0].coor[0], pipeData_origin[i].vertices[0].coor[1]]) / zrender.vector.distance([pipeData_origin[i].vertices[pipeData_origin[i].vertices.length - 1].coor[0], pipeData_origin[i].vertices[pipeData_origin[i].vertices.length - 1].coor[1]], [pipeData_origin[i].vertices[0].coor[0], pipeData_origin[i].vertices[0].coor[1]])
+        ).toFixed(2);
+        let m_pressure = linearInterpolation(
+            pipeData_origin[i].vertices[0].pressure,
+            pipeData_origin[i].vertices[pipeData_origin[i].vertices.length - 1].pressure,
+            zrender.vector.distance([e.offsetX, e.offsetY], [pipeData_origin[i].vertices[0].coor[0], pipeData_origin[i].vertices[0].coor[1]]) / zrender.vector.distance([pipeData_origin[i].vertices[pipeData_origin[i].vertices.length - 1].coor[0], pipeData_origin[i].vertices[pipeData_origin[i].vertices.length - 1].coor[1]], [pipeData_origin[i].vertices[0].coor[0], pipeData_origin[i].vertices[0].coor[1]])
+        ).toFixed(2);
         pipeInfoBlock.display(e.offsetX, e.offsetY, m_speed + ' km/h', m_temperature + ' °C', m_pressure + ' N');
     }).on('mouseout', function () {
         pipes[i].attr({style: {shadowBlur: 0,}});
