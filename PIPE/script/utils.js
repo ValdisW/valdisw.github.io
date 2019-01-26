@@ -22,7 +22,8 @@ class blockInfoTooltip{
                 shadowColor: '#000',
                 opacity: 0,
             },
-            zlevel: 2
+            zlevel: 2,
+            silent: true
         });
         zr.add(this.infoBlock);
 
@@ -40,7 +41,8 @@ class blockInfoTooltip{
                 textAlign: 'center',
                 opacity: 0,
             },
-            zlevel: 3
+            zlevel: 3,
+            silent: true
         });
         zr.add(this.title);
     }
@@ -75,7 +77,8 @@ class pipeInfoToolTip{
                 shadowColor: '#000',
                 opacity: 0,
             },
-            zlevel: 2
+            zlevel: 2,
+            silent: true
         });
         zr.add(this.infoBlock);
 
@@ -93,7 +96,8 @@ class pipeInfoToolTip{
                 textAlign: 'center',
                 opacity: 0,
             },
-            zlevel: 3
+            zlevel: 3,
+            silent: true
         });
         zr.add(this.title);
 
@@ -105,7 +109,8 @@ class pipeInfoToolTip{
                 image: './icons/velocity.png',
                 opacity: 0,
             },
-            zlevel: 3
+            zlevel: 3,
+            silent: true
         });
         zr.add(this.velocity_icon);
 
@@ -123,7 +128,8 @@ class pipeInfoToolTip{
                 textAlign: 'center',
                 opacity: 0,
             },
-            zlevel: 3
+            zlevel: 3,
+            silent: true
         });
         zr.add(this.velocity_label);
 
@@ -141,7 +147,8 @@ class pipeInfoToolTip{
                 textAlign: 'left',
                 opacity: 0,
             },
-            zlevel: 3
+            zlevel: 3,
+            silent: true
         });
         zr.add(this.velocity_value);
 
@@ -153,7 +160,8 @@ class pipeInfoToolTip{
                 image: './icons/temperature.png',
                 opacity: 0,
             },
-            zlevel: 3
+            zlevel: 3,
+            silent: true
         });
         zr.add(this.temperature_icon);
 
@@ -171,7 +179,8 @@ class pipeInfoToolTip{
                 textAlign: 'center',
                 opacity: 0,
             },
-            zlevel: 3
+            zlevel: 3,
+            silent: true
         });
         zr.add(this.temperature_label);
 
@@ -189,7 +198,8 @@ class pipeInfoToolTip{
                 textAlign: 'left',
                 opacity: 0,
             },
-            zlevel: 3
+            zlevel: 3,
+            silent: true
         });
         zr.add(this.temperature_value);
 
@@ -201,7 +211,8 @@ class pipeInfoToolTip{
                 image: './icons/pressure.png',
                 opacity: 0,
             },
-            zlevel: 3
+            zlevel: 3,
+            silent: true
         });
         zr.add(this.pressure_icon);
 
@@ -219,7 +230,8 @@ class pipeInfoToolTip{
                 textAlign: 'center',
                 opacity: 0,
             },
-            zlevel: 3
+            zlevel: 3,
+            silent: true
         });
         zr.add(this.pressure_label);
 
@@ -237,7 +249,8 @@ class pipeInfoToolTip{
                 textAlign: 'left',
                 opacity: 0,
             },
-            zlevel: 3
+            zlevel: 3,
+            silent: true
         });
         zr.add(this.pressure_value);
     }
