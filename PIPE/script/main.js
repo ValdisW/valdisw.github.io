@@ -48,7 +48,8 @@ let magnifierButton = new zrender.Rect({
     },
     style: {
         fill: '#666'
-    }
+    },
+    zlevel: 2
 });
 magnifierButton.on('click', ()=>{
     let selectFrame = new zrender.Rect({        // 选框
@@ -158,7 +159,8 @@ let resetButton = new zrender.Rect({
     },
     style: {
         fill: '#666'
-    }
+    },
+    zlevel: 2
 });
 resetIcon.hide();
 resetButton.hide();

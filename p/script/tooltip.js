@@ -1,13 +1,4 @@
-/*==========================================================================================
- *  ** 工具
- *==========================================================================================*/
-
-// 阈值函数
-const thresholdFunc = function (x) {
-    return (x>=0)?(1):(-1)
-}
-
-// 方块提示框 池内液体高度
+// 水池提示框
 class blockInfoTooltip{
     constructor() {
         this.infoBlock = new zrender.Rect({
@@ -22,7 +13,8 @@ class blockInfoTooltip{
                 shadowColor: '#000',
                 opacity: 0,
             },
-            zlevel: 2
+            zlevel: 3,
+            silent: true
         });
         zr.add(this.infoBlock);
 
@@ -40,7 +32,8 @@ class blockInfoTooltip{
                 textAlign: 'center',
                 opacity: 0,
             },
-            zlevel: 3
+            zlevel: 3,
+            silent: true
         });
         zr.add(this.title);
     }
@@ -75,7 +68,8 @@ class pipeInfoToolTip{
                 shadowColor: '#000',
                 opacity: 0,
             },
-            zlevel: 2
+            zlevel: 3,
+            silent: true
         });
         zr.add(this.infoBlock);
 
@@ -93,7 +87,9 @@ class pipeInfoToolTip{
                 textAlign: 'center',
                 opacity: 0,
             },
-            zlevel: 3
+            zlevel: 3,
+            silent: true
+
         });
         zr.add(this.title);
 
@@ -105,7 +101,8 @@ class pipeInfoToolTip{
                 image: './icons/velocity.png',
                 opacity: 0,
             },
-            zlevel: 3
+            zlevel: 3,
+            silent: true
         });
         zr.add(this.velocity_icon);
 
@@ -123,7 +120,8 @@ class pipeInfoToolTip{
                 textAlign: 'center',
                 opacity: 0,
             },
-            zlevel: 3
+            zlevel: 3,
+            silent: true
         });
         zr.add(this.velocity_label);
 
@@ -141,7 +139,8 @@ class pipeInfoToolTip{
                 textAlign: 'left',
                 opacity: 0,
             },
-            zlevel: 3
+            zlevel: 3,
+            silent: true
         });
         zr.add(this.velocity_value);
 
@@ -153,7 +152,8 @@ class pipeInfoToolTip{
                 image: './icons/temperature.png',
                 opacity: 0,
             },
-            zlevel: 3
+            zlevel: 3,
+            silent: true
         });
         zr.add(this.temperature_icon);
 
@@ -171,7 +171,8 @@ class pipeInfoToolTip{
                 textAlign: 'center',
                 opacity: 0,
             },
-            zlevel: 3
+            zlevel: 3,
+            silent: true
         });
         zr.add(this.temperature_label);
 
@@ -189,7 +190,8 @@ class pipeInfoToolTip{
                 textAlign: 'left',
                 opacity: 0,
             },
-            zlevel: 3
+            zlevel: 3,
+            silent: true
         });
         zr.add(this.temperature_value);
 
@@ -201,7 +203,8 @@ class pipeInfoToolTip{
                 image: './icons/pressure.png',
                 opacity: 0,
             },
-            zlevel: 3
+            zlevel: 3,
+            silent: true
         });
         zr.add(this.pressure_icon);
 
@@ -219,7 +222,8 @@ class pipeInfoToolTip{
                 textAlign: 'center',
                 opacity: 0,
             },
-            zlevel: 3
+            zlevel: 3,
+            silent: true
         });
         zr.add(this.pressure_label);
 
@@ -237,7 +241,8 @@ class pipeInfoToolTip{
                 textAlign: 'left',
                 opacity: 0,
             },
-            zlevel: 3
+            zlevel: 3,
+            silent: true
         });
         zr.add(this.pressure_value);
     }
@@ -307,43 +312,3 @@ class pipeInfoToolTip{
         this.pressure_value.attr({style: {opacity: 0}});
     }
 }
-
-//======================================================================
-//  ** 【traditional version】向管道中添加流动效果
-//----------------------------------------------------------------------
-//  pipe是管道对象，至少包括x,y,w,h,flows属性，前四个是横纵坐标和宽高，
-//  最后一个flows数组用来保存流动方块的zrender.Rect对象
-//======================================================================
-const addPipeFLow = function (zr, pipe, pipe_zr, blockWidth, blockGap, sideGap, speed) {
-    if (pipe.w > pipe.h) {      // 管道为横向
-        let flow_num = Math.ceil(pipe_zr.shape.width / (blockWidth + blockGap));     // 先计算管道片段内的流动方块数
-        for (let i = 0; i < flow_num; i++) {
-            pipe.flows[i] = new zrender.Rect({
-                shape: {
-                    x: pipe_zr.shape.x + (blockWidth + blockGap) * i, y: pipe_zr.shape.y + sideGap,
-                    width: blockWidth, height: pipe_zr.shape.height - sideGap*2,
-                },
-                style: {fill: '#282c34', opacity: 0.7},
-                silent: true,
-            });
-            zr.add(pipe.flows[i]);
-            pipe.flows[i].animate('shape', true).when(pipe.time, {x: pipe_zr.shape.x + (blockWidth + blockGap)*(i + pipe.flow_direction /** speed*/)}).done(function () {}).start();
-        }
-    }
-    else {              // 管道为纵向
-        let flow_num = Math.ceil(pipe_zr.shape.height / (blockWidth + blockGap));
-        for (let i = 0; i < flow_num; i++) {
-            pipe.flows[i] = new zrender.Rect({
-                shape: {
-                    x: pipe_zr.shape.x + sideGap, y: pipe_zr.shape.y + (blockWidth + blockGap) * i,
-                    width: pipe_zr.shape.width - sideGap*2, height: blockWidth,
-                },
-                style: {fill: '#282c34', opacity: 0.7},
-                silent: true,
-            });
-            zr.add(pipe.flows[i]);
-            pipe.flows[i].animate('shape', true).when(pipe.time, {y: pipe_zr.shape.y + (blockWidth + blockGap)*(i + pipe.flow_direction/* * speed*/)}).done(function () {}).start();
-        }
-    }
-};
-
