@@ -3,13 +3,9 @@
 //--------------------------------------------------------------------
 //    实际绘制（标题和管网）以及提示框的交互
 //====================================================================
-const linearInterpolation = function (val1, val2, prop) {
-    return val1 + prop * (val2 - val1);
-}
-
 let zr = zrender.init($('#main')[0]);
-let pipeInfoBlock =　new pipeInfoToolTip();
-let blockInfoBlock = new blockInfoTooltip();
+let pipeInfoBlock =　new pipeInfoToolTip();       // 管道提示框
+let blockInfoBlock = new blockInfoTooltip();      // 水池提示框
 
 let pipe_drawData = new Array(pipeData_origin.length);
 for (let i = 0; i < pipe_drawData.length; i++) {
