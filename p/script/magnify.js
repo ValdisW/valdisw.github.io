@@ -101,6 +101,7 @@ magnifierButton.on('click', ()=>{
                     style: {
                         lineWidth: 3 * totalMagnify,
                         lineDash: [5 * totalMagnify, 5 * totalMagnify],
+                        lineDashOffset: 0,
                     },
                 });
                 pipes_flow[i].animate('style', true).when(1000, {lineDashOffset: -1 * (10 * totalMagnify)}).done(function() {}).start();
@@ -120,8 +121,10 @@ magnifierButton.on('click', ()=>{
                     style: {
                         lineWidth: 3 * totalMagnify,
                         lineDash: [5 * totalMagnify, 5 * totalMagnify],
+                        lineDashOffset: 0,
                     },
                 });
+                pipes_noData_flow[i].animate('style', true).when(1000, {lineDashOffset: -1 * (10 * totalMagnify)}).done(function() {}).start();
             }
             // 按钮变化
             magnifierButton.hide();
@@ -199,6 +202,7 @@ resetButton.on('click', ()=>{
             style: {
                 lineWidth: 3,
                 lineDash: [5, 5],
+                lineDashOffset: 0,
             },
         });
         pipes_flow[i].animate('style', true).when(1000, {lineDashOffset: -1 * (10)}).done(function() {}).start();
@@ -266,6 +270,7 @@ $('#main').get(0).onmousewheel = (e)=>{
                 style: {
                     lineWidth: 3 * totalMagnify,
                     lineDash: [5 * totalMagnify, 5 * totalMagnify],
+                    lineDashOffset: 0,
                 },
             });
             pipes_flow[i].animate('style', true).when(1000, {lineDashOffset: -1 * (10 * totalMagnify)}).done(function() {}).start();
@@ -285,10 +290,11 @@ $('#main').get(0).onmousewheel = (e)=>{
                 style: {
                     lineWidth: 3 * totalMagnify,
                     lineDash: [5 * totalMagnify, 5 * totalMagnify],
+                    lineDashOffset: 0,
                 },
             });
+            pipes_noData_flow[i].animate('style', true).when(1000, {lineDashOffset: -1 * (10 * totalMagnify)}).done(function() {}).start();
         }
-
     }
 };
 
@@ -335,3 +341,6 @@ $('#main').mousemove(function (e) {
         }
     }
 });
+
+
+$(document).keydown(function () {console.log(pipes_flow[0].style.lineDashOffset)});
