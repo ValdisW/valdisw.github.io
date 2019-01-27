@@ -27,7 +27,7 @@ for (let i = 0; i < pipe_drawData_origin.length; i++) {
 let title = new zrender.Rect({
     shape: {
         x: 0, y: 0,
-        width: window.innerWidth, height: 140,
+        width: window.innerWidth, height: 100,
     },
     style: {
         fill: 'transparent',

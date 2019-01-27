@@ -11,7 +11,7 @@ let magnify_max = 6, magnify_min = 0.5;
 // 框选缩放功能按钮
 let magnifierIcon = new zrender.Image({
     style: {
-        x: window.innerWidth / 3 * 2 + 3, y: 30 + 3,
+        x: window.innerWidth / 3 * 2 + 3, y: 36 + 3,
         width: 30, height: 30,
         image: './icons/magnifier.png',
     },
@@ -21,7 +21,7 @@ let magnifierIcon = new zrender.Image({
 zr.add(magnifierIcon);
 let magnifierButton = new zrender.Rect({
     shape: {
-        x: window.innerWidth / 3 * 2, y: 30,
+        x: window.innerWidth / 3 * 2, y: 36,
         width: 36, height: 36,
         r: [8]
     },
@@ -142,7 +142,7 @@ zr.add(magnifierButton);
 // 复位按钮
 let resetIcon = new zrender.Image({
     style: {
-        x: window.innerWidth / 3 * 2 + 4, y: 30 + 4,
+        x: window.innerWidth / 3 * 2 + 4, y: 36 + 4,
         width: 28, height: 28,
         image: './icons/reset.png',
     },
@@ -152,7 +152,7 @@ let resetIcon = new zrender.Image({
 zr.add(resetIcon);
 let resetButton = new zrender.Rect({
     shape: {
-        x: window.innerWidth / 3 * 2, y: 30,
+        x: window.innerWidth / 3 * 2, y: 36,
         width: 36, height: 36,
         r: [8]
     },
