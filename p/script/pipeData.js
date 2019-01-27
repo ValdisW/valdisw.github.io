@@ -46,8 +46,10 @@ let pipeData_noData = [
         [pipeVertexData.input6_1.coor.slice(0)[0] + 70, 200],
         [pipeVertexData.input6_1.coor.slice(0)[0] + 70, pipeVertexData.input15_1.coor.slice(0)[1]],
     ],
+    [[pipeVertexData.output1_1.coor.slice(0)[0], -130],[pipeVertexData.output1_1.coor.slice(0)[0] + 30, -130]],
     [[pipeVertexData.input6_1.coor.slice(0)[0] + 20, pipeVertexData.output5_1.coor.slice(0)[1] + 50],[pipeVertexData.input6_1.coor.slice(0)[0] + 50, pipeVertexData.output5_1.coor.slice(0)[1] + 50]],
     [[pipeVertexData.input6_1.coor.slice(0)[0] + 20, pipeVertexData.output5_1.coor.slice(0)[1] + 90],[pipeVertexData.input6_1.coor.slice(0)[0] + 50, pipeVertexData.output5_1.coor.slice(0)[1] + 90]],
+    [],
 
     [[pipeVertexData.input7_2.coor.slice(0)[0], 235], [pipeVertexData.input6_1.coor.slice(0)[0], 235]],
 
@@ -59,10 +61,11 @@ let pipeData_noData = [
 
     [[1300, 250], [1300, pipeVertexData.input15_1.coor.slice(0)[1]]],
 
-    [[1400, 435], [1420, 435], [1420, 30],[1480, 30],[1480, -10]],
-    [[1450, 30],[1450, -10]],
-    [[1450, -100],[1450, -140], [1600, -140]],
-    [[1480, -100],[1480, -140]],
+    // 9污泥浓缩池上下
+    [[1400, 435], [1420, 435], [1420, 60],[1520, 60],[1520, 30]],
+    [[1480, 60],[1480, 30]],
+    [[1480, -50],[1480, -80], [1600, -80]],
+    [[1520, -50],[1520, -80]],
 
     [[pipeVertexData.input6_1.coor.slice(0)[0], 435], [1230, 435], [1230, 700],[1700, 700],[1700, 800],[1600, 800]],
     [[pipeVertexData.input6_1.coor.slice(0)[0], 475], [1230, 475]],
@@ -89,4 +92,8 @@ let pipeData_noData = [
     [[1030, 660], [1030, pipeVertexData.output15_5.coor.slice(0)[1]]],
     [[1100, 660], [1100, pipeVertexData.output15_5.coor.slice(0)[1]]],
     [[1130, 660], [1130, pipeVertexData.output15_5.coor.slice(0)[1]]],
+    [[1530, 660], [1530, pipeVertexData.output15_5.coor.slice(0)[1]]],
+    [[1560, 660], [1560, pipeVertexData.output15_5.coor.slice(0)[1]]],
+    [[1600, 660], [1600, pipeVertexData.output15_5.coor.slice(0)[1]]],
+    [[1630, 660], [1630, pipeVertexData.output15_5.coor.slice(0)[1]]],
 ];

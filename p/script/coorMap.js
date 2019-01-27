@@ -32,13 +32,21 @@ for (let node in pipeVertexData) {
     pipeVertexData[node].coor[1] = (pipeVertexData[node].coor[1] - minY) * (window.innerHeight - title_height) / (maxY - minY) / 8 * 7 + title_height;
 }
 let pipeVertexData_origin = JSON.parse(JSON.stringify(pipeVertexData));     // 保留原始坐标的拷贝
-let pipes_noData_drawData = new Array(pipeData_noData.length);
+
+let pipes_noData_drawData = new Array(pipeData_noData.length);      // 无数据坐标点
 for (let i = 0; i < pipes_noData_drawData.length; i++) {
     pipes_noData_drawData[i] = new Array(pipeData_noData[i].length);
     for (let segment = 0; segment < pipeData_noData[i].length; segment++) {
         pipes_noData_drawData[i][segment] = new Array(2);
         pipes_noData_drawData[i][segment][0] = (pipeData_noData[i][segment][0] - minX) * window.innerWidth / (maxX - minX) / 2 + 400;
         pipes_noData_drawData[i][segment][1] = (pipeData_noData[i][segment][1] - minY) * (window.innerHeight - title_height) / (maxY - minY) / 8 * 7 + title_height;
+    }
+}
+let pipes_noData_drawData_origin = new Array(pipes_noData_drawData.length);
+for (let i = 0; i < pipes_noData_drawData_origin.length; i++) {
+    pipes_noData_drawData_origin[i] = new Array(pipes_noData_drawData[i].length);
+    for (let j = 0; j < pipes_noData_drawData_origin[i].length; j++) {
+        pipes_noData_drawData_origin[i][j] = pipes_noData_drawData[i][j].slice(0);
     }
 }
 

@@ -105,6 +105,24 @@ magnifierButton.on('click', ()=>{
                 });
                 pipes_flow[i].animate('style', true).when(1000, {lineDashOffset: -1 * (10 * totalMagnify)}).done(function() {}).start();
             }
+            // 放大不带数据的管道
+            for (let i = 0; i < pipes_noData_drawData.length; i++) {
+                for (let j = 0; j < pipes_noData_drawData[i].length; j++) {
+                    pipes_noData_drawData[i][j][0] = (pipes_noData_drawData[i][j][0] - startX) * totalMagnify;
+                    pipes_noData_drawData[i][j][1] = (pipes_noData_drawData[i][j][1] - startY) * totalMagnify;
+                }
+                pipes_noData[i].attr({
+                    shape: {points: pipes_noData_drawData[i]},
+                    style: {lineWidth: 5 * totalMagnify},
+                });
+                pipes_noData_flow[i].attr({
+                    shape: {points: pipes_noData_drawData[i]},
+                    style: {
+                        lineWidth: 3 * totalMagnify,
+                        lineDash: [5 * totalMagnify, 5 * totalMagnify],
+                    },
+                });
+            }
             // 按钮变化
             magnifierButton.hide();
             magnifierIcon.hide();
@@ -185,6 +203,20 @@ resetButton.on('click', ()=>{
         });
         pipes_flow[i].animate('style', true).when(1000, {lineDashOffset: -1 * (10)}).done(function() {}).start();
     }
+    // 还原不带数据的管道
+    for (let i = 0; i < pipes_noData_flow.length; i++) {
+        pipes_noData[i].attr({
+            shape: {points: pipes_noData_drawData_origin[i]},
+            style: {lineWidth: 5}
+        });
+        pipes_noData_flow[i].attr({
+            shape: {points: pipes_noData_drawData_origin[i]},
+            style: {
+                lineWidth: 3,
+                lineDash: [5, 5],
+            }
+        });
+    }
 });
 zr.add(resetButton);
 
@@ -238,6 +270,25 @@ $('#main').get(0).onmousewheel = (e)=>{
             });
             pipes_flow[i].animate('style', true).when(1000, {lineDashOffset: -1 * (10 * totalMagnify)}).done(function() {}).start();
         }
+        // 放大无数据的管道
+        for (let i = 0; i < pipes_noData_drawData.length; i++) {
+            for (let j = 0; j < pipes_noData_drawData[i].length; j++) {
+                pipes_noData_drawData[i][j][0] = magnify * (pipes_noData_drawData[i][j][0] - e.clientX) + e.clientX;
+                pipes_noData_drawData[i][j][1] = magnify * (pipes_noData_drawData[i][j][1] - e.clientY) + e.clientY;
+            }
+            pipes_noData[i].attr({
+                shape: {points: pipes_noData_drawData[i]},
+                style: {lineWidth: 5 * totalMagnify},
+            });
+            pipes_noData_flow[i].attr({
+                shape: {points: pipes_noData_drawData[i]},
+                style: {
+                    lineWidth: 3 * totalMagnify,
+                    lineDash: [5 * totalMagnify, 5 * totalMagnify],
+                },
+            });
+        }
+
     }
 };
 
@@ -272,6 +323,15 @@ $('#main').mousemove(function (e) {
             }
             pipes[i].attr({shape: {points: pipeNewCoors}});
             pipes_flow[i].attr({shape: {points: pipeNewCoors}});
+        }
+        // 更新无数据的管道
+        for (let i = 0; i < pipes_noData_drawData.length; i++) {
+            for (let j = 0; j < pipes_noData_drawData[i].length; j++) {
+                pipes_noData_drawData[i][j][0] = pipes_noData_drawData[i][j][0] + e.originalEvent.movementX;
+                pipes_noData_drawData[i][j][1] = pipes_noData_drawData[i][j][1] + e.originalEvent.movementY;
+            }
+            pipes_noData[i].attr({shape: {points: pipes_noData_drawData[i]}});
+            pipes_noData_flow[i].attr({shape: {points: pipes_noData_drawData[i]}});
         }
     }
 });
