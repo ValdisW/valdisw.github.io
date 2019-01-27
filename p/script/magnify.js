@@ -218,8 +218,10 @@ resetButton.on('click', ()=>{
             style: {
                 lineWidth: 3,
                 lineDash: [5, 5],
+                lineDashOffset: 0,
             }
         });
+        pipes_noData_flow[i].animate('style', true).when(1000, {lineDashOffset: -1 * (10)}).done(function() {}).start();
     }
 });
 zr.add(resetButton);
