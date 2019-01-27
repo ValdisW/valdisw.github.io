@@ -41,7 +41,7 @@ let title = new zrender.Rect({
 });
 zr.add(title);
 
-// 绘制管道
+// 绘制带数据的管道
 let pipe_num = pipe_drawData.length;
 let pipes = new Array(pipe_num);         // 保存所有管道
 let pipes_flow = new Array(pipe_num);    // 保存所有管道的流动效果
@@ -59,6 +59,7 @@ for (let i = 0; i < pipe_num; i++) {
         pipes[i].attr({
             style: { shadowBlur: 20, shadowColor: '#FF0'}     // 管线高亮（阴影）
         });
+        console.log(pipeData_origin[i].name);
         // 计算鼠标指向位置的流速、温度、压力
         let m_speed = linearInterpolation(
             pipeData_origin[i].vertices[0].speed,
@@ -94,9 +95,39 @@ for (let i = 0; i < pipe_num; i++) {
         zlevel: 1,
         silent: true,
     });
-    //console.log(pipes_flow[i]);
     pipes_flow[i].animate('style', true).when(1000, {lineDashOffset: -1 * (10)}).done(function() {}).start();
     zr.add(pipes_flow[i]);
+}
+
+// 绘制不带数据的管道
+let pipes_noData = Array(pipes_noData_drawData.length);
+for (let i = 0; i < pipes_noData.length; i++) {
+    pipes_noData[i] = new zrender.Polyline({
+        shape: {points: pipes_noData_drawData[i]},
+        style: {
+            stroke: '#FF0',
+            lineWidth: 5,
+            opacity: 0.3
+        },
+        zlevel: 1
+    });
+    zr.add(pipes_noData[i]);
+}
+let pipes_noData_flow = Array(pipes_noData_drawData.length);
+for (let i = 0; i < pipes_noData_flow.length; i++) {
+    pipes_noData_flow[i] = new zrender.Polyline({
+        shape: {points: pipes_noData_drawData[i]},
+        style: {
+            stroke: '#282C34',
+            lineWidth: 3,
+            lineDash: [5, 5],
+            opacity: 0.7
+        },
+        zlevel: 1,
+        silent: true,
+    });
+    pipes_noData_flow[i].animate('style', true).when(1000, {lineDashOffset: -1 * (10)}).done(function() {}).start();
+    zr.add(pipes_noData_flow[i]);
 }
 
 // 绘制水池

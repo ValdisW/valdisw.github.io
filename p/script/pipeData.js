@@ -34,3 +34,59 @@ let pipeData_origin = [
     //{name: 'pipe28', vertices: [[750, 1031], pipeVertexData.input13_2]},
     //{name: 'pipe29', vertices: [[789, 990], [761, 990]]}
 ];
+let pipeData_noData = [
+    [
+        [pipeVertexData.output1_1.coor.slice(0)[0], -160],
+        [pipeVertexData.output1_1.coor.slice(0)[0] + 30, -160],
+        [pipeVertexData.output1_1.coor.slice(0)[0] + 30, -130],
+        [pipeVertexData.output1_1.coor.slice(0)[0] + 60, -130],
+        [pipeVertexData.output1_1.coor.slice(0)[0] + 60, -35],
+        [pipeVertexData.input6_1.coor.slice(0)[0] + 20, -35],
+        [pipeVertexData.input6_1.coor.slice(0)[0] + 20, 200],
+        [pipeVertexData.input6_1.coor.slice(0)[0] + 70, 200],
+        [pipeVertexData.input6_1.coor.slice(0)[0] + 70, pipeVertexData.input15_1.coor.slice(0)[1]],
+    ],
+    [[pipeVertexData.input6_1.coor.slice(0)[0] + 20, pipeVertexData.output5_1.coor.slice(0)[1] + 50],[pipeVertexData.input6_1.coor.slice(0)[0] + 50, pipeVertexData.output5_1.coor.slice(0)[1] + 50]],
+    [[pipeVertexData.input6_1.coor.slice(0)[0] + 20, pipeVertexData.output5_1.coor.slice(0)[1] + 90],[pipeVertexData.input6_1.coor.slice(0)[0] + 50, pipeVertexData.output5_1.coor.slice(0)[1] + 90]],
+
+    [[pipeVertexData.input7_2.coor.slice(0)[0], 235], [pipeVertexData.input6_1.coor.slice(0)[0], 235]],
+
+    [[1700, 250], [1700, pipeVertexData.input15_1.coor.slice(0)[1]]],
+
+    [[1150, 250], [1150, pipeVertexData.input15_1.coor.slice(0)[1]]],
+
+    [[1020, 250], [1020, pipeVertexData.input15_1.coor.slice(0)[1]]],
+
+    [[1300, 250], [1300, pipeVertexData.input15_1.coor.slice(0)[1]]],
+
+    [[1400, 435], [1420, 435], [1420, 30],[1480, 30],[1480, -10]],
+    [[1450, 30],[1450, -10]],
+    [[1450, -100],[1450, -140], [1600, -140]],
+    [[1480, -100],[1480, -140]],
+
+    [[pipeVertexData.input6_1.coor.slice(0)[0], 435], [1230, 435], [1230, 700],[1700, 700],[1700, 800],[1600, 800]],
+    [[pipeVertexData.input6_1.coor.slice(0)[0], 475], [1230, 475]],
+
+    [
+        [1670, pipeVertexData.input15_1.coor.slice(0)[1]],
+        [1670, pipeVertexData.input15_1.coor.slice(0)[1]-30],
+        [1480, pipeVertexData.input15_1.coor.slice(0)[1]-30],
+        [1480, pipeVertexData.output7_2.coor.slice(0)[1]+450],
+    ],
+    [[1600, pipeVertexData.input15_1.coor.slice(0)[1]], [1600, pipeVertexData.input15_1.coor.slice(0)[1]-30]],
+    [[pipeVertexData.input7_2.coor.slice(0)[0], pipeVertexData.output7_2.coor.slice(0)[1]-30],[pipeVertexData.input7_2.coor.slice(0)[0]+30, pipeVertexData.output7_2.coor.slice(0)[1]-30],[pipeVertexData.input7_2.coor.slice(0)[0]+30, pipeVertexData.output7_2.coor.slice(0)[1]+450],[pipeVertexData.input7_2.coor.slice(0)[0]+550, pipeVertexData.output7_2.coor.slice(0)[1]+450],[pipeVertexData.input7_2.coor.slice(0)[0]+550, pipeVertexData.output7_2.coor.slice(0)[1]+670],[1600, pipeVertexData.output7_2.coor.slice(0)[1]+670],],
+    [[980, pipeVertexData.input15_1.coor.slice(0)[1]], [980, pipeVertexData.input15_1.coor.slice(0)[1]-30], [pipeVertexData.input7_2.coor.slice(0)[0]+30, pipeVertexData.input15_1.coor.slice(0)[1]-30], ],
+    [[1080, pipeVertexData.input15_1.coor.slice(0)[1]], [1080, pipeVertexData.input15_1.coor.slice(0)[1]-30]],
+
+    [[1635, pipeVertexData.input15_1.coor.slice(0)[1]], [1635, pipeVertexData.input15_1.coor.slice(0)[1]-60], [1350, pipeVertexData.input15_1.coor.slice(0)[1]-60], [1350, pipeVertexData.output7_2.coor.slice(0)[1]]],
+    [[1050, pipeVertexData.input15_1.coor.slice(0)[1]], [1050, pipeVertexData.input15_1.coor.slice(0)[1]-60], [1350, pipeVertexData.input15_1.coor.slice(0)[1]-60]],
+
+    [[1450, 900], [1450, 950], [1750, 950]],
+
+    [[1420, 770], [1420, 740], [1650, 740], [1650, 670], [1650, 660], [1000, 660], [1000, pipeVertexData.output15_5.coor.slice(0)[1]]],
+    [[1450, 770], [1450, 740]],
+    [[1480, 770], [1480, 740]],
+    [[1030, 660], [1030, pipeVertexData.output15_5.coor.slice(0)[1]]],
+    [[1100, 660], [1100, pipeVertexData.output15_5.coor.slice(0)[1]]],
+    [[1130, 660], [1130, pipeVertexData.output15_5.coor.slice(0)[1]]],
+];

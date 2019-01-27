@@ -61,7 +61,50 @@ magnifierButton.on('click', ()=>{
             magnifyMode = true;        // 放大模式
             totalMagnify = ((window.innerWidth / frameWidth) > magnify_max) ? magnify_max : (window.innerWidth / frameWidth);
 
-            magnifyToScreen(zr, startX, startY, totalMagnify); // 执行放大
+           // magnifyToScreen(zr, startX, startY, totalMagnify); // 执行放大
+            // 放大方块
+            for (let i = 0; i < block_num; i++) {
+                blocks_outer[i].attr({
+                    shape: {
+                        x: (blocks_outer[i].shape.x - startX) * totalMagnify,
+                        y: (blocks_outer[i].shape.y - startY) * totalMagnify,
+                        width: blocks_outer[i].shape.width * totalMagnify,
+                        height: blocks_outer[i].shape.height * totalMagnify,
+                    }
+                });
+                blocks_inner[i].attr({
+                    shape: {
+                        x: (blocks_inner[i].shape.x - startX) * totalMagnify,
+                        y: (blocks_inner[i].shape.y - startY) * totalMagnify,
+                        width: blocks_inner[i].shape.width * totalMagnify,
+                        height: blocks_inner[i].shape.height * totalMagnify,
+                    },
+                    style: {
+                        font: parseInt(blockData_fit[i].font.slice(0, blockData_fit[i].font.indexOf('px')))*totalMagnify + blockData_fit[i].font.substr(blockData_fit[i].font.indexOf('px')),
+                    }
+                });
+            }
+            // 放大管道
+            for (let i = 0; i < pipe_num; i++) {        // 每条管道
+                let pipeNewCoors = new Array(pipes[i].shape.points.length);     // 是一个n-by-2的数组，用于临时保存新的折线坐标
+                for (let j = 0; j < pipes[i].shape.points.length; j++) {
+                    pipeNewCoors[j] = new Array(2);
+                    pipeNewCoors[j][0] = (pipes[i].shape.points[j][0] - startX) * totalMagnify;
+                    pipeNewCoors[j][1] = (pipes[i].shape.points[j][1] - startY) * totalMagnify;
+                }
+                pipes[i].attr({
+                    shape: {points: pipeNewCoors},
+                    style: {lineWidth: 5 * totalMagnify},
+                });
+                pipes_flow[i].attr({
+                    shape: {points: pipeNewCoors},
+                    style: {
+                        lineWidth: 3 * totalMagnify,
+                        lineDash: [5 * totalMagnify, 5 * totalMagnify],
+                    },
+                });
+                pipes_flow[i].animate('style', true).when(1000, {lineDashOffset: -1 * (10 * totalMagnify)}).done(function() {}).start();
+            }
             // 按钮变化
             magnifierButton.hide();
             magnifierIcon.hide();
@@ -232,50 +275,3 @@ $('#main').mousemove(function (e) {
         }
     }
 });
-
-// 将框选内容放大到整个视口
-const magnifyToScreen = function (zr, targetX, targetY, mag) {
-    // 放大方块
-    for (let i = 0; i < block_num; i++) {
-        blocks_outer[i].attr({
-            shape: {
-                x: (blocks_outer[i].shape.x - targetX) * mag,
-                y: (blocks_outer[i].shape.y - targetY) * mag,
-                width: blocks_outer[i].shape.width * mag,
-                height: blocks_outer[i].shape.height * mag,
-            }
-        });
-        blocks_inner[i].attr({
-            shape: {
-                x: (blocks_inner[i].shape.x - targetX) * mag,
-                y: (blocks_inner[i].shape.y - targetY) * mag,
-                width: blocks_inner[i].shape.width * mag,
-                height: blocks_inner[i].shape.height * mag,
-            },
-            style: {
-                font: parseInt(blockData_fit[i].font.slice(0, blockData_fit[i].font.indexOf('px')))*totalMagnify + blockData_fit[i].font.substr(blockData_fit[i].font.indexOf('px')),
-            }
-        });
-    }
-    // 放大管道
-    for (let i = 0; i < pipe_num; i++) {        // 每条管道
-        let pipeNewCoors = new Array(pipes[i].shape.points.length);     // 是一个n-by-2的数组，用于临时保存新的折线坐标
-        for (let j = 0; j < pipes[i].shape.points.length; j++) {
-            pipeNewCoors[j] = new Array(2);
-            pipeNewCoors[j][0] = (pipes[i].shape.points[j][0] - targetX) * mag;
-            pipeNewCoors[j][1] = (pipes[i].shape.points[j][1] - targetY) * mag;
-        }
-        pipes[i].attr({
-            shape: {points: pipeNewCoors},
-            style: {lineWidth: 5 * mag},
-        });
-        pipes_flow[i].attr({
-            shape: {points: pipeNewCoors},
-            style: {
-                lineWidth: 3 * mag,
-                lineDash: [5 * mag, 5 * mag],
-            },
-        });
-        pipes_flow[i].animate('style', true).when(1000, {lineDashOffset: -1 * (10 * mag)}).done(function() {}).start();
-    }
-}
