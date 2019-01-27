@@ -14,6 +14,14 @@ for (let i = 0; i < pipe_drawData.length; i++) {
         pipe_drawData[i][j] = pipeData_origin[i].vertices[j].coor.slice(0);
     }
 }
+// 原始数据深拷贝
+let pipe_drawData_origin = new Array(pipe_drawData.length);
+for (let i = 0; i < pipe_drawData_origin.length; i++) {
+    pipe_drawData_origin[i] = new Array(pipe_drawData[i].length);
+    for (let j = 0; j < pipe_drawData_origin[i].length; j++) {
+        pipe_drawData_origin[i][j] = pipe_drawData[i][j].slice(0);
+    }
+}
 
 // 标题文字
 let title = new zrender.Rect({

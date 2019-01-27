@@ -130,11 +130,11 @@ resetButton.on('click', ()=>{
     // 还原管道
     for (let i = 0; i < pipe_num; i++) {        // 每条管道
         pipes[i].attr({
-            shape: {points: pipeData_origin[i].vertices.slice(0)},
+            shape: {points: pipe_drawData_origin[i]},
             style: {lineWidth: 5},
         });
         pipes_flow[i].attr({
-            shape: {points: pipeData_origin[i].vertices.slice(0)},
+            shape: {points: pipe_drawData_origin[i]},
             style: {
                 lineWidth: 3,
                 lineDash: [5, 5],
