@@ -178,3 +178,81 @@ for (let i = 0; i < block_num; i++) {
     });
     zr.add(blocks_inner[i]);
 }
+
+// 最后加上花里胡哨的节点
+let flowerNodes = new Array(nodes.length);
+const drawNode_hourglass = function (zr, x, y, direc) {
+    let hourglass = new zrender.Polyline({
+        style: {stroke: '#0CC', lineWidth: 2},
+        zlevel: 2, silent: true,
+    });
+    switch (direc) {
+        case 0:
+            hourglass.attr({
+                shape: {
+                    points: [
+                        [x - 5, y - 5],
+                        [x + 5, y - 5],
+                        [x - 5, y + 5],
+                        [x + 5, y + 5],
+                        [x - 5, y - 5],
+                        [x + 5, y - 5],
+                    ]
+                },
+            });
+            break;
+        case 1:
+            hourglass.attr({
+                shape: {
+                    points: [
+                        [x + 5, y - 5],
+                        [x - 5, y + 5],
+                        [x - 5, y - 5],
+                        [x + 5, y + 5],
+                        [x + 5, y - 5],
+                        [x - 5, y + 5],
+                    ]
+                },
+            });
+            break;
+        case 2:
+            hourglass.attr({
+                shape: {
+                    points: [
+                        [x, y - 8],
+                        [x + 6, y + 4],
+                        [x - 6, y + 4],
+                        [x, y - 8],
+                    ]
+                },
+            });
+            break;
+        case 3:
+            hourglass = new zrender.Group();
+            let tmpRct1 = new zrender.Rect({
+                shape: {x: x - 13, y: y - 30, width: 26, height: 60},
+                style: {stroke: '#0CC', lineWidth: 2, fill: 'transparent'},
+                zlevel: 2, silent: true
+            });
+            let tmpRct2 = new zrender.Rect({
+                shape: {x: x - 8, y: y - 22, width: 16, height: 45},
+                style: {stroke: '#0CC', lineWidth: 2, fill: 'transparent'},
+                zlevel: 2, silent: true
+            });
+            let tmpPolyline = new zrender.Polyline({
+                shape: {points: [[x - 8, y - 22], [x + 8, y - 12], [x - 8, y - 2], [x + 8, y + 8], [x - 8, y + 18], [x, y + 23], ]},
+                style: {stroke: '#0CC', lineWidth: 2},
+                zlevel: 2, silent: true
+            });
+            hourglass.add(tmpRct1);
+            hourglass.add(tmpRct2);
+            hourglass.add(tmpPolyline);
+            break;
+    }
+    zr.add(hourglass);
+    return hourglass;
+}
+
+for (let i = 0; i < nodes.length; i++) {
+    flowerNodes[i] = drawNode_hourglass(zr, nodes[i][0], nodes[i][1], nodes[i][2]);
+}

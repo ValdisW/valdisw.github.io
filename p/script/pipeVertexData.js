@@ -7,7 +7,7 @@ const pipeVertexData = {
     // Data points on pipes
     "j1": {"use": true, "coor": [517, -105], "speed": null, "temperature": null, "pressure": null},
     "j3": {"use": true, "coor": [517, -10], "speed": null, "temperature": null, "pressure": null},
-    "j4": {"use": true, "coor": [821, -10], "speed": null, "temperature": null, "pressure": null},
+    "j4": {"use": true, "coor": [820, -10], "speed": null, "temperature": null, "pressure": null},
     "j6": {"use": true, "coor": [820, -104], "speed": null, "temperature": null, "pressure": null},
     "j7": {"use": true, "coor": [1096, -10], "speed": null, "temperature": null, "pressure": null},
     "j9": {"use": true, "coor": [1096, -107], "speed": null, "temperature": null, "pressure": null},
@@ -15,17 +15,17 @@ const pipeVertexData = {
     "j11": {"use": true, "coor": [582, 15], "speed": null, "temperature": null, "pressure": null},
     "j12": {"use": true, "coor": [582, 231], "speed": null, "temperature": null, "pressure": null},
     "j13": {"use": true, "coor": [833, 231], "speed": null, "temperature": null, "pressure": null},
-    "j14": {"use": true, "coor": [1211, -100], "speed": null, "temperature": null, "pressure": null},
-    "j15": {"use": true, "coor": [1210, 40], "speed": null, "temperature": null, "pressure": null},
+    "j14": {"use": true, "coor": [1225, -100], "speed": null, "temperature": null, "pressure": null},
+    "j15": {"use": true, "coor": [1225, 40], "speed": null, "temperature": null, "pressure": null},
     "j16": {"use": true, "coor": [596, 40], "speed": null, "temperature": null, "pressure": null},
     "j17": {"use": true, "coor": [596, 110], "speed": null, "temperature": null, "pressure": null},
     "j18": {"use": true, "coor": [596, 196], "speed": null, "temperature": null, "pressure": null},
     "j20": {"use": true, "coor": [795, 195], "speed": null, "temperature": null, "pressure": null},
     "j21": {"use": true, "coor": [910, 195], "speed": null, "temperature": null, "pressure": null},
     "j22": {"use": true, "coor": [939, 195], "speed": null, "temperature": null, "pressure": null},
-    "j23": {"use": true, "coor": [1224, -70], "speed": null, "temperature": null, "pressure": null},
-    "j24": {"use": true, "coor": [1224, 105], "speed": null, "temperature": null, "pressure": null},
-    "j25_1": {"use": true, "coor": [1224, 135], "speed": null, "temperature": null, "pressure": null},
+    "j23": {"use": true, "coor": [1240, -70], "speed": null, "temperature": null, "pressure": null},
+    "j24": {"use": true, "coor": [1240, 105], "speed": null, "temperature": null, "pressure": null},
+    "j25_1": {"use": true, "coor": [1240, 135], "speed": null, "temperature": null, "pressure": null},
     "j25_2": {"use": true, "coor": [1202, 135], "speed": null, "temperature": null, "pressure": null},
     "j26": {"use": true, "coor": [1202, 189], "speed": null, "temperature": null, "pressure": null},
     "j27": {"use": true, "coor": [975, 189], "speed": null, "temperature": null, "pressure": null},
@@ -91,7 +91,18 @@ const pipeVertexData = {
     "input17_2": {"use": true, "coor": [945, 676], "speed": null, "temperature": null, "pressure": null},
     "output17_1": {"use": true, "coor": [1000, 875], "speed": null, "temperature": null, "pressure": null},
     "output17_2": {"use": true, "coor": [1100, 875], "speed": null, "temperature": null, "pressure": null},
-
-
 };
 
+const nodes = [
+    [pipeVertexData.j1.coor.slice(0)[0], -50, 0],
+    [pipeVertexData.j6.coor.slice(0)[0], -50, 0],
+    [pipeVertexData.j9.coor.slice(0)[0], -70, 0],
+    [pipeVertexData.j30.coor.slice(0)[0], 485, 0],
+    [pipeVertexData.j21.coor.slice(0)[0], 425, 0],
+    [pipeVertexData.j26.coor.slice(0)[0], 160, 0],
+
+    [700, pipeVertexData.j18.coor.slice(0)[1], 1],
+    [pipeVertexData.j1.coor.slice(0)[0], 450, 2],
+    [pipeVertexData.j1.coor.slice(0)[0], 350, 3],
+
+];

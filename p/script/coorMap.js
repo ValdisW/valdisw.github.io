@@ -58,3 +58,13 @@ for (let i = 0; i < blockData_fit.length; i++){
     blockData_fit[i].vertex1[1] = (blockData_fit[i].vertex1[1] - minY) * (window.innerHeight - title_height) / (maxY - minY) *0.98 + title_height;
     blockData_fit[i].vertex2[1] = (blockData_fit[i].vertex2[1] - minY) * (window.innerHeight - title_height) / (maxY - minY) *0.98 + title_height;
 }
+
+// 调整花里胡哨的节点
+let nodes_origin = new Array(nodes.length);
+for (let i = 0; i < nodes.length; i++) {
+    nodes[i][0] = (nodes[i][0] - minX) * window.innerWidth / (maxX - minX) / 2 + window.innerWidth / 4;
+    nodes[i][1] = (nodes[i][1] - minY) * (window.innerHeight - title_height) / (maxY - minY) *0.98 + title_height;
+    nodes_origin[i] = new Array(2);
+    nodes_origin[i][0] = nodes[i][0];
+    nodes_origin[i][1] = nodes[i][1];
+}

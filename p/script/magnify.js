@@ -126,7 +126,10 @@ magnifierButton.on('click', ()=>{
                 });
                 pipes_noData_flow[i].animate('style', true).when(1000, {lineDashOffset: -1 * (10 * totalMagnify)}).done(function() {}).start();
             }
-            // 按钮变化
+            // 放大花里胡哨的节点
+            for (let i = 0; i < nodes.length; i++) {
+            }
+                // 按钮变化
             magnifierButton.hide();
             magnifierIcon.hide();
             resetIcon.show();

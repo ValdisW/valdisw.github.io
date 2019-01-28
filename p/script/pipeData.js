@@ -49,6 +49,11 @@ let pipeData_noData = [
     [[pipeVertexData.output1_1.coor.slice(0)[0], -130],[pipeVertexData.output1_1.coor.slice(0)[0] + 30, -130]],
     [[pipeVertexData.input6_1.coor.slice(0)[0] + 20, pipeVertexData.output5_1.coor.slice(0)[1] + 50],[pipeVertexData.input6_1.coor.slice(0)[0] + 50, pipeVertexData.output5_1.coor.slice(0)[1] + 50]],
     [[pipeVertexData.input6_1.coor.slice(0)[0] + 20, pipeVertexData.output5_1.coor.slice(0)[1] + 90],[pipeVertexData.input6_1.coor.slice(0)[0] + 50, pipeVertexData.output5_1.coor.slice(0)[1] + 90]],
+    [[pipeVertexData.output2_1.coor.slice(0)[0], -160],[pipeVertexData.output2_1.coor.slice(0)[0] + 30, -160], [pipeVertexData.output2_1.coor.slice(0)[0] + 30, -130], [pipeVertexData.output2_1.coor.slice(0)[0] + 60, -130], [pipeVertexData.output2_1.coor.slice(0)[0] + 60, -35]],
+    [[pipeVertexData.output2_1.coor.slice(0)[0], -130],[pipeVertexData.output2_1.coor.slice(0)[0] + 30, -130]],
+    [[pipeVertexData.output3_1.coor.slice(0)[0], -160],[pipeVertexData.output3_1.coor.slice(0)[0] + 20, -160], [pipeVertexData.output3_1.coor.slice(0)[0] + 20, -35]],
+    [[pipeVertexData.output3_1.coor.slice(0)[0], -100],[pipeVertexData.output3_1.coor.slice(0)[0] + 20, -100]],
+    [[pipeVertexData.output3_1.coor.slice(0)[0], -80],[pipeVertexData.output3_1.coor.slice(0)[0] + 20, -80]],
 
     [[pipeVertexData.input7_2.coor.slice(0)[0], 235], [pipeVertexData.input6_1.coor.slice(0)[0], 235]],
 
