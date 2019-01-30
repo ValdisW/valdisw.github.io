@@ -61,7 +61,6 @@ magnifierButton.on('click', ()=>{
             magnifyMode = true;        // 放大模式
             totalMagnify = ((window.innerWidth / frameWidth) > magnify_max) ? magnify_max : (window.innerWidth / frameWidth);
 
-           // magnifyToScreen(zr, startX, startY, totalMagnify); // 执行放大
             // 放大方块
             for (let i = 0; i < block_num; i++) {
                 blocks_outer[i].attr({
@@ -108,16 +107,25 @@ magnifierButton.on('click', ()=>{
             }
             // 放大不带数据的管道
             for (let i = 0; i < pipes_noData_drawData.length; i++) {
+/*
                 for (let j = 0; j < pipes_noData_drawData[i].length; j++) {
                     pipes_noData_drawData[i][j][0] = (pipes_noData_drawData[i][j][0] - startX) * totalMagnify;
                     pipes_noData_drawData[i][j][1] = (pipes_noData_drawData[i][j][1] - startY) * totalMagnify;
                 }
+*/
+                let pipeNewCoors_noData = new Array(pipes_noData[i].shape.points.length);     // 是一个n-by-2的数组，用于临时保存新的折线坐标
+                for (let j = 0; j < pipes_noData[i].shape.points.length; j++) {
+                    pipeNewCoors_noData[j] = new Array(2);
+                    pipeNewCoors_noData[j][0] = (pipes_noData[i].shape.points[j][0] - startX) * totalMagnify;
+                    pipeNewCoors_noData[j][1] = (pipes_noData[i].shape.points[j][1] - startY) * totalMagnify;
+                }
+
                 pipes_noData[i].attr({
-                    shape: {points: pipes_noData_drawData[i]},
+                    shape: {points: pipeNewCoors_noData},
                     style: {lineWidth: 5 * totalMagnify},
                 });
                 pipes_noData_flow[i].attr({
-                    shape: {points: pipes_noData_drawData[i]},
+                    shape: {points: pipeNewCoors_noData},
                     style: {
                         lineWidth: 3 * totalMagnify,
                         lineDash: [5 * totalMagnify, 5 * totalMagnify],
@@ -127,9 +135,8 @@ magnifierButton.on('click', ()=>{
                 pipes_noData_flow[i].animate('style', true).when(1000, {lineDashOffset: -1 * (10 * totalMagnify)}).done(function() {}).start();
             }
             // 放大花里胡哨的节点
-            for (let i = 0; i < nodes.length; i++) {
-            }
-                // 按钮变化
+            //for (let i = 0; i < nodes.length; i++) {}
+            // 按钮变化
             magnifierButton.hide();
             magnifierIcon.hide();
             resetIcon.show();
@@ -138,7 +145,6 @@ magnifierButton.on('click', ()=>{
             have_exec_mag = true;
         }
     });
-
 });
 zr.add(magnifierButton);
 
@@ -282,16 +288,19 @@ $('#main').get(0).onmousewheel = (e)=>{
         }
         // 放大无数据的管道
         for (let i = 0; i < pipes_noData_drawData.length; i++) {
-            for (let j = 0; j < pipes_noData_drawData[i].length; j++) {
-                pipes_noData_drawData[i][j][0] = magnify * (pipes_noData_drawData[i][j][0] - e.clientX) + e.clientX;
-                pipes_noData_drawData[i][j][1] = magnify * (pipes_noData_drawData[i][j][1] - e.clientY) + e.clientY;
+            let pipeNewCoors_noData = new Array(pipes_noData[i].shape.points.length);     // 是一个n-by-2的数组，用于临时保存新的折线坐标
+            for (let j = 0; j < pipes_noData[i].shape.points.length; j++) {
+                pipeNewCoors_noData[j] = new Array(2);
+                pipeNewCoors_noData[j][0] = magnify * (pipes_noData[i].shape.points[j][0] - e.clientX) + e.clientX;
+                pipeNewCoors_noData[j][1] = magnify * (pipes_noData[i].shape.points[j][1] - e.clientY) + e.clientY;
             }
+
             pipes_noData[i].attr({
-                shape: {points: pipes_noData_drawData[i]},
+                shape: {points: pipeNewCoors_noData},
                 style: {lineWidth: 5 * totalMagnify},
             });
             pipes_noData_flow[i].attr({
-                shape: {points: pipes_noData_drawData[i]},
+                shape: {points: pipeNewCoors_noData},
                 style: {
                     lineWidth: 3 * totalMagnify,
                     lineDash: [5 * totalMagnify, 5 * totalMagnify],
@@ -337,12 +346,33 @@ $('#main').mousemove(function (e) {
         }
         // 更新无数据的管道
         for (let i = 0; i < pipes_noData_drawData.length; i++) {
+/*
             for (let j = 0; j < pipes_noData_drawData[i].length; j++) {
                 pipes_noData_drawData[i][j][0] = pipes_noData_drawData[i][j][0] + e.originalEvent.movementX;
                 pipes_noData_drawData[i][j][1] = pipes_noData_drawData[i][j][1] + e.originalEvent.movementY;
             }
-            pipes_noData[i].attr({shape: {points: pipes_noData_drawData[i]}});
-            pipes_noData_flow[i].attr({shape: {points: pipes_noData_drawData[i]}});
+*/
+/*
+            let pipeNewCoors_noData = new Array(pipes_noData[i].shape.points.length);     // 是一个n-by-2的数组，用于临时保存新的折线坐标
+            for (let j = 0; j < pipes_noData[i].shape.points.length; j++) {
+                pipeNewCoors_noData[j] = new Array(2);
+                pipeNewCoors_noData[j][0] = pipes_noData[i].shape.points[j][0] + e.originalEvent.movementX;
+                pipeNewCoors_noData[j][1] = pipes_noData[i].shape.points[j][1] + e.originalEvent.movementY;
+            }
+            console.log(pipeNewCoors_noData);
+            pipes_noData[i].attr({shape: {points: pipes_noData_drawData}});
+            pipes_noData_flow[i].attr({shape: {points: pipes_noData_drawData}});
+*/
+
+
+            let pipeNewCoors_noData = new Array(pipes_noData[i].shape.points.length);     // 是一个n-by-2的数组，用于临时保存新的折线坐标
+            for (let j = 0; j < pipes_noData[i].shape.points.length; j++) {
+                pipeNewCoors_noData[j] = new Array(2);
+                pipeNewCoors_noData[j][0] = pipes_noData[i].shape.points[j][0] + e.originalEvent.movementX;
+                pipeNewCoors_noData[j][1] = pipes_noData[i].shape.points[j][1] + e.originalEvent.movementY;
+            }
+            pipes_noData[i].attr({shape: {points: pipeNewCoors_noData}});
+            pipes_noData_flow[i].attr({shape: {points: pipeNewCoors_noData}});
         }
     }
 });

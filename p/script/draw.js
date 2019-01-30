@@ -180,7 +180,7 @@ for (let i = 0; i < block_num; i++) {
 }
 
 // 最后加上花里胡哨的节点
-/* 
+/*
 let flowerNodes = new Array(nodes.length);
 const drawNode_hourglass = function (zr, x, y, direc) {
     let hourglass = new zrender.Polyline({
