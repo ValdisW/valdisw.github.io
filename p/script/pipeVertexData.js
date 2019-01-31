@@ -55,6 +55,10 @@ const pipeVertexData = {
     "j56": {"use": true, "coor": [866, 990], "speed": null, "temperature": null, "pressure": null},
     "j59": {"use": true, "coor": [1000, 989], "speed": null, "temperature": null, "pressure": null},
 
+    "_j60": {"use": true, "coor": [550, 990], "speed": null, "temperature": null, "pressure": null},
+    "outside": {"use": true, "coor": [750, 1050], "speed": null, "temperature": null, "pressure": null},
+
+
     // Data points attached to blocks
     "input1_1": {"use": true, "coor": [587, -105], "speed": null, "temperature": null, "pressure": null},
     "output1_1": {"use": true, "coor": [784, -105], "speed": null, "temperature": null, "pressure": null},

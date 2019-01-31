@@ -30,8 +30,8 @@ let pipeData_origin = [
     {name: 'pipe24', vertices: [pipeVertexData.output13_4, pipeVertexData.j50, pipeVertexData.j49]},
     {name: 'pipe25', vertices: [pipeVertexData.output13_5, pipeVertexData.j51, pipeVertexData.j50]},
     {name: 'pipe26', vertices: [pipeVertexData.output17_1, pipeVertexData.j59, pipeVertexData.j56/*, [805, 990]*/]},
-    {name: 'pipe27', vertices: [pipeVertexData.output17_2, pipeVertexData.j52, pipeVertexData.j53, pipeVertexData.j55, pipeVertexData.j56]},
-    //{name: 'pipe28', vertices: [[750, 1031], pipeVertexData.input13_2]},
+    {name: 'pipe27', vertices: [pipeVertexData.output17_2, pipeVertexData.j52, pipeVertexData.j53, pipeVertexData.j55, pipeVertexData.j56, pipeVertexData._j60]},
+    {name: 'pipe28', vertices: [pipeVertexData.outside, pipeVertexData.input13_2]},
     //{name: 'pipe29', vertices: [[789, 990], [761, 990]]}
 ];
 let pipeData_noData = [
