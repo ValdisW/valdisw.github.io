@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        *{margin: 0; padding: 0; cursor: none}
+        body{overflow-y: hidden}
+        #info{
+            position: absolute;
+        }
+        .progress{
+            position: absolute;
+            top: 3%; left: 3%;
+            height: 20px; width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div id="hp-container" class="progress">
+        <div id="hp-bar" class="progress-bar"></div>
+    </div>
+    <div id="info">
+        <!-- <p v-text="pst"></p>
+        <p v-text="spd"></p>
+        <p v-text="acc"></p> -->
+
+    </div>
+    <script src="https://cdn.bootcss.com/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/p5.min.js"></script>
+
+    <script>
+        let bullets = [];
+        let enemies = [];
+        let player;
+        let hpContainer = $('#hp-container'), hpBar = $('#hp-bar');
+
+        // 飞行对象
+        class Flying{
+            constructor(config) {
+                this.position = config.position;                    // 位置
+                this.direction = config.direction.normalize();      // 飞行方向
+                this.radius = config.radius;                        // 半径
+
+                this.speed = config.speed;                          // 飞行速度
+                this.color = config.color;                          // 颜色
+
+            }
+
+            // 根据飞行方向更新位置信息
+            update() {
+                this.position.add(this.direction.setMag(this.speed));
+            }
+
+            // 根据位置信息绘制对象
+            render() {
+                fill(this.color);
+                ellipse(this.position.x, this.position.y, this.radius * 2, this.radius * 2);
+            }
+        }
+
+        // 受重力影响的对象
+        class Fallable{
+            constructor(position) {
+                this.position = position;   // 位置
+                this.speed = 1;             // 移动速度
+                this.jumpSpeed = 20;        // 跳跃初速度
+                this.color = color(0);      // 颜色
+
+                this.velocity = createVector(0, 0);         // 初始速度
+                this.acceleration = createVector(0, 1);     // 初始加速度
+            }
+
+            // 根据加速度更新速度
+            updateVelocity() {
+                this.velocity.set(this.velocity.x + this.acceleration.x, this.velocity.y + this.acceleration.y);
+            }
+
+            // 根据速度更新位置
+            updatePosition() {        
+                this.position.set(this.position.x + this.velocity.x, this.position.y + this.velocity.y);    
+            }
+
+            collision () {
+                // 边界处理
+                let f = 0.6;
+                if (this.position.x - this.radius < 0){
+                    this.position.x = 0 + this.radius;
+                }
+                if (this.position.y - this.radius < 0) {
+                    this.position.y = 0 + this.radius;
+                }
+                if (this.position.x + this.radius >= windowWidth) {
+                    this.position.x = windowWidth - this.radius;
+                }
+                if (this.position.y + this.radius >= windowHeight) {
+                    this.position.y = windowHeight - this.radius;
+                }
+
+                if (this.position.x == 0 + this.radius){
+                    this.velocity.x = round(-f * this.velocity.x);
+                }
+                if (this.position.y == 0 + this.radius){
+                    this.velocity.y = round(-f * this.velocity.y);
+                }
+                if (this.position.x == windowWidth - this.radius){
+                    this.velocity.x = round(-f * this.velocity.x);
+                }
+                if (this.position.y == windowHeight - this.radius){
+                    this.velocity.y = round(-f * this.velocity.y);
+                }
+            }
+
+            // 跳跃
+            jump () {
+                if (this.position.y == height - this.radius)this.velocity.y -= this.jumpSpeed;
+            }
+
+            // 移动
+            move (direction) {
+                switch (direction) {
+                    case 'left':
+                        this.velocity.x += -this.speed;
+                        //this.position.x -= this.speed;
+                        break;
+
+                    case 'right':
+                        this.velocity.x += this.speed;
+                        //this.position.x += this.speed;
+                        break;
+                }
+            }
+
+            update () {
+                this.updateVelocity();      // 根据加速度更新速度
+                this.updatePosition();      // 根据速度更新位置
+                this.collision();           // 碰撞
+            }
+
+            render () {
+                fill(this.color);
+                ellipse(this.position.x, this.position.y, this.radius * 2, this.radius * 2);
+            }
+        }
+
+        // 子弹
+        class Bullet extends Flying{
+            constructor(config) {
+                super(config);
+                this.isValid = true;
+            }
+            update() {
+                super.update();
+                // 出界处理
+                if (this.position.x > width || this.position.x < 0 || this.position.y > height || this.position.y < 0) {
+                    this.isValid = false;
+                }
+            }
+            render() {
+                if (this.isValid) {
+                    super.render();
+                }
+            }
+        }
+
+        // 会飞的敌人
+        class FlyingEnemy extends Flying{
+            constructor(config) {
+                super(config);
+                this.isAlive = true;
+                this.attack = 10;
+            }
+            collision () {
+                // 边界处理
+                let f = 0.6;
+                if (this.position.x - this.radius < 0){
+                    this.position.x = 0 + this.radius;
+                }
+                if (this.position.y - this.radius < 0) {
+                    this.position.y = 0 + this.radius;
+                }
+                if (this.position.x + this.radius >= windowWidth) {
+                    this.position.x = windowWidth - this.radius;
+                }
+                if (this.position.y + this.radius >= windowHeight) {
+                    this.position.y = windowHeight - this.radius;
+                }
+
+                if (this.position.x == 0 + this.radius){
+                    this.direction.x = round(-f * this.direction.x);
+                }
+                if (this.position.y == 0 + this.radius){
+                    this.direction.y = round(-f * this.direction.y);
+                }
+                if (this.position.x == windowWidth - this.radius){
+                    this.direction.x = round(-f * this.direction.x);
+                }
+                if (this.position.y == windowHeight - this.radius){
+                    this.direction.y = round(-f * this.direction.y);
+                }
+            }
+            update() {
+                // 主动动作
+                if (Math.round(Math.random()-0.45)) this.direction = p5.Vector.random2D();
+
+                this.collision();
+                super.update();
+
+                // 判断是否被击中
+                for (let b of bullets) {
+                    let d = p5.Vector.dist(b.position, this.position);
+                    if (d <= this.radius + b.radius) {
+                        this.isAlive = false;
+                        b.isValid = false;
+                    }
+                }
+                // 判断是否接触玩家
+                let d_p = p5.Vector.dist(player.position, this.position);
+                if (d_p <= this.radius + player.radius) {
+                    this.isAlive = false;
+                    player.hp -= this.attack;
+                }
+            }
+            render() {
+                super.render();
+            }
+        }
+
+        // 普通敌人
+        class Enemy extends Fallable{
+            constructor(position) {
+                super(position);
+                this.radius = 12;
+                this.isAlive = true;
+                this.attack = 10;
+            }
+            update() {
+                // 更新位置
+                super.update();
+
+                // 主动动作
+                if (Math.round(Math.random()-0.45)) this.jump();
+                if (Math.round(Math.random()-0.45)) this.move('left');
+                if (Math.round(Math.random()-0.45)) this.move('right');
+
+
+                // 判断是否被击中
+                for (let b of bullets) {
+                    let d = p5.Vector.dist(b.position, this.position);
+                    if (d <= this.radius + b.radius) {
+                        this.isAlive = false;
+                        b.isValid = false;
+                    }
+                }
+                // 判断是否接触玩家
+                let d_p = p5.Vector.dist(player.position, this.position);
+                if (d_p <= this.radius + player.radius) {
+                    this.isAlive = false;
+                    player.hp -= this.attack;
+                }
+            }
+            render() {
+                if (this.isAlive) {
+                    fill(128);
+                    ellipse(this.position.x, this.position.y, this.radius * 2, this.radius * 2);
+                }
+            }
+        }
+
+        // 玩家
+        class Player extends Fallable{
+            constructor(position) {
+                super(position);
+
+                this.mass = 10;             // 质量
+                this.radius = 30;           // 半径
+                this.hp = 100;              // 生命值
+
+                this.maxSpeed = 4;          // 最大速度
+
+                this.color = color(0);
+
+            }
+            
+            update () {
+                super.update();
+                if (this.hp <= 0) {
+                    this.color = color(0, 0, 0, 0);
+                }
+            }
+
+            shoot() {
+                bullets.push(new Bullet({
+                    position: player.position.copy(),
+                    direction: createVector(mouseX - player.position.x, mouseY - player.position.y),
+                    color: color(0),
+                    radius: 2,
+                    speed: 10
+                }));
+            }
+        }
+
+        function setup() {
+            createCanvas(windowWidth, windowHeight);
+            player = new Player(createVector(500, 500));
+
+            new Vue({
+                el: '#info',
+                data: {
+                    pst: player.position,
+                    spd: player.velocity,
+                    acc: player.acceleration
+                }
+            });
+        }
+
+        let time = 0;
+        function draw() {
+            // 每帧清屏
+            fill(255, 255, 255);
+            rect(0, 0, width, height);
+
+            // 更新子弹
+            for (let i = bullets.length - 1; i >= 0; i--) {
+                if (!bullets[i].isValid) bullets.splice(i, 1);
+            }
+            for (let i = 0; i < bullets.length; i++) {
+                bullets[i].update();
+                bullets[i].render();
+            }
+
+            // 添加敌人
+            if (Math.round(Math.random()-0.495)) enemies.push(new Enemy(createVector(random(floor(width)), height/2)));
+            if (Math.round(Math.random()-0.495)) enemies.push(new FlyingEnemy({
+                position: createVector(random(floor(width)), height/2),
+                direction: p5.Vector.random2D(),
+                color: color(172),
+                radius: 20,
+                speed: 2
+            }));
+
+            // 如果敌人标记死亡，则从数组中移除
+            for (let i = enemies.length - 1; i >= 0; i--) {
+                if (!enemies[i].isAlive) enemies.splice(i, 1);
+            }
+
+            // 绘制敌人
+            for (let e of enemies) {
+                e.update();
+                e.render();
+            }
+
+            // 血条处理
+            hpBar.css({'width': player.hp + '%'});
+            if (player.hp > 60 && player.hp <=100 ) hpBar.addClass('progress-bar-success');
+            if (player.hp > 20 && player.hp <= 60 ) hpBar.addClass('progress-bar-warning');
+            if (player.hp <= 20 ) hpBar.addClass('progress-bar-danger');
+
+            // 画准星
+            _drawSight(PI/180 * time);
+
+            // 更新玩家
+            player.update();
+            player.render();
+
+            time ++;
+        }
+
+        function keyPressed() {
+            if (key === ' ') {
+                player.jump();
+            }
+        }
+        function keyTyped() {
+            if (keyIsDown(65)) {
+                player.move('left');
+            }
+            if (keyIsDown(68)) {
+                player.move('right');
+            }
+        }
+        
+        function mouseClicked() {
+            // 单击鼠标左键射击
+            if (mouseButton == 'left') {
+                player.shoot();
+            }
+        }
+
+        // 准星
+        function _drawSight(off) {
+            let num = 3;
+            fill(0);
+            ellipse(mouseX, mouseY, 2, 2);
+            for (let i = 0; i < num; i++) {
+                triangle(
+                    mouseX + 10*cos(2*PI/num*i + off), mouseY + 10*sin(2*PI/num*i + off),
+                    mouseX + 20*cos(2*PI/num*i - 2*PI/num/10 + off), mouseY + 20*sin(2*PI/num*i - 2*PI/num/10 + off),
+                    mouseX + 20*cos(2*PI/num*i + 2*PI/num/10 + off), mouseY + 20*sin(2*PI/num*i + 2*PI/num/10 + off)
+                );
+
+            }
+        }
+
+    </script>
+</body>
+</html>
