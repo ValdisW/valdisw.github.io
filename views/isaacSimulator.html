@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Isaac</title>
+    <style>
+        *{margin: 0; padding: 0; cursor: none}
+        body{overflow-y: hidden}
+    </style>
+</head>
+<body>
+    <script src="https://cdn.bootcss.com/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/p5.min.js"></script>
+    <script>
+        // 全局变量
+        let player = void 0;
+        let enemies = [];
+        let time = 0;
+
+        // 记录键位
+        let trigger = {
+            up: false,
+            down: false,
+            left: false,
+            right: false,
+        };
+
+        // 房间类
+        class Room{
+            constructor(){
+
+            }
+        }
+
+        // 玩家类
+        class Player{
+            constructor (config) {
+                this.position = config.position;    // 位置
+                this.color = config.color;          // 颜色
+                this.radius = config.radius;        // 半径
+
+                this.speed = config.speed;          // 移动速度
+                this.tears = config.tears || 30;    // 射速
+                this.attack = config.attack || 30;  // 攻击
+
+                this.bullets = [];                  // 存放子弹
+
+                this.hitpoints = 3;                 // 生命值
+                this.maxHP = 3;                     // 最大生命值
+
+                this.cd = 0;                        // 冷却时间，用来处理射速问题
+
+                this.isShooting = false;            // 是否在射击
+                this.shootingDirection = void 0;    // 射击方向
+
+                this.isTakingDamage = false;                        // 是否在受伤的无敌时间内
+                this.takeDamageTime = Math.NEGATIVE_INFINITY;       // 上次受伤时间
+            }
+
+            // 射击，每被调用一次就会生成新的子弹
+            _shoot(d) {
+                // 冷却时间
+                if (this.cd > 0) {
+                    this.cd--;
+                }else {
+                    this.bullets.push(new Bullet({
+                        position: player.position.copy(),
+                        direction: d,
+                        range: 400
+                    }));
+                    this.cd = this.tears;
+                }
+            }
+
+            // 掉血，刚掉血的时候会有三秒的无敌状态
+            _takeDamage(time) {
+                if (!this.isTakingDamage) {         // 不在无敌状态才会扣血，扣血后进入短暂无敌状态
+                    this.hitpoints--;
+                    this.isTakingDamage = true;
+                    this.takeDamageTime = time;     //  记录受伤时间，在此时间三秒后解除无敌状态
+                }
+            }
+
+            // 每帧数据更新
+            update(time) {
+                // 如果玩家在射击，则生成子弹
+                if (this.isShooting) {
+                    this._shoot(this.shootingDirection);
+                }
+
+                // 如果玩家被怪碰到，掉血
+                for (let enemy of enemies) {
+                    if (this.position.dist(enemy.position) <= this.radius + enemy.radius) {
+                        this._takeDamage(time);
+                    }
+                }
+                // 解除无敌状态
+                if (time - this.takeDamageTime > 100) {
+                    this.isTakingDamage = false;
+                }
+            }
+
+            // 每帧渲染内容，玩家外观的变化
+            render(time) {
+                if (this.isTakingDamage && time % 6 == 0) {
+                    fill(color(0, 0, 0, 0));
+                }else {
+                    fill(color(this.color));
+                }
+                ellipse(this.position.x, this.position.y, this.radius * 2, this.radius * 2);
+            }
+        }
+
+        // 子弹类
+        class Bullet{
+            constructor(config) {
+                this.position = config.position;        // 位置
+                this.direction = config.direction;      // 方向
+                this.range = config.range || 500;       // 范围
+                this.radius = config.radius || 8;       // 半径
+                this.speed = config.speed || 5;         // 弹速
+                this.color = config.color || color(172);// 颜色
+                this.lifespan = this.range;
+                this.isValid = true;
+            }
+            update() {
+                this.position.add(this.direction.setMag(this.speed));
+                this.lifespan -= this.speed;
+                if (this.lifespan <= 0) this.isValid = false;
+            }
+            render() {
+                fill(this.color);
+                ellipse(this.position.x, this.position.y, this.radius * 2, this.radius * 2);
+            }
+        }
+
+        // 敌人类
+        class Enemy{
+            constructor(config) {
+                this.position = config.position || createVector(width / 2, height / 2);
+                this.direction = config.direction || createVector(100, 100);
+                this.hp = config.hp || 100;             // 血量
+                this.radius = config.radius || 20;      // 半径
+                this.speed = config.speed || 4;         // 速度
+                this.sight = config.sight || 600;       // 视野
+                this.color = config.color || color(255, 0, 0);
+                this.isAlive = true;                    // 是否活着
+            }
+
+            // 每帧数据更新
+            update() {
+                //========================================================================
+                // 位置更新
+                //========================================================================
+                // 如果发现玩家则靠近玩家，否则随机移动
+                if (this.position.dist(player.position) <= this.sight) {
+                    this.position.add(player.position.copy().sub(this.position).normalize().setMag(this.speed));
+                }else {
+                    this.position.add(p5.Vector.random2D().setMag(this.speed));
+                }
+                // 避免和玩家以及其他敌人位置重叠
+                for (let enemy of enemies) {
+                    if (this === enemy) continue;   // 这个"其他敌人"是自己
+                    if (this.position.dist(enemy.position) <= this.radius + enemy.radius) {
+                        this.position.add(this.position.copy().sub(enemy.position).normalize().setMag(this.speed));
+                    }
+                }
+                if (this.position.dist(player.position) <= this.radius + player.radius/3) {
+                    this.position.add(this.position.copy().sub(player.position).normalize().setMag(this.speed));
+                }
+
+                //========================================================================
+                // 被打
+                //========================================================================
+                for (let bullet of player.bullets) {
+                    if (this.position.dist(bullet.position) <= this.radius + bullet.radius) {
+                        this.hp -= player.attack;
+                        bullet.isValid = false;
+                    }
+                }
+                if (this.hp <= 0) this.isAlive = false;
+
+            }
+
+            // 每帧渲染内容
+            render() {
+                fill(this.color);
+                ellipse(this.position.x, this.position.y, this.radius * 2, this.radius * 2);
+            }
+        }
+
+        function setup(){
+            // 创建画布
+            createCanvas(windowWidth, windowHeight);
+
+            player = new Player({
+                position: createVector(width / 2, height / 2),
+                color: color(255),
+                radius: 20,
+                speed: 6
+            });
+
+            for (let i = 0; i < 5; i++) {
+                enemies.push(new Enemy({
+                    position: createVector(random(width), random(height)),
+                    radius: 25
+                }));
+            }
+        }
+
+        function draw() {
+            fill(64);
+            rect(0, 0, width, height);
+            for (let i = 0; i < player.maxHP; i++) {
+                if (i+1 > player.hitpoints) {
+                    fill(0, 0, 0, 0);
+                }else {
+                    fill(255, 0, 0);
+                }
+                ellipse(70 + i * 40, 70, 20, 20);
+            }
+
+            // 更新玩家
+            player.update(time);
+            player.render(time);
+
+            // 更新敌人
+            for (let i = enemies.length-1; i >= 0; i--) {
+                if (!enemies[i].isAlive) enemies.splice(i, 1);
+            }
+            for (enemy of enemies) {
+                enemy.update();
+                enemy.render();
+            }
+
+            // 更新子弹
+            for (let i = player.bullets.length-1; i >= 0; i--) {
+                if (!player.bullets[i].isValid) player.bullets.splice(i, 1);
+            }
+            for (let b of player.bullets) {
+                b.update();
+                b.render();
+            }
+
+            // 键盘操作
+            if (keyIsDown(65)) {
+                player.position.x -= player.speed;
+            }
+            if (keyIsDown(68)) {
+                player.position.x += player.speed;
+            }
+            if (keyIsDown(87)) {
+                player.position.y -= player.speed;
+            }
+            if (keyIsDown(83)) {
+                player.position.y += player.speed;
+            }
+
+            time ++;
+        }
+
+        // 监听键位被按下
+        function keyPressed() {
+            if (key === 'ArrowLeft') {trigger.left = true; player.shootingDirection = createVector(-1, 0);}
+            if (key === 'ArrowRight') {trigger.right = true; player.shootingDirection = createVector(1, 0);}
+            if (key === 'ArrowUp') {trigger.up = true; player.shootingDirection = createVector(0, -1);}
+            if (key === 'ArrowDown') {trigger.down = true; player.shootingDirection = createVector(0, 1);}
+            // 四个方向键任意一个被按下，判定玩家射击
+            if (trigger.up || trigger.down || trigger.left || trigger.right) {
+                player.isShooting = true;
+            }
+        }
+
+        // 监听键位被松开
+        function keyReleased() {
+            if (key === 'ArrowLeft') {trigger.left = false;}
+            if (key === 'ArrowRight') {trigger.right = false;}
+            if (key === 'ArrowUp') {trigger.up = false;}
+            if (key === 'ArrowDown') {trigger.down = false;}
+            // 四个方向键均未按下时，判定玩家没有在射击
+            if (!(trigger.up || trigger.down || trigger.left || trigger.right)) {
+                player.isShooting = false;
+            }
+       }
+    </script>
+
+</body>
+</html>

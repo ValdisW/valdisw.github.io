@@ -67,7 +67,8 @@
         class Fallable{
             constructor(position) {
                 this.position = position;   // 位置
-                this.speed = 1;             // 移动速度
+                this.move_velocity = 12;      // 移动加速度
+                this.maxSpeed = 4;
                 this.jumpSpeed = 20;        // 跳跃初速度
                 this.color = color(0);      // 颜色
 
@@ -117,20 +118,23 @@
 
             // 跳跃
             jump () {
-                if (this.position.y == height - this.radius)this.velocity.y -= this.jumpSpeed;
+                if (this.position.y == height - this.radius) this.velocity.y -= this.jumpSpeed;
             }
 
             // 移动
             move (direction) {
                 switch (direction) {
                     case 'left':
-                        this.velocity.x += -this.speed;
+                        this.position.x += -this.move_velocity;
                         //this.position.x -= this.speed;
                         break;
 
                     case 'right':
-                        this.velocity.x += this.speed;
+                        this.position.x += this.move_velocity;
                         //this.position.x += this.speed;
+                        break;
+                    case 'stay':
+                        this.velocity.x = 0;
                         break;
                 }
             }
@@ -246,6 +250,7 @@
                 if (Math.round(Math.random()-0.45)) this.jump();
                 if (Math.round(Math.random()-0.45)) this.move('left');
                 if (Math.round(Math.random()-0.45)) this.move('right');
+                if (Math.round(Math.random()-0.45)) this.move('stay');
 
 
                 // 判断是否被击中
@@ -308,14 +313,12 @@
             createCanvas(windowWidth, windowHeight);
             player = new Player(createVector(500, 500));
 
-            new Vue({
-                el: '#info',
-                data: {
-                    pst: player.position,
-                    spd: player.velocity,
-                    acc: player.acceleration
-                }
-            });
+            // new Vue({
+            //     el: '#info',
+            //     data: {
+            //         pst: player.position,
+            //     }
+            // });
         }
 
         let time = 0;
@@ -374,14 +377,17 @@
             if (key === ' ') {
                 player.jump();
             }
-        }
-        function keyTyped() {
-            if (keyIsDown(65)) {
+            if (key === 'a') {
                 player.move('left');
             }
-            if (keyIsDown(68)) {
+            if (key === 'd') {
                 player.move('right');
             }
+        }
+
+        function keyReleased() {
+            if (key === 'a' || key === 'd')
+                player.move('stay');
         }
         
         function mouseClicked() {
