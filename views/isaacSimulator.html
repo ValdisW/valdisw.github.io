@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Isaac</title>
+    <title>Isaac Simulator</title>
     <style>
         *{margin: 0; padding: 0; cursor: none}
         body{overflow-y: hidden}
+
     </style>
 </head>
 <body>
@@ -15,10 +16,15 @@
     <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/p5.min.js"></script>
     <script>
+        //===============================================================
         // 全局变量
-        let player = void 0;
-        let enemies = [];
-        let time = 0;
+        //===============================================================
+        let room = void 0,
+            player = void 0,
+            enemies = [],
+            time = 0,
+            score = 0,
+            stats;
 
         // 记录键位
         let trigger = {
@@ -28,23 +34,87 @@
             right: false,
         };
 
-        // 房间类
-        class Room{
-            constructor(){
+        // 时间格式转化
+        const timeFormatter = function(sec) {
+            let minutes = parseInt(sec / 60),
+                hours = parseInt(minutes / 60),
+                seconds = sec % 60;
+            if (minutes < 10) minutes = '0' + minutes;
+            if (hours < 10) hours = '0' + hours;
+            if (seconds < 10) seconds = '0' + seconds;
 
+            return hours + ':' + minutes + ':' + seconds;
+        }
+
+        //===============================================================
+        // 房间类
+        //===============================================================
+        class Room{
+            constructor(config){
+                this.leftFloor = config.leftFloor;
+                this.rightFloor = config.rightFloor;
+                this.upFloor = config.upFloor;
+                this.downFloor = config.downFloor;
+                this.leftCeil = config.leftCeil;
+                this.rightCeil = config.rightCeil;
+                this.upCeil = config.upCeil;
+                this.downCeil = config.downCeil;
+            }
+            render() {
+                // 绘制墙壁
+                fill(94, 64, 58);
+                quad(this.leftCeil, this.upCeil, this.rightCeil, this.upCeil, this.rightFloor, this.upFloor, this.leftFloor, this.upFloor);
+                quad(this.leftCeil, this.upCeil, this.leftFloor, this.upFloor, this.leftFloor, this.downFloor, this.leftCeil, this.downCeil);
+                quad(this.leftCeil, this.downCeil, this.rightCeil, this.downCeil, this.rightFloor, this.downFloor, this.leftFloor, this.downFloor);
+                quad(this.rightCeil, this.upCeil, this.rightFloor, this.upFloor, this.rightFloor, this.downFloor, this.rightCeil, this.downCeil);
+                
+                // 绘制地板
+                fill(74, 44, 45);
+                rect(this.leftFloor, this.upFloor, this.rightFloor - this.leftFloor, this.downFloor - this.upFloor);
             }
         }
 
-        // 玩家类
-        class Player{
+        //===============================================================
+        // 游戏对象
+        //---------------------------------------------------------------
+        //  房间内所有实体对象都继承于此
+        //===============================================================
+        class GameObject{
+            constructor(config) {
+                this.position = config.position || createVector(width/2, height/2);
+                this.color = config.color || color(255);
+                this.radius = config.radius || 15;
+            }
+            update() {
+                if (this.position.x <= room.leftFloor) this.position.x = room.leftFloor;
+                if (this.position.x >= room.rightFloor) this.position.x = room.rightFloor;
+                if (this.position.y <= room.upFloor) this.position.y = room.upFloor;
+                if (this.position.y >= room.downFloor) this.position.y = room.downFloor;
+            }
+        }
+
+        // 可移动对象
+        class Moveable extends GameObject{
+            constructor(config) {
+                super(config);
+            }
+        }
+
+        //===============================================================
+        // Player
+        //---------------------------------------------------------------
+        //  玩家的类
+        //===============================================================
+        class Player extends Moveable{
             constructor (config) {
-                this.position = config.position;    // 位置
-                this.color = config.color;          // 颜色
-                this.radius = config.radius;        // 半径
+                super(config);
 
                 this.speed = config.speed;          // 移动速度
+                this.range = config.range || 400,   // 射程
                 this.tears = config.tears || 30;    // 射速
+                this.bulletSpeed = config.bulletSpeed || 5;  // 弹速
                 this.attack = config.attack || 30;  // 攻击
+                this.luck = config.luck || 0;       // 幸运
 
                 this.bullets = [];                  // 存放子弹
 
@@ -68,14 +138,17 @@
                 }else {
                     this.bullets.push(new Bullet({
                         position: player.position.copy(),
+                        color: color(172),
+                        speed: this.bulletSpeed,
+                        radius: 8,
                         direction: d,
-                        range: 400
+                        range: this.range
                     }));
                     this.cd = this.tears;
                 }
             }
 
-            // 掉血，刚掉血的时候会有三秒的无敌状态
+            // 掉血，刚掉血时会有短暂的无敌状态
             _takeDamage(time) {
                 if (!this.isTakingDamage) {         // 不在无敌状态才会扣血，扣血后进入短暂无敌状态
                     this.hitpoints--;
@@ -86,6 +159,7 @@
 
             // 每帧数据更新
             update(time) {
+                super.update();
                 // 如果玩家在射击，则生成子弹
                 if (this.isShooting) {
                     this._shoot(this.shootingDirection);
@@ -114,19 +188,26 @@
             }
         }
 
-        // 子弹类
-        class Bullet{
+        //===============================================================
+        // Bullet
+        //---------------------------------------------------------------
+        //  子弹类
+        //===============================================================
+        class Bullet extends Moveable{
             constructor(config) {
-                this.position = config.position;        // 位置
+                super(config);
                 this.direction = config.direction;      // 方向
                 this.range = config.range || 500;       // 范围
-                this.radius = config.radius || 8;       // 半径
                 this.speed = config.speed || 5;         // 弹速
-                this.color = config.color || color(172);// 颜色
                 this.lifespan = this.range;
                 this.isValid = true;
             }
             update() {
+                if (this.position.x <= room.leftFloor ||
+                    this.position.x >= room.rightFloor ||
+                    this.position.y <= room.upFloor ||
+                    this.position.y >= room.downFloor) this.isValid = false;
+
                 this.position.add(this.direction.setMag(this.speed));
                 this.lifespan -= this.speed;
                 if (this.lifespan <= 0) this.isValid = false;
@@ -137,24 +218,28 @@
             }
         }
 
-        // 敌人类
-        class Enemy{
+        //===============================================================
+        // Enemy
+        //---------------------------------------------------------------
+        //  敌人类
+        //===============================================================
+        class Enemy extends Moveable{
             constructor(config) {
-                this.position = config.position || createVector(width / 2, height / 2);
+                super(config);
                 this.direction = config.direction || createVector(100, 100);
                 this.hp = config.hp || 100;             // 血量
-                this.radius = config.radius || 20;      // 半径
                 this.speed = config.speed || 4;         // 速度
                 this.sight = config.sight || 600;       // 视野
-                this.color = config.color || color(255, 0, 0);
                 this.isAlive = true;                    // 是否活着
+                this.scoreValue = 20;                   // 击杀后获得分数
             }
 
             // 每帧数据更新
             update() {
-                //========================================================================
+                //-------------------------------------------
                 // 位置更新
-                //========================================================================
+                //-------------------------------------------
+                super.update();
                 // 如果发现玩家则靠近玩家，否则随机移动
                 if (this.position.dist(player.position) <= this.sight) {
                     this.position.add(player.position.copy().sub(this.position).normalize().setMag(this.speed));
@@ -172,9 +257,9 @@
                     this.position.add(this.position.copy().sub(player.position).normalize().setMag(this.speed));
                 }
 
-                //========================================================================
-                // 被打
-                //========================================================================
+                //-------------------------------------------
+                // 敌人被打
+                //-------------------------------------------
                 for (let bullet of player.bullets) {
                     if (this.position.dist(bullet.position) <= this.radius + bullet.radius) {
                         this.hp -= player.attack;
@@ -182,7 +267,6 @@
                     }
                 }
                 if (this.hp <= 0) this.isAlive = false;
-
             }
 
             // 每帧渲染内容
@@ -192,44 +276,73 @@
             }
         }
 
+        //============================================================
+        // setup()
+        //------------------------------------------------------------
+        //  各部分定义后，从这里开始进行初始化
+        //============================================================
         function setup(){
             // 创建画布
             createCanvas(windowWidth, windowHeight);
 
+            textSize(20);
+
+            // 初始化房间
+            room = new Room({
+                leftFloor: 220,
+                rightFloor: width - 220,
+                upFloor: 130,
+                downFloor: height - 130,
+                leftCeil: 120,
+                rightCeil: width - 120,
+                upCeil: 30, 
+                downCeil: height - 30
+            });
+
+            // 初始化玩家
             player = new Player({
                 position: createVector(width / 2, height / 2),
-                color: color(255),
+                color: color(240, 220, 220),
                 radius: 20,
                 speed: 6
             });
+            stats = [player.speed, player.range, player.tears, player.bulletSpeed, player.attack, player.luck, (0).toFixed(2) + '%', (0).toFixed(2) + '%'];
 
+            // 初始化敌人
             for (let i = 0; i < 5; i++) {
                 enemies.push(new Enemy({
                     position: createVector(random(width), random(height)),
-                    radius: 25
+                    radius: 25,
+                    color: color(122)
                 }));
             }
+
+            frameRate(60);
         }
 
+        //============================================================
+        // draw()
+        //------------------------------------------------------------
+        //  每帧渲染的内容
+        //============================================================
         function draw() {
-            fill(64);
+            // 黑色背景
+            fill(0);
             rect(0, 0, width, height);
-            for (let i = 0; i < player.maxHP; i++) {
-                if (i+1 > player.hitpoints) {
-                    fill(0, 0, 0, 0);
-                }else {
-                    fill(255, 0, 0);
-                }
-                ellipse(70 + i * 40, 70, 20, 20);
-            }
+
+            // 绘制墙壁和地板
+            room.render();
 
             // 更新玩家
             player.update(time);
             player.render(time);
 
             // 更新敌人
-            for (let i = enemies.length-1; i >= 0; i--) {
-                if (!enemies[i].isAlive) enemies.splice(i, 1);
+            for (let i = enemies.length-1; i >= 0; i--) {       // 敌人集合清理死亡的敌人
+                if (!enemies[i].isAlive) {
+                    enemies.splice(i, 1);
+                    //score += enemies[i].scoreValue;
+                }
             }
             for (enemy of enemies) {
                 enemy.update();
@@ -244,6 +357,31 @@
                 b.update();
                 b.render();
             }
+
+            //--------------- UI ---------------
+            fill(128);
+            // 游戏时间和分数
+            text("TIME:", width/2 - 60, 30);
+            text(timeFormatter(parseInt(time/60)), width/2, 30);
+            text("SCORE:", width/2 - 60, 60);
+            text(score, width/2 + 68, 60);
+
+            // 玩家血量
+            for (let i = 0; i < player.maxHP; i++) {
+                if (i+1 > player.hitpoints) {
+                    fill(0, 0, 0, 0);
+                }else {
+                    fill(255, 0, 0);
+                }
+                ellipse(140 + i * 40, 30, 20, 20);
+            }
+
+            // 玩家属性
+            fill(128);
+            for (let i = 0; i < stats.length; i++) {
+                text(stats[i], 50, height - 300 + i*30);
+            }
+            //--------------- UI ---------------
 
             // 键盘操作
             if (keyIsDown(65)) {
@@ -262,7 +400,11 @@
             time ++;
         }
 
-        // 监听键位被按下
+        //============================================================
+        // keyPressed()
+        //------------------------------------------------------------
+        //  监听键盘按下
+        //============================================================
         function keyPressed() {
             if (key === 'ArrowLeft') {trigger.left = true; player.shootingDirection = createVector(-1, 0);}
             if (key === 'ArrowRight') {trigger.right = true; player.shootingDirection = createVector(1, 0);}
@@ -274,7 +416,11 @@
             }
         }
 
-        // 监听键位被松开
+        //============================================================
+        // keyReleased()
+        //------------------------------------------------------------
+        //  监听键盘松开
+        //============================================================
         function keyReleased() {
             if (key === 'ArrowLeft') {trigger.left = false;}
             if (key === 'ArrowRight') {trigger.right = false;}
@@ -286,6 +432,5 @@
             }
        }
     </script>
-
 </body>
 </html>
