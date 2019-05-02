@@ -24,7 +24,8 @@
             enemies = [],
             time = 0,
             score = 0,
-            stats;
+            stats,
+            fallingAcceleration = 0.3;    // 下落的加速度（如子弹）
 
         // 记录键位
         let trigger = {
@@ -36,9 +37,10 @@
 
         // 时间格式转化
         const timeFormatter = function(sec) {
-            let minutes = parseInt(sec / 60),
-                hours = parseInt(minutes / 60),
-                seconds = sec % 60;
+            let min = parseInt(sec / 60),           // 总分钟数
+                hours = parseInt(min / 60),         // 总小时数
+                seconds = sec % 60,
+                minutes = min % 60;
             if (minutes < 10) minutes = '0' + minutes;
             if (hours < 10) hours = '0' + hours;
             if (seconds < 10) seconds = '0' + seconds;
@@ -63,6 +65,7 @@
             render() {
                 // 绘制墙壁
                 fill(94, 64, 58);
+                stroke(0);
                 quad(this.leftCeil, this.upCeil, this.rightCeil, this.upCeil, this.rightFloor, this.upFloor, this.leftFloor, this.upFloor);
                 quad(this.leftCeil, this.upCeil, this.leftFloor, this.upFloor, this.leftFloor, this.downFloor, this.leftCeil, this.downCeil);
                 quad(this.leftCeil, this.downCeil, this.rightCeil, this.downCeil, this.rightFloor, this.downFloor, this.leftFloor, this.downFloor);
@@ -70,6 +73,7 @@
                 
                 // 绘制地板
                 fill(74, 44, 45);
+                stroke(0);
                 rect(this.leftFloor, this.upFloor, this.rightFloor - this.leftFloor, this.downFloor - this.upFloor);
             }
         }
@@ -81,19 +85,30 @@
         //===============================================================
         class GameObject{
             constructor(config) {
-                this.position = config.position || createVector(width/2, height/2);
-                this.color = config.color || color(255);
-                this.radius = config.radius || 15;
+                this.position = config.position || createVector(width/2, height/2);     // 位置
+                this.color = config.color || color(255);                                // 颜色
+                this.radius = config.radius || 15;                                      // 半径
             }
             update() {
-                if (this.position.x <= room.leftFloor) this.position.x = room.leftFloor;
-                if (this.position.x >= room.rightFloor) this.position.x = room.rightFloor;
-                if (this.position.y <= room.upFloor) this.position.y = room.upFloor;
-                if (this.position.y >= room.downFloor) this.position.y = room.downFloor;
+                // 位置更正。将位置限定在房间范围内。
+                if (this.position.x <= room.leftFloor + this.radius) this.position.x = room.leftFloor + this.radius;
+                if (this.position.x >= room.rightFloor - this.radius) this.position.x = room.rightFloor - this.radius;
+                if (this.position.y <= room.upFloor + this.radius) this.position.y = room.upFloor + this.radius;
+                if (this.position.y >= room.downFloor - this.radius) this.position.y = room.downFloor - this.radius;
+            }
+            render() {
+                // 仅绘制阴影
+                fill(0, 0, 0, 64);
+                stroke(0, 0, 0, 64);
+                ellipse(this.position.x, this.position.y, this.radius * 2, this.radius);
             }
         }
 
-        // 可移动对象
+        //===============================================================
+        // Moveable
+        //---------------------------------------------------------------
+        //  可移动对象类。包括玩家、敌人、子弹，可以自主移动。
+        //===============================================================
         class Moveable extends GameObject{
             constructor(config) {
                 super(config);
@@ -101,14 +116,83 @@
         }
 
         //===============================================================
+        // Item
+        //---------------------------------------------------------------
+        //  道具类。分为属性道具（主动、被动）和一般掉落（普通掉落、饰品）
+        //===============================================================
+        class Item extends GameObject{
+            constructor(config) {
+                super(config);
+                this.id = config.id || 'unknownItem';
+            }
+        }
+
+        //===============================================================
+        // AttrItem
+        //---------------------------------------------------------------
+        //  属性道具类。一般会带一个石头基座，悬浮在空中。有数量限制
+        //===============================================================
+        class AttrItem extends Item{
+            constructor(config) {
+                super(config);
+            }
+            update() {
+
+            }
+            render() {
+                switch (this.id) {
+                    case 'Breakfast': 
+
+                        break;
+                }
+            }
+        }
+
+        //===============================================================
+        // normalItem
+        //---------------------------------------------------------------
+        //  一般道具类。直接在地面上。除了饰品只有一个，其他可以获取无限个。
+        //===============================================================
+        class normalItem extends Item{
+            constructor(config) {
+                super(config);
+            }
+            update() {
+
+            }
+            render() {
+
+            }
+        }
+
+        //===============================================================
+        // ordinaryItem
+        //---------------------------------------------------------------
+        //  基础掉落类。包括心、硬币、炸弹、钥匙等
+        //===============================================================
+        class ordinaryItem extends Item{
+            constructor(config) {
+                super(config);
+            }
+            update() {
+
+            }
+            render() {
+
+            }
+        }
+
+        //===============================================================
         // Player
         //---------------------------------------------------------------
-        //  玩家的类
+        //  玩家类
         //===============================================================
         class Player extends Moveable{
             constructor (config) {
                 super(config);
 
+                // 战斗属性
+                this.maxHP = 3;                     // 最大生命值
                 this.speed = config.speed;          // 移动速度
                 this.range = config.range || 400,   // 射程
                 this.tears = config.tears || 30;    // 射速
@@ -118,8 +202,12 @@
 
                 this.bullets = [];                  // 存放子弹
 
-                this.hitpoints = 3;                 // 生命值
-                this.maxHP = 3;                     // 最大生命值
+                // 资源
+                this.coins = 0;                     // 硬币数
+                this.bombs = 0;                     // 炸弹数
+                this.keys = 0;                      // 钥匙数
+
+                this.hitpoints = 3;                 // 当前生命值
 
                 this.cd = 0;                        // 冷却时间，用来处理射速问题
 
@@ -140,7 +228,7 @@
                         position: player.position.copy(),
                         color: color(172),
                         speed: this.bulletSpeed,
-                        radius: 8,
+                        radius: 12,
                         direction: d,
                         range: this.range
                     }));
@@ -155,6 +243,12 @@
                     this.isTakingDamage = true;
                     this.takeDamageTime = time;     //  记录受伤时间，在此时间三秒后解除无敌状态
                 }
+            }
+
+            // 移动。连续的，不包括瞬移。
+            // 先加速到恒定，然后减速到静止
+            move() {
+                
             }
 
             // 每帧数据更新
@@ -179,42 +273,80 @@
 
             // 每帧渲染内容，玩家外观的变化
             render(time) {
+                stroke(0);
                 if (this.isTakingDamage && time % 6 == 0) {
-                    fill(color(0, 0, 0, 0));
+                    fill(0, 0, 0, 0);
                 }else {
-                    fill(color(this.color));
+                    fill(this.color);
                 }
-                ellipse(this.position.x, this.position.y, this.radius * 2, this.radius * 2);
+
+                // 头
+                let player_height = 50;
+                ellipse(this.position.x, this.position.y - player_height, this.radius * 2, this.radius * 2);
+
+                let eyeRadius = this.radius / 2, eyeBallRadius = eyeRadius / 2;
+                fill(0);
+                stroke(0);
+                ellipse(this.position.x - this.radius / 5 * 3, this.position.y - player_height, eyeRadius, eyeRadius);
+                ellipse(this.position.x + this.radius / 5 * 3, this.position.y - player_height, eyeRadius, eyeRadius);
+
+                arc(this.position.x, this.position.y + eyeRadius/3*2 - player_height, eyeRadius, eyeRadius, PI, TWO_PI);
+
+                fill(255);
+                ellipse(this.position.x - this.radius / 5 * 3 - eyeBallRadius/3, this.position.y - eyeBallRadius/3 - player_height, eyeBallRadius, eyeBallRadius);
+                ellipse(this.position.x + this.radius / 5 * 3 - eyeBallRadius/3, this.position.y - eyeBallRadius/3 - player_height, eyeBallRadius, eyeBallRadius);
+                rect(this.position.x - eyeRadius/16*7, this.position.y + eyeRadius/4*2 - player_height, eyeRadius/8*7, eyeRadius/4);
+
+                super.render();
             }
         }
 
         //===============================================================
         // Bullet
         //---------------------------------------------------------------
-        //  子弹类
+        //  子弹类。子弹在飞行至末端时，会平抛落地。因此子弹高度也会影响射程
         //===============================================================
         class Bullet extends Moveable{
             constructor(config) {
                 super(config);
                 this.direction = config.direction;      // 方向
                 this.range = config.range || 500;       // 范围
-                this.speed = config.speed || 5;         // 弹速
+                this.speed = config.speed || 5;         // 弹速，每帧前进的距离
+                this.height = config.height || 50;      // 子弹高度
+
+                this.fallingSpeed = 0;
+
                 this.lifespan = this.range;
                 this.isValid = true;
             }
             update() {
+                // 碰到墙壁
                 if (this.position.x <= room.leftFloor ||
                     this.position.x >= room.rightFloor ||
                     this.position.y <= room.upFloor ||
                     this.position.y >= room.downFloor) this.isValid = false;
 
+                // 位置更新
                 this.position.add(this.direction.setMag(this.speed));
+
+                // 射程计算
                 this.lifespan -= this.speed;
-                if (this.lifespan <= 0) this.isValid = false;
+
+                // 当子弹飞行至有效射程时，即llifespan==0时，开始类平抛下落
+                // 下落处理（类平抛运动）
+                if (this.lifespan <= 0) {
+                    this.fallingSpeed += fallingAcceleration;
+                    this.height -= this.fallingSpeed;
+                }
+
+                // 落地失效
+                if (this.height <= 0) this.isValid = false;
             }
             render() {
                 fill(this.color);
-                ellipse(this.position.x, this.position.y, this.radius * 2, this.radius * 2);
+                stroke(0);
+                ellipse(this.position.x, this.position.y - this.height, this.radius * 2, this.radius * 2);
+                super.render();
             }
         }
 
@@ -271,8 +403,10 @@
 
             // 每帧渲染内容
             render() {
-                fill(this.color);
-                ellipse(this.position.x, this.position.y, this.radius * 2, this.radius * 2);
+                // fill(this.color);
+                // stroke(0);
+                // ellipse(this.position.x, this.position.y, this.radius * 2, this.radius * 2);
+                super.render();
             }
         }
 
@@ -303,15 +437,16 @@
             player = new Player({
                 position: createVector(width / 2, height / 2),
                 color: color(240, 220, 220),
-                radius: 20,
+                radius: 30,
                 speed: 6
             });
             stats = [player.speed, player.range, player.tears, player.bulletSpeed, player.attack, player.luck, (0).toFixed(2) + '%', (0).toFixed(2) + '%'];
 
             // 初始化敌人
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < 2; i++) {
                 enemies.push(new Enemy({
                     position: createVector(random(width), random(height)),
+                    hp: 10,
                     radius: 25,
                     color: color(122)
                 }));
@@ -328,6 +463,7 @@
         function draw() {
             // 黑色背景
             fill(0);
+            stroke(0);
             rect(0, 0, width, height);
 
             // 绘制墙壁和地板
@@ -358,8 +494,10 @@
                 b.render();
             }
 
+            //==================================
             //--------------- UI ---------------
             fill(128);
+            stroke(128);
             // 游戏时间和分数
             text("TIME:", width/2 - 60, 30);
             text(timeFormatter(parseInt(time/60)), width/2, 30);
@@ -367,6 +505,7 @@
             text(score, width/2 + 68, 60);
 
             // 玩家血量
+            stroke(255);
             for (let i = 0; i < player.maxHP; i++) {
                 if (i+1 > player.hitpoints) {
                     fill(0, 0, 0, 0);
@@ -376,12 +515,37 @@
                 ellipse(140 + i * 40, 30, 20, 20);
             }
 
+            // 资源
+            stroke(0);
+            fill(203, 207, 111);            // 硬币
+            ellipse(50, 100, 15, 20);
+
+            fill(70);                       // 炸弹
+            ellipse(50, 130, 20, 20);
+
+            fill(203);                      // 钥匙
+            stroke(203);
+            ellipse(50, 155, 15, 10);
+            rect(44, 163, 5, 2);
+            rect(44, 168, 5, 2);
+            rect(49, 160, 2, 10);
+            fill(0)
+            stroke(0);
+            ellipse(50, 155, 7.5, 5);
+
+            fill(255);
+            text(player.coins<10?'0'+player.coins:player.coins, 70, 108);
+            text(player.bombs<10?'0'+player.bombs:player.bombs, 70, 138);
+            text(player.keys<10?'0'+player.keys:player.keys, 70, 168);
+
             // 玩家属性
             fill(128);
+            stroke(0);
             for (let i = 0; i < stats.length; i++) {
-                text(stats[i], 50, height - 300 + i*30);
+                text(stats[i], 50, height/3+ i*30);
             }
             //--------------- UI ---------------
+            //==================================
 
             // 键盘操作
             if (keyIsDown(65)) {
@@ -406,6 +570,7 @@
         //  监听键盘按下
         //============================================================
         function keyPressed() {
+            // 方向键判定
             if (key === 'ArrowLeft') {trigger.left = true; player.shootingDirection = createVector(-1, 0);}
             if (key === 'ArrowRight') {trigger.right = true; player.shootingDirection = createVector(1, 0);}
             if (key === 'ArrowUp') {trigger.up = true; player.shootingDirection = createVector(0, -1);}
@@ -414,6 +579,12 @@
             if (trigger.up || trigger.down || trigger.left || trigger.right) {
                 player.isShooting = true;
             }
+
+            // WASD判定
+            if (key === 'w') {trigger.left = true; player.shootingDirection = createVector(-1, 0);}
+            if (key === 'a') {trigger.right = true; player.shootingDirection = createVector(1, 0);}
+            if (key === 's') {trigger.up = true; player.shootingDirection = createVector(0, -1);}
+            if (key === 'd') {trigger.down = true; player.shootingDirection = createVector(0, 1);}
         }
 
         //============================================================
