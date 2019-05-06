@@ -8,7 +8,7 @@ class Player extends Moveable{
         super(config);
 
         // 战斗属性
-        this.maxHP = 3;                     // 最大生命值
+        this.maxHP = config.maxHP || 3;     // 最大生命值
         this.speed = config.speed || 4;     // 移动速度
         this.range = config.range || 400,   // 射程
         this.tears = config.tears || 30;    // 射速
@@ -29,7 +29,7 @@ class Player extends Moveable{
         this.currentAcceleration = 0;       // 即时加速度
         this.currentVelocity = createVector(0, 0);           // 即时速度（向量，每帧位置的变化量）
 
-        this.hitpoints = 3;                 // 当前生命值
+        this.hitpoints = this.maxHP;                 // 当前生命值
 
         this.cd = 0;                        // 冷却时间，用来处理射速问题
 

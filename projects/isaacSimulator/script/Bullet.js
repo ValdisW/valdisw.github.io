@@ -22,7 +22,7 @@ class Bullet extends Moveable{
         let tempVector = createVector(abs(this.direction.y), abs(this.direction.x));
         this.playerVelocity.x *= tempVector.x;
         this.playerVelocity.y *= tempVector.y;
-        this.realDirection = (this.direction.copy().add(this.playerVelocity.normalize().mult(0.6))).normalize();
+        this.realDirection = (this.direction.copy().add(this.playerVelocity.normalize().mult(0.4))).normalize();
         console.log(this.direction);
     }
     update() {

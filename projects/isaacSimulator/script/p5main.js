@@ -26,15 +26,17 @@ function setup(){
         position: createVector(width / 2, height / 2),
         color: color(240, 220, 220),
         radius: 30,
-        speed: 6
+        speed: 6,
+        tears: 20,
+        bulletSpeed: 7
     });
     stats = [player.speed, player.range, player.tears, player.bulletSpeed, player.attack, player.luck, (0).toFixed(2) + '%', (0).toFixed(2) + '%'];
 
     // 初始化敌人
-    for (let i = 0; i < 0; i++) {
+    for (let i = 0; i < 3; i++) {
         enemies.push(new Enemy({
             position: createVector(random(width), random(height)),
-            hp: 10,
+            hp: 100,
             radius: 25,
             color: color(122)
         }));
@@ -155,10 +157,10 @@ function keyPressed() {
     }
 
     // WASD判定
-    if (key === 'w') trigger.w = true;
-    if (key === 'a') trigger.a = true;
-    if (key === 's') trigger.s = true;
-    if (key === 'd') trigger.d = true;
+    if (key === 'w' | key === 'W') trigger.w = true;
+    if (key === 'a' | key === 'A') trigger.a = true;
+    if (key === 's' | key === 'S') trigger.s = true;
+    if (key === 'd' | key === 'D') trigger.d = true;
 }
 
 //============================================================
@@ -177,8 +179,8 @@ function keyReleased() {
     }
 
     // WASD判定
-    if (key === 'w') trigger.w = false;
-    if (key === 'a') trigger.a = false;
-    if (key === 's') trigger.s = false;
-    if (key === 'd') trigger.d = false;
+    if (key === 'w' | key === 'W') trigger.w = false;
+    if (key === 'a' | key === 'A') trigger.a = false;
+    if (key === 's' | key === 'S') trigger.s = false;
+    if (key === 'd' | key === 'D') trigger.d = false;
 }

@@ -32,7 +32,8 @@ let title = new zrender.Rect({
     style: {
         fill: 'transparent',
         text: '管网计算与预警系统',
-        textFill: '#7BFFF8',
+        //textFill: '#7BFFF8',
+        textFill: '#7394CF',
         font: '36px LEXUS 简粗黑 U',
         fontWeight: 'lighter',
         textAlign: 'center'
@@ -164,7 +165,8 @@ for (let i = 0; i < block_num; i++) {
             height: blockData_fit[i].vertex2[1] - blockData_fit[i].vertex1[1] - 8,
         },
         style: {
-            fill: '#282c34',
+            //fill: '#282c34',
+            fill: '#1A2E51',
             text: blockData_fit[i].name,
             textFill: '#7bfff8',
             font: blockData_fit[i].font,
