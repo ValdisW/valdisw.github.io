@@ -8,17 +8,50 @@
     <link href="https://cdn.bootcss.com/twitter-bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
     <style>
         *{margin: 0; padding: 0}
-        #slider{
-            width: 30%;
+        ::selection{background-color: #222; color: #DDD;}
+        canvas, #drawingList, #idftList{
+            border-radius: 5px;
+            box-shadow: 1px 1px 2px 0px RGBA(128, 128, 128, 0.7);
         }
-        #terms{
-            width: 60px;
+        #slider{width: 30%;}
+        #terms{width: 60px;}
+        #drawingPanel, #idftPanel{
+            display: inline-block;
+        }
+        #drawingList, #idftList{
+            display: inline-block;
+            height: 480px; width: 120px;
+            overflow-y: scroll;
+            border: 1px solid #666;
+        }
+        #drawingList::-webkit-scrollbar, #idftList::-webkit-scrollbar { width: 10px; }
+        #drawingList::-webkit-scrollbar-thumb, #idftList::-webkit-scrollbar-thumb {
+            background-color:#666;
+            border-radius: 5px;
+        }
+        input[type=range]{
+            display: inlblock;
+            margin-top: 8px;
+            outline: none; 
+            -webkit-appearance: none; /*清除系统默认样式*/  
+            background:  #CCC;  
+            background-size: 30% 100%;
+            height: 4px;
+            border-radius: 2px;  
+        } 
+
+        input[type=range]::-webkit-slider-thumb {  
+            -webkit-appearance: none;/*清除系统默认样式*/  
+            height: 20px; width: 20px;
+            background: #666; 
+            border-radius: 50%;  
+            border: solid 1px #222; 
         }
     </style>
 </head>
 <body>
     <!-- 导航 -->
-    <nav class="navbar navbar-default">
+    <nav class="navbar navbar-inverse">
         <div class="container">
             <div class="navbar-header">
                 <div class="navbar-brand">Learning Fourier</div>
@@ -29,13 +62,25 @@
         </div>
     </nav>
 
-    <canvas id="drawingCanvas"></canvas>
-    <canvas id="idftCanvas"></canvas>
-    <div id="control">
-        <input id="slider" type="range" step="1" min="1" max="1" v-model="terms_val">
-        <input type="text" id="terms" disabled="disabled" v-model="terms_val">
+    <!-- 主体 -->
+    <button id="originTrigger" class="btn btn-success">查看原序列</button>
+    <button id="dftTrigger" class="btn btn-default">查看傅里叶序列</button>
+    <button id="idftTrigger" class="btn btn-primary">查看逆变换序列</button>
+    <div id="body">
+        <div id="drawingPanel">
+            <canvas id="drawingCanvas" @mousedown="drawingCanvasMousedown" @mousemove="drawingCanvasMousemove" @mouseup="drawingCanvasMouseup"></canvas>
+            <ol id="drawingList"></ol>
+        </div>
+        <div id="idftPanel">
+            <canvas id="idftCanvas"></canvas>
+            <ol id="idftList"></ol>
+        </div>
+        <div id="control">
+            <input id="slider" type="range" step="1" min="1" :max="max_terms" v-model="terms_val" @change="sliderChanged">
+            <input type="text" id="terms" disabled="disabled" v-model="terms_val">
+        </div>
+        <canvas id="displayCanvas"></canvas>
     </div>
-    <canvas id="displayCanvas"></canvas>
 
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -50,21 +95,11 @@
         let a_ift = [];
         let terms_val = 0;
 
-        let app = new Vue({
-            el: '#control',
-            data: {
-                'terms_val': terms_val
-            },
-            watch: {
-                'terms_val': function(newVal, oldVal) {
-                    terms_val = newVal;
-                }
-            }
-        });
-
         // 控件
-        const slider = $('#slider');
-        const terms = $('#terms');
+        const slider = $('#slider');        // 滑动条
+        const terms = $('#terms');          // 滑条旁边的数值显示
+        const drawingList = $('#drawingList');  // 原序列显示
+        const idftList = $('#idftList');
 
         // 初始化Canvas
         const drawingCanvas = $('#drawingCanvas').attr({
@@ -86,22 +121,55 @@
             'border': '1px solid #666',
         });
         const drawingCtx = drawingCanvas.get(0).getContext('2d');
-        drawingCtx.fillStyle = '#00f';
-        drawingCtx.strokeStyle = '#00f';
+        drawingCtx.fillStyle = '#e8b004';
+        drawingCtx.strokeStyle = '#e8b004';
         drawingCtx.lineWidth = 2;
         const displayCtx = displayCanvas.get(0).getContext('2d');
-        displayCtx.fillStyle = '#f00';
-        displayCtx.strokeStyle = '#f00';
+        displayCtx.fillStyle = '#ee3f4d';
+        displayCtx.strokeStyle = '#ee3f4d';
         displayCtx.lineWidth = 2;
         const idftCtx = idftCanvas.get(0).getContext('2d');
-        idftCtx.fillStyle = '#00f';
-        idftCtx.strokeStyle = '#00f';
+        idftCtx.fillStyle = '#2376b7';
+        idftCtx.strokeStyle = '#2376b7';
         idftCtx.lineWidth = 2;
+
+        let app = new Vue({
+            el: '#control',
+            data: {
+                'terms_val': terms_val,
+                'max_terms': 1
+            },
+
+            methods: {
+                'sliderChanged': function (e) {
+                    let a_ft_copy = [].concat(a_ft);       // 拷贝傅里叶序列
+                    let expandNum = e.target.value;        // 获取输入框项数
+
+                    let removeNum = a_ft.length - expandNum;     // 需要除去的项数
+                    for (let i = 0; i < removeNum; i++) {
+                        a_ft_copy.splice(getMinComplex(a_ft_copy)[1], 1);
+                    }
+
+                    let new_idft = idft(a_ft_copy);       // 根据截取到的信号进行反变换
+
+                    // 绘制IDFT
+                    idftList.empty();
+                    idftCtx.clearRect(0, 0, idftCanvas.width(), idftCanvas.height());
+                    idftCtx.beginPath();
+                    for (let i = 0; i < new_idft.length; i++) {
+                        idftCtx.lineTo(new_idft[i].real + idftCanvas.width()/2, new_idft[i].imaginary + idftCanvas.width()/2);
+                        idftList.append($('<li>' + new_idft[i].real.toFixed(0) + '+' + new_idft[i].imaginary.toFixed(0) + 'i' + '</li>'));
+                    }
+                    idftCtx.stroke();
+                }
+            }
+        });
 
         // 鼠标操作
         drawingCanvas.mousedown(e=>{        // 按下
             mouseIsDown = true;
             a = [];     // 清空原序列
+            drawingList.empty();
             drawingCtx.clearRect(0, 0, drawingCanvas.width(), drawingCanvas.height());
             drawingCtx.beginPath();
         });
@@ -110,6 +178,7 @@
             mouseX = e.offsetX;
             mouseY = e.offsetY;
             if (mouseIsDown) {
+                drawingList.append($('<li>a<sub>' + 0 + '</sub> = ' + (mouseX - drawingCanvas.width()/2) + '+' + (mouseY - drawingCanvas.height()/2) + 'i' + '</li>'));
                 drawingCtx.lineTo(mouseX, mouseY);
                 a.push(new Complex(mouseX - drawingCanvas.width()/2, mouseY - drawingCanvas.height()/2));
             }
@@ -118,15 +187,13 @@
 
         drawingCanvas.mouseup(e=>{          // 松开
             mouseIsDown = false;
+
+            // 计算傅里叶变换后的序列
             a_ft = dft(a);
 
-            // 更新控件
-            terms_val = a_ft.length;
-            terms.val(a_ft.length);
-            slider.attr({
-                'max': a_ft.length,
-                'value': a_ft.length
-            });
+            // 更新控件(Vue)
+            app.terms_val = a_ft.length;
+            app.max_terms = a_ft.length;
 
             // 绘制幅度谱
             let maxLength = a_ft[0].getLength();
@@ -137,12 +204,15 @@
 
             a_ift = idft(a_ft);
             // 绘制IDFT
+            idftList.empty();
             idftCtx.clearRect(0, 0, idftCanvas.width(), idftCanvas.height());
             idftCtx.beginPath();
             for (let i = 0; i < a_ft.length; i++) {
                 idftCtx.lineTo(a_ift[i].real + idftCanvas.width()/2, a_ift[i].imaginary + idftCanvas.width()/2);
+                idftList.append($('<li>' + a_ift[i].real.toFixed(0) + '+' + a_ift[i].imaginary.toFixed(0) + 'i' + '</li>'));
             }
             idftCtx.stroke();
+
         });
     </script>
 </body>
