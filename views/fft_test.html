@@ -30,7 +30,7 @@
             border-radius: 5px;
         }
         input[type=range]{
-            display: inlblock;
+            display: inline-block;
             margin-top: 8px;
             outline: none; 
             -webkit-appearance: none; /*清除系统默认样式*/  
@@ -87,6 +87,9 @@
     <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
     <script src="../script/mathUtils.js"></script>
     <script>
+        // Jquery控制样式
+
+
         // 全局变量
         let mouseIsDown = false;
         let mouseX = 0, mouseY = 0;
@@ -99,7 +102,7 @@
         const slider = $('#slider');        // 滑动条
         const terms = $('#terms');          // 滑条旁边的数值显示
         const drawingList = $('#drawingList');  // 原序列显示
-        const idftList = $('#idftList');
+        const idftList = $('#idftList');        // 逆变换序列显示
 
         // 初始化Canvas
         const drawingCanvas = $('#drawingCanvas').attr({
@@ -158,7 +161,7 @@
                     idftCtx.beginPath();
                     for (let i = 0; i < new_idft.length; i++) {
                         idftCtx.lineTo(new_idft[i].real + idftCanvas.width()/2, new_idft[i].imaginary + idftCanvas.width()/2);
-                        idftList.append($('<li>' + new_idft[i].real.toFixed(0) + '+' + new_idft[i].imaginary.toFixed(0) + 'i' + '</li>'));
+                        idftList.append($('<li>a<sup>\"</sup><sub>' + i + '</sub> = ' + new_idft[i].real.toFixed(0) + '+' + new_idft[i].imaginary.toFixed(0) + 'i' + '</li>'));
                     }
                     idftCtx.stroke();
                 }
@@ -178,7 +181,7 @@
             mouseX = e.offsetX;
             mouseY = e.offsetY;
             if (mouseIsDown) {
-                drawingList.append($('<li>a<sub>' + 0 + '</sub> = ' + (mouseX - drawingCanvas.width()/2) + '+' + (mouseY - drawingCanvas.height()/2) + 'i' + '</li>'));
+                drawingList.append($('<li>a<sub>' + drawingList.children().length + '</sub> = ' + (mouseX - drawingCanvas.width()/2) + '+' + (mouseY - drawingCanvas.height()/2) + 'i' + '</li>'));
                 drawingCtx.lineTo(mouseX, mouseY);
                 a.push(new Complex(mouseX - drawingCanvas.width()/2, mouseY - drawingCanvas.height()/2));
             }
@@ -209,10 +212,9 @@
             idftCtx.beginPath();
             for (let i = 0; i < a_ft.length; i++) {
                 idftCtx.lineTo(a_ift[i].real + idftCanvas.width()/2, a_ift[i].imaginary + idftCanvas.width()/2);
-                idftList.append($('<li>' + a_ift[i].real.toFixed(0) + '+' + a_ift[i].imaginary.toFixed(0) + 'i' + '</li>'));
+                idftList.append($('<li>a<sup>\'</sup><sub>' + idftList.children().length + '</sub> = ' + a_ift[i].real.toFixed(0) + '+' + a_ift[i].imaginary.toFixed(0) + 'i' + '</li>'));
             }
             idftCtx.stroke();
-
         });
     </script>
 </body>
