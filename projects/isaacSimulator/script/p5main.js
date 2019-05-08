@@ -33,7 +33,7 @@ function setup(){
     stats = [player.speed, player.range, player.tears, player.bulletSpeed, player.attack, player.luck, (0).toFixed(2) + '%', (0).toFixed(2) + '%'];
 
     // 初始化敌人
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 8; i++) {
         enemies.push(new Enemy({
             position: createVector(random(width), random(height)),
             hp: 100,

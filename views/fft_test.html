@@ -4,38 +4,146 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>FFT</title>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        *{margin: 0; padding: 0}
+        #slider{
+            width: 30%;
+        }
+        #terms{
+            width: 60px;
+        }
+    </style>
 </head>
 <body>
+    <!-- 导航 -->
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <div class="navbar-brand">Learning Fourier</div>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">Home</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <canvas id="drawingCanvas"></canvas>
+    <canvas id="idftCanvas"></canvas>
+    <div id="control">
+        <input id="slider" type="range" step="1" min="1" max="1" v-model="terms_val">
+        <input type="text" id="terms" disabled="disabled" v-model="terms_val">
+    </div>
+    <canvas id="displayCanvas"></canvas>
+
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
     <script src="../script/mathUtils.js"></script>
     <script>
-        let a = [
-            new Complex(1, 0),
-            new Complex(0, 0),
-            new Complex(1, 0),
-            new Complex(0, 0),
-            new Complex(1, 0),
-            new Complex(0, 0),
-            new Complex(1, 0),
-            new Complex(0, 0),
-            new Complex(1, 0),
-            new Complex(0, 0)
-        ];
+        // 全局变量
+        let mouseIsDown = false;
+        let mouseX = 0, mouseY = 0;
+        let a = [];     // 原序列
+        let a_ft = [];
+        let a_ift = [];
+        let terms_val = 0;
 
-        let A = new Array(a.length);
-
-        function fft(a) {
-            let n = a.length;       // n为项数
-
-            // 遍历原序列
-            for (let i = 0; i < n; i++) {
-                if (i % 2 == 0) {       // 偶数项
-
-                }else {                 // 奇数项
-
+        let app = new Vue({
+            el: '#control',
+            data: {
+                'terms_val': terms_val
+            },
+            watch: {
+                'terms_val': function(newVal, oldVal) {
+                    terms_val = newVal;
                 }
             }
-        }
+        });
+
+        // 控件
+        const slider = $('#slider');
+        const terms = $('#terms');
+
+        // 初始化Canvas
+        const drawingCanvas = $('#drawingCanvas').attr({
+            'height': '480px',
+            'width': '480px',
+        }).css({
+            'border': '1px solid #666',
+        });
+        const displayCanvas = $('#displayCanvas').attr({
+            'height': '120px',
+            'width': '480px',
+        }).css({
+            'border': '1px solid #666',
+        });
+        const idftCanvas = $('#idftCanvas').attr({
+            'height': '480px',
+            'width': '480px',
+        }).css({
+            'border': '1px solid #666',
+        });
+        const drawingCtx = drawingCanvas.get(0).getContext('2d');
+        drawingCtx.fillStyle = '#00f';
+        drawingCtx.strokeStyle = '#00f';
+        drawingCtx.lineWidth = 2;
+        const displayCtx = displayCanvas.get(0).getContext('2d');
+        displayCtx.fillStyle = '#f00';
+        displayCtx.strokeStyle = '#f00';
+        displayCtx.lineWidth = 2;
+        const idftCtx = idftCanvas.get(0).getContext('2d');
+        idftCtx.fillStyle = '#00f';
+        idftCtx.strokeStyle = '#00f';
+        idftCtx.lineWidth = 2;
+
+        // 鼠标操作
+        drawingCanvas.mousedown(e=>{        // 按下
+            mouseIsDown = true;
+            a = [];     // 清空原序列
+            drawingCtx.clearRect(0, 0, drawingCanvas.width(), drawingCanvas.height());
+            drawingCtx.beginPath();
+        });
+
+        drawingCanvas.mousemove(e=>{        // 移动
+            mouseX = e.offsetX;
+            mouseY = e.offsetY;
+            if (mouseIsDown) {
+                drawingCtx.lineTo(mouseX, mouseY);
+                a.push(new Complex(mouseX - drawingCanvas.width()/2, mouseY - drawingCanvas.height()/2));
+            }
+            drawingCtx.stroke();
+        });
+
+        drawingCanvas.mouseup(e=>{          // 松开
+            mouseIsDown = false;
+            a_ft = dft(a);
+
+            // 更新控件
+            terms_val = a_ft.length;
+            terms.val(a_ft.length);
+            slider.attr({
+                'max': a_ft.length,
+                'value': a_ft.length
+            });
+
+            // 绘制幅度谱
+            let maxLength = a_ft[0].getLength();
+            displayCtx.clearRect(0, 0, displayCanvas.width(), displayCanvas.height());
+            for (let i = 0; i < a.length; i++) {
+                displayCtx.fillRect(i*displayCanvas.width()/a.length + displayCanvas.width()/a.length/4, displayCanvas.height(), displayCanvas.width()/2/a.length, -(a_ft[i].getLength()/maxLength*displayCanvas.height()*0.8));
+            }
+
+            a_ift = idft(a_ft);
+            // 绘制IDFT
+            idftCtx.clearRect(0, 0, idftCanvas.width(), idftCanvas.height());
+            idftCtx.beginPath();
+            for (let i = 0; i < a_ft.length; i++) {
+                idftCtx.lineTo(a_ift[i].real + idftCanvas.width()/2, a_ift[i].imaginary + idftCanvas.width()/2);
+            }
+            idftCtx.stroke();
+        });
     </script>
 </body>
 </html>

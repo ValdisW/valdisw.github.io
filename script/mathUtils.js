@@ -1,3 +1,52 @@
+// class Complex{
+//     constructor(r, i) {
+//         this.real = r;
+//         this.imaginary = i;    
+//     }
+//     // 由数组生成复数
+//     getComplexFromArray(arr) {
+//         return new Complex(arr[0], arr[1]);
+//     }
+
+//     // 求模
+//     getLength = function () {
+//         return Math.sqrt(this.real*this.real + this.imaginary*this.imaginary);
+//     };
+
+//     // 转换成字符串
+//     toString = function() {
+//         return this.real + '+' + this.imaginary + 'i';
+//     };
+
+//     // 转换成数组
+//     toArray = function () {
+//         let arr = [this.real, this.imaginary];
+//         return arr;
+//     };
+
+//     // 加法
+//     add = function (that) {
+//         return new Complex(this.real + that.real, this.imaginary + that.imaginary);
+//     };
+
+//     // 乘法
+//     multiply= function (that) {
+//         return new Complex(this.real * that.real - this.imaginary * that.imaginary, this.real * that.imaginary + this.imaginary * that.real);
+//     };
+
+//     // 数乘
+//     scaling = function (real) {
+//         return new Complex(this.real * real, this.imaginary * real);
+//     };
+
+//     // 乘方
+//     power(num) {
+//         let result = new Complex(1, 0);
+//         for (let i = 0; i < num; i++) result = result.multiply(this);
+//         return result;
+//     }
+// }
+
 // 复数
 const Complex = function (r, i) {
     this.real = r;
@@ -30,6 +79,11 @@ Complex.prototype.add = function (that) {
     return new Complex(this.real + that.real, this.imaginary + that.imaginary);
 };
 
+// 减法
+Complex.prototype.subtract = function (that) {
+    return new Complex(this.real - that.real, this.imaginary - that.imaginary);
+}
+
 // 乘法
 Complex.prototype.multiply= function (that) {
     return new Complex(this.real * that.real - this.imaginary * that.imaginary, this.real * that.imaginary + this.imaginary * that.real);
@@ -39,6 +93,13 @@ Complex.prototype.multiply= function (that) {
 Complex.prototype.scaling = function (real) {
     return new Complex(this.real * real, this.imaginary * real);
 };
+
+// 乘方
+Complex.prototype.power = function(num) {
+    let result = new Complex(1, 0);
+    for (let i = 0; i < num; i++) result = result.multiply(this);
+    return result;
+}
 
 // 从复数数组中获取有最大模的复数及下标
 const getMaxComplex = function (complexArr) {
@@ -82,12 +143,52 @@ const getComplexArrayLength = function (x) {
 //-----------------------以上规定复数-------------------------------
 // 注意f(x) 都是复数
 
-// 求定积分
-const integral = function(f, x1, x2, samples) {         // f 是复函数
-    let sum = new Complex(0, 0);                                   // 总面积
+//===============================================================
+// fft - 快速傅里叶变换
+//---------------------------------------------------------------
+//  输入a：复序列。长度一般是以2为底的幂
+//  输出A：与输出等长的复序列
+//===============================================================
+const fft = function (a) {
+    let n = a.length, half_n = n/2;             // 序列长度
+    let A = new Array(n);                       // 保存输出序列
+    let w = new Complex(Math.cos(Math.PI*2/n), Math.sin(Math.PI*2/n));      // 单位根
+    for (let k = 0; k < half_n; k++) {          // 循环次数为序列长度的一半
+        // 计算单位根的2k次方
+        let w2k = w.power(2*k);
+        // 计算A1和A2。A1需要a的所有奇数项(0, 2, 4, ..., n-2)，A2需要a的所有偶数项(1, 3, 5, ..., n-1)
+        let A1 = new Complex(0, 0), A2 = new Complex(0, 0);
+        for (let i = 0, p = 0; i < n; i+=2, p++) {
+            let temp = w2k.power(p).multiply(a[i]);      // A1的每一项，等于单位根的2k次方，再乘a的某个奇数项
+            A1 = A1.add(temp);
+        }
+
+        for (let i = 1, p = 0; i < n; i+=2, p++) {
+            let temp = w2k.power(p).multiply(a[i]);      // A2的每一项，等于单位根的2k次方，再乘a的某个奇数项
+            A2 = A2.add(temp);
+        }
+
+        let wkA2 = w.power(k).multiply(A2);
+
+        A[k] = A1.add(wkA2);
+        A[k+half_n] = A1.subtract(wkA2);
+    }
+    return A;
+}
+
+//===============================================================
+// integral - 求定积分
+//---------------------------------------------------------------
+//  输入f：原函数
+//  输入x1, x2：积分上下限
+//  输入samples：小矩形的个数
+//  输出sum：定积分
+//===============================================================
+const integral = function(f, x1, x2, samples) {     // f 是复函数
+    let sum = new Complex(0, 0);                    // 总面积
     step = (x2 - x1) / samples;
     for (let i = x1; i < x2; i += step) {
-        let area = f(i).scaling(step);                 // 每个小长方形的面积
+        let area = f(i).scaling(step);              // 每个小长方形的面积
         sum = sum.add(area);
     }
     return sum;
@@ -98,7 +199,12 @@ const cft = function (f, x1, x2, samples) {         // 原函数 下限 上限 �
     return function (omega) {return integral(function (x) {return f(x).multiply(new Complex(Math.cos(-2*Math.PI*omega*x), Math.sin(-2*Math.PI*omega*x)))}, x1, x2, samples)}
 };
 
-// 离散傅里叶变换
+//===============================================================
+// dft - 离散傅里叶变换
+//---------------------------------------------------------------
+//  输入x：复序列。长度一般是以2为底的幂
+//  输出X：与输出等长的复序列
+//===============================================================
 const dft = function(x) {               // x为复序列
     let N = x.length;
     let X = new Array(N);
@@ -110,9 +216,9 @@ const dft = function(x) {               // x为复序列
         }
     }
     // 调整周期
-    /*    let sliceIndex = Math.ceil(X.length / 2);
-        let newX = X.slice(sliceIndex, X.length).concat(X.slice(0, sliceIndex));
-        return newX;*/
+    // let sliceIndex = Math.ceil(X.length / 2);
+    // let newX = X.slice(sliceIndex, X.length).concat(X.slice(0, sliceIndex));
+    // return newX;
     return X;
 };
 

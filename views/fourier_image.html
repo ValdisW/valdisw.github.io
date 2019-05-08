@@ -14,7 +14,7 @@
     <div id="outputPoint"></div>
 </div>
 
-<div id="dftAmplitude"></div>       <!-- 幅度谱 -->
+<div id="dftAmplitude"></div>           <!-- 幅度谱 -->
 <div id="dftPhase"></div>               <!-- 相位谱 -->
 
 <div id="controlpane">
@@ -55,6 +55,7 @@
     $('#expandNum').attr('value', originImageData.length);                     // 输入框默认值
 
     // 原信号转换成复信号
+    // 原序列
     let dogComplexData= new Array(originImageData.length);
     for (let i = 0; i < originImageData.length; i++)
         dogComplexData[i] = new Complex(originImageData[i][0], originImageData[i][1]);
@@ -81,11 +82,11 @@
     dftPhaseChart.setOption(dftPhaseOption);
 
     $('#fourierDescriptor').html(getFourierDescriptor(dogComplexData, 10));
-    const updateNewDog = function() {                   // 根据输入框的项数刷新各图像
-        let expandNum = parseInt($('#expandNum').val());       //  获取输入框项数
+    const updateNewDog = function() {                           // 根据输入框的项数刷新各图像
+        let expandNum = parseInt($('#expandNum').val());        // 获取输入框项数
 
         // --- 调整 ---
-        let removeNum = originImageData.length - expandNum;         // 需要除去的项数
+        let removeNum = originImageData.length - expandNum;     // 需要除去的项数
         // 从大到小
         let partOfDogComplexData_dft = [].concat(dogComplexData_dft);          // 拷贝离散傅里叶频谱
         for (let i = 0; i < removeNum; i++) {
