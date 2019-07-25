@@ -1,236 +1,280 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>OpenCV_LAB</title>
+    <title>Valdis的魔法商店 | CVLAB</title>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../style/opencvJS_style.css">
 </head>
+
 <body>
-<div id="black"></div>
-<div id="waiting">请稍等，OpenCV.js加载中...</div>
+    <div id="black"></div>
+    <div id="waiting">OpenCV.js加载中...</div>
 
-<div id="header">
-    <div id="nav">
-        <button onclick="document.getElementById('srcImgInputButton').click()">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1">
+                        <span class="navbar-toggler-icon"></span>
+                    </button> <a class="navbar-brand" href="#">CVLAB</a>
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="http://example.com"
+                                    id="navbarDropdownMenuLink" data-toggle="dropdown">图像</a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item" id="binarizeButton" href="#">二值化</a>
+                                    <a class="dropdown-item" id="linearGrayTransButton" href="#">灰度变换</a>
+                                    <a class="dropdown-item" id="histogramTransButton" href="#">直方图</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" id="spatialSmoothButton" href="#">空域平滑</a>
+                                    <a class="dropdown-item" id="addNoiseButton" href="#">添加噪声</a>
+                                    <a class="dropdown-item" id="morphologicalButton" href="#">形态学处理</a>
+                                </div>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link" id="splitButton" href="#">图像分割</a>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link" id="borderDetectButton" href="#">边缘检测</a>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link" id="codingAndDecodingButton" href="#">图像编码</a>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link" id="plusOrMinusButton" href="#">图像加减</a>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link" id="countingButton" href="#">计数</a>
+                            </li>
+                        </ul>
+                        <ul class="navbar-nav ml-md-auto">
+                            <li class="nav-item active">
+                                <a class="btn btn-dark" href="#"
+                                    onclick="document.getElementById('srcImgInputButton').click()">
+                                    选择图片
+                                    <input type="file" class="fileInputButton" id="srcImgInputButton" accept="image/*">
+                                </a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="http://example.com"
+                                    id="navbarDropdownMenuLink" data-toggle="dropdown">Dropdown link</a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item" href="#">Action</a> <a class="dropdown-item"
+                                        href="#">Another action</a>
+                                    <a class="dropdown-item" href="#">Something else here</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">Separated link</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <img src="" id="srcImg" alt="">
+
+    <div id="grayPanel" class="window_panel">
+        <p class="dragBar">灰度变换</p>
+        <div id="grayChart"></div>
+        <label for="grayModeSelect">变换类型: </label>
+        <select name="grayMode" id="grayModeSelect">
+            <option value=0>线性</option>
+            <option value=1>对数</option>
+        </select>
+        <div id="linearPart">
+            <label for="from_min">原灰度范围:最小值:</label><input id="from_min" type="text" value=0>
+            <label for="from_max">最大值:</label><input id="from_max" type="text" value=255><br>
+            <label for="to_min">变换后灰度范围:最小值</label><input id="to_min" type="text" value=0>
+            <label for="to_max">最大值:</label><input id="to_max" type="text" value=255>
+        </div>
+        <div id="expPart">
+            <label for="para_a">参数a:</label><input id="para_a" type="text" value=100>
+            <label for="para_b">参数b:</label><input id="para_b" type="text" value=0.01>
+            <label for="para_c">参数c:</label><input id="para_c" type="text" value=80>
+        </div>
+        <button class="confirm">确定</button>
+        <button class="cancel">取消</button>
+    </div>
+
+    <div id="histogramPanel" class="window_panel">
+        <p class="dragBar">直方图变换</p>
+        <div id="histogramChart"></div>
+        <label for="histogramChannelSelect">通道:&nbsp;</label>
+        <select name="channel" id="histogramChannelSelect">
+            <option value="0">红</option>
+            <option value="1">绿</option>
+            <option value="2">蓝</option>
+        </select>
+        <button id="ifEqualize">均衡化</button>
+        <button>关闭</button>
+    </div>
+
+    <div id="plusOrMinusPanel" class="window_panel">
+        <p class="dragBar">图像加减</p>
+        <button onclick="document.getElementById('plusOrMinusInputButton').click()">
             选择图片
-            <input type="file" class="fileInputButton" id="srcImgInputButton" accept="image/*">
+            <input type="file" class="fileInputButton" id="plusOrMinusInputButton" accept="image/*">
         </button>
-        <ul>
-            <li>
-                <span>图像</span>
-                <ul>
-                    <li id="binarizeButton">二值化</li>
-                    <li id="linearGrayTransButton">灰度变换</li>
-                    <li id="histogramTransButton">直方图</li>
-                    <li id="spatialSmoothButton">空域平滑</li>
-                    <li id="addNoiseButton">添加噪声</li>
-                    <li id="morphologicalButton">形态学处理</li>
-                </ul>
-            </li>
-            <li id="splitButton">图像分割</li>
-            <li id="borderDetectButton">边缘检测</li>
-            <li id="codingAndDecodingButton">图像编码</li>
-            <li id="plusOrMinusButton">图像加减</li>
-            <li id="countingButton">计数</li>
-        </ul>
-    </div>
-</div>
-
-<img src="" id="srcImg" alt="">
-
-<div id="grayPanel" class="window_panel">
-    <p class="dragBar">灰度变换</p>
-    <div id="grayChart"></div>
-    <label for="grayModeSelect">变换类型: </label>
-    <select name="grayMode" id="grayModeSelect">
-        <option value=0>线性</option>
-        <option value=1>对数</option>
-    </select>
-    <div id="linearPart">
-        <label for="from_min">原灰度范围:最小值:</label><input id="from_min" type="text" value=0>
-        <label for="from_max">最大值:</label><input id="from_max" type="text" value=255><br>
-        <label for="to_min">变换后灰度范围:最小值</label><input id="to_min" type="text" value=0>
-        <label for="to_max">最大值:</label><input id="to_max" type="text" value=255>
-    </div>
-    <div id="expPart">
-        <label for="para_a">参数a:</label><input id="para_a" type="text" value=100>
-        <label for="para_b">参数b:</label><input id="para_b" type="text" value=0.01>
-        <label for="para_c">参数c:</label><input id="para_c" type="text" value=80>
-    </div>
-    <button class="confirm">确定</button>
-    <button class="cancel">取消</button>
-</div>
-
-<div id="histogramPanel" class="window_panel">
-    <p class="dragBar">直方图变换</p>
-    <div id="histogramChart"></div>
-    <label  for="histogramChannelSelect">通道:&nbsp;</label>
-    <select name="channel" id="histogramChannelSelect">
-        <option value="0">红</option>
-        <option value="1">绿</option>
-        <option value="2">蓝</option>
-    </select>
-    <button id="ifEqualize">均衡化</button>
-    <button>关闭</button>
-</div>
-
-<div id="plusOrMinusPanel" class="window_panel">
-    <p class="dragBar">图像加减</p>
-    <button onclick="document.getElementById('plusOrMinusInputButton').click()">
-        选择图片
-        <input type="file" class="fileInputButton" id="plusOrMinusInputButton" accept="image/*">
-    </button>
-    <label for="plusOrMinusSelect">运算类型: </label>
-    <select name="plusOrMinus" id="plusOrMinusSelect">
-        <option value=0>加法</option>
-        <option value=1>减法</option>
-    </select>
-    <img src="" id="operationImg" alt="操作图片">
-    <button>确定</button>
-</div>
-
-<div id="spacialSmoothPanel" class="window_panel">
-    <p class="dragBar">空域平滑</p>
-    <div class="gadgetOpions">
-        <label for="filterModeSelect">滤波类型: </label>
-        <select name="filterMode" id="filterModeSelect">
-            <option value=0>均值滤波</option>
-            <option value=1>中值滤波</option>
-        </select><br>
-    </div>
-    <div class="gadgetOpions">
-        <label for="templetSize">模板大小: </label>
-        <input id="templetSize" type="text" value=1>
-    </div>
-    <button>确定</button>
-</div>
-
-<div id="addNoisePanel" class="window_panel">
-    <p class="dragBar">添加噪声</p>
-    <div class="gadgetOpions">
-        <label for="noiseTypeSelect">噪声类型: </label>
-        <select name="noiseType" id="noiseTypeSelect">
-            <option value=0>椒盐噪声</option>
-            <option value=1>高斯噪声</option>
+        <label for="plusOrMinusSelect">运算类型: </label>
+        <select name="plusOrMinus" id="plusOrMinusSelect">
+            <option value=0>加法</option>
+            <option value=1>减法</option>
         </select>
-    </div>
-    <div class="gadgetOpions">
-        <label for="noiseIntensity">强度: </label>
-        <input id="noiseIntensity" type="range" min="0" max="1" step="0.05">
-    </div>
-    <button>确定</button>
-</div>
-
-<div id="codingAndDecodingPanel" class="window_panel">
-    <p class="dragBar">编/解码</p>
-    <div id="codingControl">
-        <label for="codingAlgoSelect">编码方式: </label>
-        <select name="codingAlgo" id="codingAlgoSelect">
-            <option value=0>Huffman编码</option>
-            <option value=1>Shannon-Fano编码</option>
-            <!-- <option value=2>算术编码</option> -->
-        </select><br>
-
-        <label  for="codingChannelSelect">通道: </label>
-        <select name="codingChannel" id="codingChannelSelect">
-            <option value=0>红</option>
-            <option value=1>绿</option>
-            <option value=2>蓝</option>
-        </select>
-    </div>
-    <div id="codingTable">
-        <table></table>
-    </div>
-    <div id="codingInfo">
-        <label for="entropy">图像信息熵:&nbsp;</label><input type="text" id="entropy" readonly><br>
-        <label for="averageCodeLength">平均码字长:&nbsp;</label><input type="text" id="averageCodeLength" readonly><br>
-        <label for="codingEfficiency">编码效率:&nbsp;</label><input type="text" id="codingEfficiency" readonly><br>
-    </div>
-    <button>关闭</button>
-</div>
-
-<div id="binarizePanel" class="window_panel">
-    <p class="dragBar">二值化</p>
-    <div class="gadgetOpions">
-        <label for="threshold">阈值：</label>
-        <input id="threshold" type="range" min="0" max="255" step="1">
-    </div>
-    <button class="confirm">确定</button>
-    <button class="cancel">取消</button>
-</div>
-
-<div id="borderDetectPanel" class="window_panel">
-    <p class="dragBar">边缘检测</p>
-    <div class="gadgetOpions">
-        <label for="operatorSelect">选择算子：</label>
-        <select name="operatorSelect" id="operatorSelect">
-            <option value=0>Roberts算子（四点差分）</option>
-            <option value=1>Sobel算子（加权平均差分）</option>
-            <option value=2>Prewitt算子（局部差分平均）</option>
-            <option value=3>Laplacian算子</option>
-        </select>
-    </div>
-    <button class="confirm">确定</button>
-    <button class="cancel">取消</button>
-</div>
-
-<div id="splitPanel" class="window_panel">
-    <p class="dragBar">图像分割 </p>
-    <div class="gadgetOpions">
-        <label for="splitAlgoSelect">分割算法：</label>
-        <select name="splitAlgoSelect" id="splitAlgoSelect">
-            <option value=0>迭代阈值分割</option>
-            <option value=1>区域生长算法分割</option>
-        </select>
-    </div>
-    <button class="confirm">确定</button>
-    <button class="cancel">取消</button>
-</div>
-
-<div id="countingPanel" class="window_panel">
-    <p class="dragBar">目标计数</p>
-    <div class="gadgetOpions">
-        <label for="targetNum">目标个数: </label><input type="text" id="targetNum">
+        <img src="" id="operationImg" alt="操作图片">
+        <button>确定</button>
     </div>
 
-    <div>分步骤：</div>
-    <button id="stepButton1">均衡化</button><br>
-    <button id="stepButton2">中值滤波</button><br>
-    <button id="stepButton3">二值化</button><br>
-    <button id="stepButton4">闭运算</button><br>
-    <button id="stepButton5">距离归一</button><br>
-    <button id="stepButton6">二值化</button><br>
-    <button id="stepButton7">腐蚀</button><br>
-    <button id="stepButton8">计数</button>
-    <br>
-    <button id="oneStepButton">一键计数</button>
-    <button class="confirm">确定</button>
-    <button class="cancel">取消</button>
-</div>
-
-<div id="morphologicalPanel" class="window_panel">
-    <p class="dragBar">形态学处理</p>
-    <div class="gadgetOpions">
-        <label for="morphologicalSelect">处理：</label>
-        <select name="morphologicalSelect" id="morphologicalSelect">
-            <option value="erode">腐蚀</option>
-            <option value="dilate">膨胀</option>
-            <option value="opening">开运算</option>
-            <option value="closing">闭运算</option>
-        </select>
+    <div id="spacialSmoothPanel" class="window_panel">
+        <p class="dragBar">空域平滑</p>
+        <div class="gadgetOpions">
+            <label for="filterModeSelect">滤波类型: </label>
+            <select name="filterMode" id="filterModeSelect">
+                <option value=0>均值滤波</option>
+                <option value=1>中值滤波</option>
+            </select><br>
+        </div>
+        <div class="gadgetOpions">
+            <label for="templetSize">模板大小: </label>
+            <input id="templetSize" type="text" value=1>
+        </div>
+        <button>确定</button>
     </div>
-    <button class="confirm">确定</button>
-    <button class="cancel">取消</button>
-</div>
 
-<!-- Scripts -->
-<script src="../js/jquery-3.3.1.min.js"></script>
-<script src="../js/echarts.js"></script>
-<script src="../script/opencvUtils.js"></script>
-<script src="../script/opencv_script.js"></script>
-<script async src="../js/opencv.js" onload="onOpenCvReady()"></script>
+    <div id="addNoisePanel" class="window_panel">
+        <p class="dragBar">添加噪声</p>
+        <div class="gadgetOpions">
+            <label for="noiseTypeSelect">噪声类型: </label>
+            <select name="noiseType" id="noiseTypeSelect">
+                <option value=0>椒盐噪声</option>
+                <option value=1>高斯噪声</option>
+            </select>
+        </div>
+        <div class="gadgetOpions">
+            <label for="noiseIntensity">强度: </label>
+            <input id="noiseIntensity" type="range" min="0" max="1" step="0.05">
+        </div>
+        <button>确定</button>
+    </div>
+
+    <div id="codingAndDecodingPanel" class="window_panel">
+        <p class="dragBar">编/解码</p>
+        <div id="codingControl">
+            <label for="codingAlgoSelect">编码方式: </label>
+            <select name="codingAlgo" id="codingAlgoSelect">
+                <option value=0>Huffman编码</option>
+                <option value=1>Shannon-Fano编码</option>
+                <!-- <option value=2>算术编码</option> -->
+            </select><br>
+
+            <label for="codingChannelSelect">通道: </label>
+            <select name="codingChannel" id="codingChannelSelect">
+                <option value=0>红</option>
+                <option value=1>绿</option>
+                <option value=2>蓝</option>
+            </select>
+        </div>
+        <div id="codingTable">
+            <table></table>
+        </div>
+        <div id="codingInfo">
+            <label for="entropy">图像信息熵:&nbsp;</label><input type="text" id="entropy" readonly><br>
+            <label for="averageCodeLength">平均码字长:&nbsp;</label><input type="text" id="averageCodeLength" readonly><br>
+            <label for="codingEfficiency">编码效率:&nbsp;</label><input type="text" id="codingEfficiency" readonly><br>
+        </div>
+        <button>关闭</button>
+    </div>
+
+    <div id="binarizePanel" class="window_panel">
+        <p class="dragBar">二值化</p>
+        <div class="gadgetOpions">
+            <label for="threshold">阈值：</label>
+            <input id="threshold" type="range" min="0" max="255" step="1">
+        </div>
+        <button class="confirm">确定</button>
+        <button class="cancel">取消</button>
+    </div>
+
+    <div id="borderDetectPanel" class="window_panel">
+        <p class="dragBar">边缘检测</p>
+        <div class="gadgetOpions">
+            <label for="operatorSelect">选择算子：</label>
+            <select name="operatorSelect" id="operatorSelect">
+                <option value=0>Roberts算子（四点差分）</option>
+                <option value=1>Sobel算子（加权平均差分）</option>
+                <option value=2>Prewitt算子（局部差分平均）</option>
+                <option value=3>Laplacian算子</option>
+            </select>
+        </div>
+        <button class="confirm">确定</button>
+        <button class="cancel">取消</button>
+    </div>
+
+    <div id="splitPanel" class="window_panel">
+        <p class="dragBar">图像分割 </p>
+        <div class="gadgetOpions">
+            <label for="splitAlgoSelect">分割算法：</label>
+            <select name="splitAlgoSelect" id="splitAlgoSelect">
+                <option value=0>迭代阈值分割</option>
+                <option value=1>区域生长算法分割</option>
+            </select>
+        </div>
+        <button class="confirm">确定</button>
+        <button class="cancel">取消</button>
+    </div>
+
+    <div id="countingPanel" class="window_panel">
+        <p class="dragBar">目标计数</p>
+        <div class="gadgetOpions">
+            <label for="targetNum">目标个数: </label><input type="text" id="targetNum">
+        </div>
+
+        <div>分步骤：</div>
+        <button id="stepButton1">均衡化</button><br>
+        <button id="stepButton2">中值滤波</button><br>
+        <button id="stepButton3">二值化</button><br>
+        <button id="stepButton4">闭运算</button><br>
+        <button id="stepButton5">距离归一</button><br>
+        <button id="stepButton6">二值化</button><br>
+        <button id="stepButton7">腐蚀</button><br>
+        <button id="stepButton8">计数</button>
+        <br>
+        <button id="oneStepButton">一键计数</button>
+        <button class="confirm">确定</button>
+        <button class="cancel">取消</button>
+    </div>
+
+    <div id="morphologicalPanel" class="window_panel">
+        <p class="dragBar">形态学处理</p>
+        <div class="gadgetOpions">
+            <label for="morphologicalSelect">处理：</label>
+            <select name="morphologicalSelect" id="morphologicalSelect">
+                <option value="erode">腐蚀</option>
+                <option value="dilate">膨胀</option>
+                <option value="opening">开运算</option>
+                <option value="closing">闭运算</option>
+            </select>
+        </div>
+        <button class="confirm">确定</button>
+        <button class="cancel">取消</button>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="../js/echarts.js"></script>
+    <script src="../script/opencvUtils.js"></script>
+    <script src="../script/opencv_script.js"></script>
+    <script async src="../js/opencv.js" onload="onOpenCvReady()"></script>
 </body>
+
 </html>
