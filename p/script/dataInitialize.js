@@ -8,3 +8,6 @@ for (let node in pipeVertexData) {
     pipeVertexData[node].temperature = Math.random() * 100;
     pipeVertexData[node].pressure = Math.random() * 100;
 }
+$.getJSON('../data/output.json', data => {
+    console.log(data);
+})
