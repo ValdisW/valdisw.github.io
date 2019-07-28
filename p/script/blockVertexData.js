@@ -1,3 +1,10 @@
+/**
+ * 各功能池的属性，包括：
+ *  - id
+ *  - 名称
+ *  - 字体
+ *  - 左上和右下点的坐标
+ */
 const blockVertexData = [                                           // 各方块测量数据
     {id: '1', name: '提标硝化滤池', font: '16px Microsoft YaHei', vertex1: [pipeVertexData.input1_1.coor.slice(0)[0], -180], vertex2: [pipeVertexData.output1_1.coor.slice(0)[0], pipeVertexData.input3_2.coor.slice(0)[1]]},
     //{id: '1_attach', name: '', font: '16px Microsoft YaHei', vertex1: [pipeVertexData.output1_1.coor.slice(0)[0], -180], vertex2: [pipeVertexData.output1_1.coor.slice(0)[0] + 20, -100]},
@@ -32,6 +39,5 @@ const blockVertexData = [                                           // 各方块
 
     /*
         {id: '4_attach', name: '', font: '16px Microsoft YaHei', vertex1: [587, -120], vertex2: [784, -80]},
-
     */
 ];

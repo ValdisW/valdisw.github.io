@@ -4,8 +4,8 @@
 //    实际绘制（标题和管网）以及提示框的交互
 //====================================================================
 let zr = zrender.init($('#main')[0]);
-let pipeInfoBlock =　new pipeInfoToolTip();       // 管道提示框
-let blockInfoBlock = new blockInfoTooltip();      // 水池提示框
+let pipeInfoBlock = new pipeInfoToolTip(); // 管道提示框
+let blockInfoBlock = new blockInfoTooltip(); // 水池提示框
 
 let pipe_drawData = new Array(pipeData_origin.length);
 for (let i = 0; i < pipe_drawData.length; i++) {
@@ -26,8 +26,10 @@ for (let i = 0; i < pipe_drawData_origin.length; i++) {
 // 标题文字
 let title = new zrender.Rect({
     shape: {
-        x: 0, y: 0,
-        width: window.innerWidth, height: 100,
+        x: 0,
+        y: 0,
+        width: window.innerWidth,
+        height: 100,
     },
     style: {
         fill: 'transparent',
@@ -44,21 +46,26 @@ zr.add(title);
 
 // 绘制带数据的管道
 let pipe_num = pipe_drawData.length;
-let pipes = new Array(pipe_num);         // 保存所有管道
-let pipes_flow = new Array(pipe_num);    // 保存所有管道的流动效果
+let pipes = new Array(pipe_num); // 保存所有管道
+let pipes_flow = new Array(pipe_num); // 保存所有管道的流动效果
 for (let i = 0; i < pipe_num; i++) {
     // 管道本体
     pipes[i] = new zrender.Polyline({
-        shape: {points: pipe_drawData[i]},
+        shape: {
+            points: pipe_drawData[i]
+        },
         style: {
             stroke: '#FF0',
             lineWidth: 5
         },
         zlevel: 1
     });
-    pipes[i].on('mousemove', (e)=>{     // tooltip交互
+    pipes[i].on('mousemove', (e) => { // tooltip交互
         pipes[i].attr({
-            style: { shadowBlur: 20, shadowColor: '#FF0'}     // 管线高亮（阴影）
+            style: {
+                shadowBlur: 20,
+                shadowColor: '#FF0'
+            } // 管线高亮（阴影）
         });
         console.log(pipeData_origin[i].name);
         // 计算鼠标指向位置的流速、温度、压力
@@ -79,14 +86,20 @@ for (let i = 0; i < pipe_num; i++) {
         ).toFixed(2);
         pipeInfoBlock.display(e.offsetX, e.offsetY, m_speed + ' km/h', m_temperature + ' °C', m_pressure + ' N');
     }).on('mouseout', function () {
-        pipes[i].attr({style: {shadowBlur: 0,}});
+        pipes[i].attr({
+            style: {
+                shadowBlur: 0,
+            }
+        });
         pipeInfoBlock.vanish();
     });
     zr.add(pipes[i]);
 
     // 管道流动
     pipes_flow[i] = new zrender.Polyline({
-        shape: {points: pipe_drawData[i]},
+        shape: {
+            points: pipe_drawData[i]
+        },
         style: {
             stroke: '#282C34',
             lineWidth: 3,
@@ -96,7 +109,9 @@ for (let i = 0; i < pipe_num; i++) {
         zlevel: 1,
         silent: true,
     });
-    pipes_flow[i].animate('style', true).when(1000, {lineDashOffset: -1 * (10)}).done(function() {}).start();
+    pipes_flow[i].animate('style', true).when(1000, {
+        lineDashOffset: -1 * (10)
+    }).done(function () {}).start();
     zr.add(pipes_flow[i]);
 }
 
@@ -104,7 +119,9 @@ for (let i = 0; i < pipe_num; i++) {
 let pipes_noData = Array(pipes_noData_drawData.length);
 for (let i = 0; i < pipes_noData.length; i++) {
     pipes_noData[i] = new zrender.Polyline({
-        shape: {points: pipes_noData_drawData[i]},
+        shape: {
+            points: pipes_noData_drawData[i]
+        },
         style: {
             stroke: '#FF0',
             lineWidth: 5,
@@ -117,7 +134,9 @@ for (let i = 0; i < pipes_noData.length; i++) {
 let pipes_noData_flow = Array(pipes_noData_drawData.length);
 for (let i = 0; i < pipes_noData_flow.length; i++) {
     pipes_noData_flow[i] = new zrender.Polyline({
-        shape: {points: pipes_noData_drawData[i]},
+        shape: {
+            points: pipes_noData_drawData[i]
+        },
         style: {
             stroke: '#282C34',
             lineWidth: 3,
@@ -127,7 +146,9 @@ for (let i = 0; i < pipes_noData_flow.length; i++) {
         zlevel: 1,
         silent: true,
     });
-    pipes_noData_flow[i].animate('style', true).when(1000, {lineDashOffset: -1 * (10)}).done(function() {}).start();
+    pipes_noData_flow[i].animate('style', true).when(1000, {
+        lineDashOffset: -1 * (10)
+    }).done(function () {}).start();
     zr.add(pipes_noData_flow[i]);
 }
 

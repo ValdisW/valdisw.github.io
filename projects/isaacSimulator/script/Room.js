@@ -1,8 +1,8 @@
 //===============================================================
 // 房间类
 //===============================================================
-class Room{
-    constructor(config){
+class Room {
+    constructor(config) {
         this.leftFloor = config.leftFloor;
         this.rightFloor = config.rightFloor;
         this.upFloor = config.upFloor;
@@ -20,11 +20,11 @@ class Room{
         quad(this.leftCeil, this.upCeil, this.leftFloor, this.upFloor, this.leftFloor, this.downFloor, this.leftCeil, this.downCeil);
         quad(this.leftCeil, this.downCeil, this.rightCeil, this.downCeil, this.rightFloor, this.downFloor, this.leftFloor, this.downFloor);
         quad(this.rightCeil, this.upCeil, this.rightFloor, this.upFloor, this.rightFloor, this.downFloor, this.rightCeil, this.downCeil);
-        
+
         // 绘制地板
         fill(74, 44, 45);
         stroke(0);
+        randomSeed(38572935);
         rect(this.leftFloor, this.upFloor, this.rightFloor - this.leftFloor, this.downFloor - this.upFloor);
     }
 }
-

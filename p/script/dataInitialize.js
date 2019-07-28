@@ -1,7 +1,7 @@
 //=====================================================
 // ** dataInitialize.js
 //-----------------------------------------------------
-// Initialize speed, temperature, pressure of data points
+// 初始化数据点的相关属性（流速、温度、压力）
 //=====================================================
 for (let node in pipeVertexData) {
     pipeVertexData[node].speed = Math.random() * 100;

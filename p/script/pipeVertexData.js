@@ -1,7 +1,7 @@
 //=====================================================
 // ** pipeVertexData.js
 //-----------------------------------------------------
-// Defines all data points
+// 这里定义了所有的数据点
 //=====================================================
 const pipeVertexData = {
     // Data points on pipes
@@ -59,7 +59,7 @@ const pipeVertexData = {
     "outside": {"use": true, "coor": [750, 1050], "speed": null, "temperature": null, "pressure": null},
 
 
-    // Data points attached to blocks
+    // 各功能池的输入和输出节点
     "input1_1": {"use": true, "coor": [587, -105], "speed": null, "temperature": null, "pressure": null},
     "output1_1": {"use": true, "coor": [784, -105], "speed": null, "temperature": null, "pressure": null},
     "input2_1": {"use": true, "coor": [877, -105], "speed": null, "temperature": null, "pressure": null},
