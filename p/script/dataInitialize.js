@@ -9,5 +9,8 @@ for (let node in pipeVertexData) {
     pipeVertexData[node].pressure = Math.random() * 100;
 }
 $.getJSON('./data/output.json', data => {
-    console.log(data);
+    for (let p of data) {
+        let pipe_id = 'g' + p.pipe;
+        console.log(pipe_id);
+    }
 })

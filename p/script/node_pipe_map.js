@@ -1,12 +1,12 @@
 /**
  * 管道和节点的映射
  */
-const map = [{
+const node_pipe_map = [{
         'pipe_id': 'g1',
         'node_id': ['j1', 'input1_1']
     },
     {
-        'pipe_id': 'g1',
+        'pipe_id': 'g2',
         'node_id': ['j1', 'j3']
     },
     {
