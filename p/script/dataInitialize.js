@@ -11,6 +11,12 @@ for (let node in pipeVertexData) {
 $.getJSON('./data/output.json', data => {
     for (let p of data) {
         console.log(p);
-        pipeVertexData['g' + p.pipe].speed = parseFloat(p.speed).toFixed(2);
+        let pipe_id = 'g' + p.pipe;
+        for (let map of node_pipe_map) {
+            if (map['pipe_id'] == pipe_id) {
+                pipeVertexData[map['node_id'][0]].speed = parseFloat(p.speed).toFixed(2);
+                pipeVertexData[map['node_id'][1]].speed = parseFloat(p.speed).toFixed(2);
+            }
+        }
     }
 })
