@@ -11,6 +11,6 @@ for (let node in pipeVertexData) {
 $.getJSON('./data/output.json', data => {
     for (let p of data) {
         console.log(p);
-        pipeVertexData['g' + p.pipe].speed = parseFloat(p.speed);
+        pipeVertexData['g' + p.pipe].speed = parseFloat(p.speed).toFixed(2);
     }
 })
