@@ -10,7 +10,6 @@ for (let node in pipeVertexData) {
 }
 $.getJSON('./data/output.json', data => {
     for (let p of data) {
-        console.log(p);
         let pipe_id = 'g' + p.pipe;
         for (let map of node_pipe_map) {
             if (map['pipe_id'] == pipe_id) {
@@ -19,4 +18,5 @@ $.getJSON('./data/output.json', data => {
             }
         }
     }
+    console.log(pipeVertexData);
 })
