@@ -15,8 +15,7 @@ $.getJSON('./data/output.json', data => {
             if (map['pipe_id'] == pipe_id) {
                 pipeVertexData[map['node_id'][0]].speed = parseFloat(p.speed).toFixed(2);
                 pipeVertexData[map['node_id'][1]].speed = parseFloat(p.speed).toFixed(2);
-                console.log(p.speed)
-                console.log(parseFloat(p.speed).toFixed(2))
+                console.log(parseFloat(p.speed).toFixed(pipeVertexData[map['node_id'][0]].speed));
             }
         }
     }
