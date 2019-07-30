@@ -35,34 +35,24 @@
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink"
-                  data-toggle="dropdown">Dropdown link</a>
+                  data-toggle="dropdown">项目</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                   <a class="dropdown-item" href="./mountain-p5.html">p5-mountain</a>
                   <a class="dropdown-item" href="./mountain-d3.html">d3-mountain</a>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                  <div class="dropdown-divider"> </div>
-                  <a class="dropdown-item" href="#">Separated link</a>
-                </div>
-              </li>
-            </ul>
-            <ul class="navbar-nav ml-md-auto">
-              <li class="nav-item active">
-                <a class="nav-link" href="#">Link <span class="sr-only">(current)</span></a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink"
-                  data-toggle="dropdown">Dropdown link</a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="#">Action</a> <a class="dropdown-item" href="#">Another action</a> <a
-                    class="dropdown-item" href="#">Something else here</a>
-                  <div class="dropdown-divider">
-                  </div> <a class="dropdown-item" href="#">Separated link</a>
                 </div>
               </li>
             </ul>
         </nav>
+        <div class="jumbotron">
+          <h1 class="display-4">绿水青山，就是金山银山!</h1>
+          <p class="lead">要牢记噢！</p>
+          <hr class="my-4">
+          <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+          <p class="lead">
+            <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+          </p>
+        </div>
         <div id="block1"></div>
-
       </div>
     </div>
   </div>
@@ -74,7 +64,7 @@
   <script src="./script/mountainOption.js"></script>
   <script src="./script/getMonthData.js"></script>
   <script>
-    const block1 = document.getElementById('block1');
+    const block1 = $('#block1').get(0);
     const chart1 = echarts.init(block1);
     let city = 'shanghai';
     d3.csv('./data/' + city + '.csv').then(val => {
