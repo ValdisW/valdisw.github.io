@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Mountain-p5</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            overflow-y: hidden;
+            background-color: rgb(239, 232, 222);
+        }
+    </style>
+</head>
+
+<body>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://cdn.bootcss.com/p5.js/0.9.0/p5.min.js"></script>
+    <script src="./js/p5.scribble.js"></script>
+
+    <script src="./script/calcMonthlyData.js"></script>
+    <script src="./script/getMonthData.js"></script>
+
+    <script src="./script/p5_extend/gradientRect.js"></script>
+    <script src="./script/mountain/draw.js"></script>
+    <script>
+        let city = 'beijing'
+        const Y_AXIS = 1;
+        const X_AXIS = 2;
+        const scribble = new Scribble();
+        scribble.bowing = 1;
+        scribble.roughness = 1;
+        scribble.maxOffset = 1.5;
+
+        let mountain = {
+            outer_line: [],
+            inner_line: [],
+            base_height: 50,
+            rect: {
+                x: null,
+                y: null,
+                w: null,
+                h: null
+            },
+            setRect: function (x, y, w, h) {
+                this.rect.x = x;
+                this.rect.y = y;
+                this.rect.w = w;
+                this.rect.h = h;
+            },
+            loadData: loadData,
+            draw: drawMountain
+        }
+
+        function setup() {
+            createCanvas(window.innerWidth, window.innerHeight);
+            d3.csv('./data/' + city + '.csv').then(val => {
+                let aqi_per_month = calcMonthlyData(val);
+                let some_month_data = getMonthData(val, 2018, 12);
+
+                mountain.setRect(50, 50, window.innerWidth - 100, 300);
+                mountain.loadData(some_month_data);
+                mountain.draw();
+            });
+        }
+
+        function draw() {}
+    </script>
+</body>
+
+</html>

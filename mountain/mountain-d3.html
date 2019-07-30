@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Mountain-d3</title>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+
+        #city-block {
+            position: absolute;
+            padding: 3%;
+            left: 10px;
+            bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <form id="city-block" class="card col-md-4">
+        <div class="form-group row">
+            <div class="form-check form-check-inline">
+                <input checked class="form-check-input" type="radio" name="time-type" id="inlineRadio1"
+                    value="all-time">
+                <label class="form-check-label" for="inlineRadio1">全部时间</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="time-type" id="inlineRadio2" value="user-select">
+                <label class="form-check-label" for="inlineRadio2">选择年份</label>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="city-select" class="col-sm-4 col-form-label">城市：</label>
+            <select class="form-control col-sm-8" name="city-select" id="city-select">
+                <option value="beijing">北京</option>
+                <option value="shanghai">上海</option>
+                <option value="lasa">拉萨</option>
+                <option value="kunming">昆明</option>
+                <option value="guiyang">贵阳</option>
+                <option value="changsha">长沙</option>
+                <option value="nanchang">南昌</option>
+                <option value="hangzhou">杭州</option>
+                <option value="chengdu">成都</option>
+                <option value="chongqing">重庆</option>
+                <option value="wuhan">武汉</option>
+                <option value="hefei">合肥</option>
+                <option value="nanjing">南京</option>
+                <option value="haikou">海口</option>
+                <option value="shijiazhuang">石家庄</option>
+                <option value="changchun">长春</option>
+                <option value="fuzhou">福州</option>
+                <option value="guangzhou">广州</option>
+                <option value="haerbin">哈尔滨</option>
+                <option value="wulumuqi">乌鲁木齐</option>
+                <option value="huhehaote">呼和浩特</option>
+                <option value="jinan">济南</option>
+                <option value="lanzhou">兰州</option>
+                <option value="nanning">南宁</option>
+                <option value="shenyang">沈阳</option>
+                <option value="taiyuan">太原</option>
+                <option value="tianjin">天津</option>
+                <option value="xian">西安</option>
+                <option value="xining">西宁</option>
+                <option value="yinchuan">银川</option>
+                <option value="zhengzhou">郑州</option>
+            </select>
+        </div>
+
+        <div class="form-group row" id="year-select-block">
+            <label for="year-select" class="col-sm-4 col-form-label">年份：</label>
+            <select class="form-control col-sm-8" name="year-select" id="year-select">
+                <option value="2013">2013</option>
+                <option value="2014">2014</option>
+                <option value="2015">2015</option>
+                <option value="2016">2016</option>
+                <option value="2017">2017</option>
+                <option value="2018">2018</option>
+                <option value="2019">2019</option>
+            </select>
+        </div>
+        <a class="btn btn-warning" href="" id="link">保存</a>
+    </form>
+
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <script src="./script/calcMonthlyData.js"></script>
+    <script src="./script/getMonthData.js"></script>
+    <script src="./script/extract_data/getYearData.js"></script>
+    <script src="./script/extract_data/getAllMonthlyData.js"></script>
+    <script>
+        const svgHeadInfo =
+            '<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">';
+        let city = 'beijing';
+        let years;
+        let year = 2019;
+
+        $('#city-block').change(() => {
+            city = $('#city-select').val();
+            year = $('#year-select').val();
+            let radio_val = $("input[name='time-type']:checked").val();
+            $('#main').remove();
+            d3.csv('./data/' + city + '.csv').then(val => {
+                let cooked_data;
+                if (radio_val == 'all-time') {
+                    years = [2013, 2014, 2015, 2016, 2017, 2018, 2019];
+                    $('#year-select').attr('disabled', true);
+                } else if (radio_val == 'user-select') {
+                    years = [year];
+                    $('#year-select').attr('disabled', false);
+                }
+                cooked_data = getAllMonthlyData(val, years);
+
+                console.log('选取的数据集:', cooked_data);
+
+                // 计算最值
+                let d_min = Number.MAX_VALUE,
+                    d_max = Number.MIN_VALUE,
+                    most_polluted = Number.MIN_VALUE,
+                    most_clean = Number.MAX_VALUE;
+                for (let d of cooked_data) {
+                    if (parseFloat(d[0]) > d_max) d_max = parseFloat(d[0]);
+                    if (parseFloat(d[0]) < d_min) d_min = parseFloat(d[0]);
+                    if (parseFloat(d[1]) > most_polluted) most_polluted = parseFloat(d[1]);
+                    if (parseFloat(d[1]) < most_clean) most_clean = parseFloat(d[1]);
+                }
+
+                most_polluted = 300;
+                // 构建绘图数据
+                let data = [cooked_data];
+                data[0].push([data[0][data[0].length - 1][0], most_polluted]);
+                data[0].unshift([data[0][0][0], most_polluted]);
+
+                // d3线条生成器准备
+                let x = d3.scaleLinear().domain([d_min, d_max]).range([50, window.innerWidth - 50]),
+                    y = d3.scaleLinear().domain([0, most_polluted]).range([100, 450]);
+                let line = d3.line()
+                    .x(d => x(d[0]))
+                    .y(d => y(d[1]))
+
+                let svg = d3.select('body').append('div').attr('id', 'main').append('svg')
+                    .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
+                    .attr('id', 'svg')
+                    .attr('width', window.innerWidth)
+                    .attr('height', window.innerHeight)
+                    .style('background-color', 'rgb(239, 232, 222)');
+
+                let linearGradient = svg.append('defs').append('linearGradient')
+                    .attr('id', 'mountain-color')
+                    .attr('x1', '0%')
+                    .attr('y1', '0%')
+                    .attr('x2', '0%')
+                    .attr('y2', '100%');
+                linearGradient.append('stop')
+                    .attr(
+                        'offset',
+                        parseInt((0 - most_clean) / (most_polluted - most_clean) * 100) + '%')
+                    .style('stop-color', '#1685a9')
+                    .style('stop-opacity', '1');
+                linearGradient.append('stop')
+                    .attr(
+                        'offset',
+                        parseInt((100 - most_clean) / (most_polluted - most_clean) * 100) + '%')
+                    .style('stop-color', '#76cfa6')
+                    .style('stop-opacity', '1');
+                linearGradient.append('stop')
+                    .attr(
+                        'offset',
+                        parseInt((200 - most_clean) / (most_polluted - most_clean) * 100) + '%')
+                    .style('stop-color', '#a78e44')
+                    .style('stop-opacity', '1');
+                linearGradient.append('stop')
+                    .attr(
+                        'offset',
+                        parseInt((250 - most_clean) / (most_polluted - most_clean) * 100) + '%')
+                    .style('stop-color', '#845a33')
+                    .style('stop-opacity', '1');
+                linearGradient.append('stop')
+                    .attr('offset', '100%')
+                    .style('stop-color', 'rgb(239, 232, 222)')
+                    .style('stop-opacity', '1');
+
+                svg.selectAll('path.line')
+                    .data(data)
+                    .enter()
+                    .append('path')
+                    .classed('line', true)
+                    .style('fill', 'url(#mountain-color)')
+                    .style('stroke', '#000')
+                    .attr('d', d => line(d));
+
+                // 生成svg文件链接
+                let serializer = new XMLSerializer();
+                let source = serializer.serializeToString(document.getElementById("svg"));
+
+                //add name spaces
+                if (!source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)) {
+                    source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
+                }
+                if (!source.match(/^<svg[^>]+"http\:\/\/www\.w3\.org\/1999\/xlink"/)) {
+                    source = source.replace(/^<svg/,
+                        '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
+                }
+
+                source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
+
+                //convert svg source to URI data scheme.
+                let url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
+
+                //set url value to a element's href attribute.
+                $("#link").attr('href', url);
+            });
+        });
+
+        $('#link').hover(function () {
+            $(this).text('导出svg: 右键→在新标签页中打开链接');
+        }, function () {
+            $(this).text('保存');
+        });
+
+        $('#city-block').change();
+    </script>
+</body>
+
+</html>
