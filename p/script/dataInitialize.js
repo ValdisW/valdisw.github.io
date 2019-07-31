@@ -14,6 +14,7 @@ $.getJSON('./data/output.json', data => {
         let pipe_id = 'g' + p.pipe;
         for (let map of node_pipe_map) {
             if (map['pipe_id'] == pipe_id) {
+                console.log('speed =', speed);
                 pipeVertexData[map['node_id'][0]].speed = speed;
                 pipeVertexData[map['node_id'][1]].speed = speed;
             }
