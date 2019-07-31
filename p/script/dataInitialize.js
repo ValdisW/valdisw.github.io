@@ -10,7 +10,7 @@ for (let node in pipeVertexData) {
 }
 $.getJSON('./data/output.json', data => {
     for (let p of data) {
-        console.log('p.speed =', p.speed.toFixed(2));
+        console.log('p.speed =', p.speed.toFixed(4));
         let speed = parseInt(p.speed).toFixed(2);
         let pipe_id = 'g' + p.pipe;
         for (let map of node_pipe_map) {
