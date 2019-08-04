@@ -84,7 +84,7 @@ for (let i = 0; i < pipe_num; i++) {
             pipeData_origin[i].vertices[pipeData_origin[i].vertices.length - 1].pressure,
             zrender.vector.distance([e.offsetX, e.offsetY], [pipeData_origin[i].vertices[0].coor[0], pipeData_origin[i].vertices[0].coor[1]]) / zrender.vector.distance([pipeData_origin[i].vertices[pipeData_origin[i].vertices.length - 1].coor[0], pipeData_origin[i].vertices[pipeData_origin[i].vertices.length - 1].coor[1]], [pipeData_origin[i].vertices[0].coor[0], pipeData_origin[i].vertices[0].coor[1]])
         ).toFixed(2);
-        pipeInfoBlock.display(e.offsetX, e.offsetY, m_speed + ' km/h', m_temperature + ' °C', m_pressure + ' N');
+        pipeInfoBlock.display(e.offsetX, e.offsetY, m_speed + ' m/s', m_temperature + ' °C', m_pressure + ' N');
     }).on('mouseout', function () {
         pipes[i].attr({
             style: {
