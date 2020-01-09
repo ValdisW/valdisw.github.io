@@ -1,0 +1,15 @@
+#part6 {
+    height: 640px;
+}
+
+#temp-pattern {
+    position: absolute;
+    top: 100px;
+    width: 80%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#part6 .divide-line {
+    top: 650px;
+}

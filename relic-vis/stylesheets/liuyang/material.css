@@ -1,0 +1,32 @@
+#part5 {
+    height: 600px;
+}
+
+#material {
+    width: 300px;
+    line-height-step: 300px;
+}
+
+#material p {
+    position: absolute;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+
+}
+
+#material-list {
+    position: absolute;
+    top: 220px;
+    left: 150px;
+    width: 450px;
+    height: 500px;
+}
+
+#material-chart {
+    position: absolute;
+    top: 120px;
+    right: 100px;
+    width: 500px;
+    height: 500px;
+}

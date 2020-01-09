@@ -1,0 +1,63 @@
+/* part2 */
+#part2 {
+    height: 1000px;
+}
+
+#ranking-part {
+    width: 100%;
+}
+
+#ranking-figure {
+    position: absolute;
+    top: 120px;
+    background-color: #fff9f0;
+    border: 1.5px solid #c42c2c;
+    margin: 0 auto;
+}
+
+#ranking-label {
+    position: absolute;
+    top: 420px;
+    background-color: #c42c2c;
+    color: #f2f7d9;
+    font-family: 方正粗金陵;
+    text-align: center;
+    border-radius: 40px;
+    width: 120px;
+    height: 30px;
+    line-height: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+
+}
+
+#group-intro {
+    position: absolute;
+    top: 540px;
+    width: 36%;
+    left: 50%;
+    transform: translateX(-50%);
+    line-height: 26px;
+}
+
+#queues {
+    background-color: cadetblue;
+    position: absolute;
+    top: 740px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#queues td {
+    width: 200px;
+    float: left;
+}
+
+#queues .title {
+    line-height: 50px;
+}
+
+.icon {
+    width: 50px;
+    margin-top: 25px;
+}

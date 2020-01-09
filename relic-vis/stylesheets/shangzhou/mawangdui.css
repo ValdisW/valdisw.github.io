@@ -1,0 +1,38 @@
+#mawangdui {
+    position: relative;
+    height: 1300px;
+}
+
+#mawangdui .divide-line:nth-of-type(1) {
+    top: 30px;
+}
+
+#mawangdui h1 {
+    top: 100px;
+    color: #e2c477;
+    font-size: 35px;
+}
+
+#mawangdui h1 span {
+    font-size: 23px;
+}
+
+#mawangdui p {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 200px;
+    width: 50%;
+}
+
+#mawangdui-chart {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 75%;
+    top: 300px;
+}
+
+#mawangdui .divide-line:nth-of-type(2) {
+    top: 1250px;
+}

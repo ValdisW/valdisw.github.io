@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+
+        .blocks {
+            height: 100px;
+            width: 100px;
+            margin-bottom: 20px;
+            text-align: center;
+            line-height: 100px;
+            font-weight: bold;
+            color: cyan;
+            background-color: cadetblue;
+        }
+
+        #block2 {
+            position: absolute;
+        }
+
+        #container {
+            background-color: black;
+            height: 1200px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div id="block1" class="blocks">block1</div>
+        <div id="block2" class="blocks">block2</div>
+        <div id="block3" class="blocks">block3</div>
+        <div id="block4" class="blocks">block4</div>
+    </div>
+    <script src="../javascripts/jquery.min.js"></script>
+    <script src="../javascripts/ScrollMagic.min.js"></script>
+    <script>
+        let scroll_controller = new ScrollMagic.Controller();
+        var scene = new ScrollMagic.Scene({
+            triggerElement: '#container',
+            triggerHook: "onLeave", //触发元素开始离开视口时触发
+            duration: 0,
+            offset: 50
+        }).setPin("#block2"); //固定需要固定的元素
+        scroll_controller.addScene(scene);
+    </script>
+</body>
+
+</html>

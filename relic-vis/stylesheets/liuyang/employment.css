@@ -1,0 +1,38 @@
+/* part3 */
+#step-line {
+    background-color: #c42c2c;
+    height: 2px;
+    width: 600px;
+}
+
+#steps {
+    position: absolute;
+    top: 60px;
+    width: 70%;
+}
+
+.step-circle {
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    color: #FFF;
+    background-color: #1a2f46;
+    text-align: center;
+    line-height: 16px;
+}
+
+.block {
+    background-color: #c42c2c;
+    opacity: 0.19;
+    height: 20px;
+    width: 80%;
+}
+
+#clothing-figure {
+    width: 30%;
+    float: right;
+}
+
+#clothing-figure>img {
+    width: 300px;
+}

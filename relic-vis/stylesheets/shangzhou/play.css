@@ -1,0 +1,65 @@
+#play {
+    position: relative;
+    height: 1000px;
+}
+
+#how .divide-line {
+    top: 10px;
+}
+
+#how h1 {
+    top: 60px;
+    color: #e2c477;
+    font-size: 35px;
+}
+
+#how h1 span {
+    font-size: 23px;
+}
+
+#how p {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 200px;
+    width: 50%;
+}
+
+#temp-how {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    top: 300px;
+}
+
+/* function */
+#function h1 {
+    top: 600px;
+    color: #e2c477;
+    font-size: 35px;
+}
+
+#function h1 span {
+    font-size: 23px;
+}
+
+#function p {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 700px;
+    width: 50%;
+}
+
+#temp-function {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    top: 800px;
+}
+
+#function .divide-line {
+    top: 950px;
+}

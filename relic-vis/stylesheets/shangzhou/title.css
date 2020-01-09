@@ -1,0 +1,27 @@
+#title {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    background-color: #131111;
+}
+
+#main-title {
+    top: 30%;
+    color: #FFF;
+    font-size: 45px;
+}
+
+#main-title .en {
+    font-size: 30px;
+}
+
+#main-intro {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%);
+    color: #debd65;
+    line-height: 33px;
+    width: 40%;
+    font-size: 20px;
+}

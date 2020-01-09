@@ -1,0 +1,34 @@
+#place h2 {
+    text-align: center;
+}
+
+#place p {
+    width: 36%;
+    margin: 0 auto;
+}
+
+#place-chart>div {
+    width: 40%;
+    margin: 0 auto;
+
+}
+
+#place-chart div span {
+    display: inline-block;
+}
+
+#place-chart div span:nth-of-type(1) {
+    background-color: #a7dccc;
+    width: 57.2%;
+}
+
+#place-chart div span:nth-of-type(2) {
+    background-color: #fef5e4;
+    width: 21.4%;
+}
+
+#place-chart div span:nth-of-type(3) {
+    background-color: #204a46;
+    color: #FFF;
+    width: 21.4%;
+}

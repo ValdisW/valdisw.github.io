@@ -1,0 +1,224 @@
+#part-body1 {
+    position: relative;
+    color: #f2f7d9;
+    height: 2000px;
+    background-image: linear-gradient(30deg, #C42C2C, #C42C2C, #C42C2C, #E2AAA9);
+}
+
+#part-body1 .divide-line {
+    top: 1430px;
+}
+
+.timePoints {
+    background-color: #ffffff;
+    height: 6px;
+    width: 6px;
+    border-radius: 50%;
+    margin-left: 300px;
+}
+
+#flower1 {
+    position: absolute;
+    right: 0;
+    width: 26%;
+    top: 60px;
+}
+
+.timeLine {
+    position: absolute;
+    left: 304px;
+    width: 2px;
+    background-color: #f2f7d9;
+}
+
+.timePoint {
+    position: absolute;
+    left: 300px;
+    width: 10px;
+    height: 10px;
+    background-color: #f2f7d9;
+    border-radius: 50%;
+}
+
+.timeLabel {
+    position: absolute;
+    left: 200px;
+}
+
+.eventLabel {
+    position: absolute;
+    left: 360px;
+}
+
+.timeLabel:nth-of-type(1),
+.eventLabel:nth-of-type(1) {
+    top: 45px;
+}
+
+.timePoint:nth-of-type(1) {
+    top: 50px;
+}
+
+.timeLine:nth-of-type(1) {
+    top: 50px;
+    height: 250px;
+}
+
+.timeLabel:nth-of-type(2),
+.eventLabel:nth-of-type(2) {
+    top: 295px;
+}
+
+.timePoint:nth-of-type(2) {
+    top: 300px;
+}
+
+.timeLine:nth-of-type(2) {
+    top: 300px;
+    height: 350px;
+}
+
+.timeLabel:nth-of-type(3),
+.eventLabel:nth-of-type(3) {
+    top: 645px;
+}
+
+.timePoint:nth-of-type(3) {
+    top: 650px;
+}
+
+.timeLine:nth-of-type(3) {
+    top: 650px;
+    height: 150px;
+}
+
+/* 太阳和云 */
+#landscape p {
+    position: absolute;
+    top: 830px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #f2f7d9;
+    height: 300px;
+}
+
+#clock {
+    position: absolute;
+    left: 250px;
+    top: 820px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: #f9a262;
+}
+
+#cloud1 {
+    position: absolute;
+    top: 830px;
+    left: 50px;
+    width: 300px;
+}
+
+#cloud2 {
+    transform: scaleX(-1);
+    position: absolute;
+    top: 950px;
+    left: 750px;
+    width: 300px;
+
+}
+
+#cloud3 {
+    position: absolute;
+    top: 1780px;
+    left: 980px;
+    width: 300px;
+}
+
+/* 孔庙建筑 */
+.archi-img {
+    display: block;
+    position: absolute;
+}
+
+#main-archi,
+#stair {
+    left: 50%;
+    transform: translate(-50%);
+}
+
+#main-archi {
+    top: 900px;
+}
+
+#stair {
+    top: 1272px;
+}
+
+#pavilion-left {
+    width: 200px;
+    top: 1100px;
+    left: 30%;
+}
+
+#pavilion-right {
+    width: 200px;
+    top: 1100px;
+    left: 60%;
+}
+
+#drum-left {
+    width: 200px;
+    top: 1100px;
+    left: 30%;
+}
+
+#drum-right {
+    width: 200px;
+    top: 1100px;
+    left: 60%;
+}
+
+#archi-label {
+    top: 1360px;
+}
+
+.part1-label {
+    background-color: #f2f7d9;
+    text-align: center;
+    border-radius: 10px;
+    margin: 0 auto;
+    left: 50%;
+    transform: translateX(-50%);
+
+}
+
+.part1-label div {
+    font-family: 方正粗金陵;
+    color: #c42c2c;
+    border-radius: 10px;
+    border: 1px solid #c42c2c;
+}
+
+/* layout */
+#plane-figure {
+    position: absolute;
+    width: 80%;
+    left: 50%;
+    top: 1500px;
+    transform: translateX(-50%);
+}
+
+#highlight {
+    position: absolute;
+    left: 16.9%;
+    top: 1592px;
+    background-color: #f2f7d9;
+    width: 249px;
+    height: 170px;
+    opacity: 0.64;
+}
+
+#layout-label {
+    top: 1900px;
+}
