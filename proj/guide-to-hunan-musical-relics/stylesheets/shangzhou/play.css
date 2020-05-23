@@ -1,0 +1,38 @@
+/* #how .divide-line {
+  padding-top: 2vmax;
+} */
+
+#how h1 {
+  padding-top: 5vmax;
+  color: #e2c477;
+}
+
+#pie-title {
+  text-align: center;
+  font-size: 1vmax;
+  padding-left: 0;
+  /* margin-top: 3vmax;  */
+}
+
+#temp-how {
+  display: block;
+  margin: 0 auto;
+  width: 30vmax;
+  padding-top: 3vmax;
+}
+
+/* function */
+#function h1 {
+  color: #e2c477;
+}
+
+#temp-function {
+  display: block;
+  margin: 0 auto;
+  width: 30vmax;
+  padding-top: 3vmax;
+}
+
+#function .divide-line {
+  padding-top: 6vmax;
+}

@@ -1,0 +1,163 @@
+#hunan {
+  width: 100%;
+  background-color: #131111;
+}
+
+#hunan h1 {
+  color: #fff;
+}
+
+#hunan p {
+  color: #debd65;
+}
+
+#buttons {
+  margin: 2.7vmax 0 2vmax 28.3vmax;
+}
+
+#buttons > li {
+  display: inline-block;
+  position: relative;
+}
+
+#buttons > li > span {
+  position: absolute;
+  top: 1.5vmax;
+  display: block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: #fff;
+}
+
+#buttons > li > span:nth-child(1) {
+  left: 0.3vmax;
+}
+#buttons > li > span:nth-child(2) {
+  right: 1vmax;
+}
+
+#buttons > li > button {
+  width: 5vmax;
+  text-align: center;
+  outline: none;
+  border: none;
+  background-color: #fff4;
+  border-radius: 0.5vmax;
+  padding: 0vmax 1vmax;
+  height: 2.3vmax;
+  line-height: 2.3vmax;
+  font-size: 1.1vmax;
+  color: #e2c477;
+  text-decoration: none;
+  cursor: pointer;
+  margin-right: 0.7vmax;
+}
+
+#bronze {
+  display: block;
+  margin: 0 auto;
+  /* height: 27vmax; */
+  width: 42vmax;
+}
+
+#axis {
+  width: 42vmax;
+  margin: 0 auto;
+  margin-top: -0.1vmax;
+}
+
+#axis > .line {
+  background-color: #e2c477;
+  width: 100%;
+  height: 1px;
+}
+
+#axis > .labels {
+  margin: 0 auto;
+}
+
+#axis > .labels > .label {
+  display: inline-block;
+  width: auto;
+  padding-top: 0;
+  padding-top: 1.5vmax;
+}
+
+#axis > .labels > .label > .label-name {
+  width: auto;
+  color: #e2c477;
+  font-size: 1vmax;
+  border: 0.07vmax solid #e2c477;
+  font-family: "方正粗金陵";
+  height: 1.5vmax;
+  line-height: 1.5vmax;
+  padding: 0 0.2vmax 0;
+  text-align: center;
+}
+
+#axis > .labels > .label > .label-period {
+  width: auto;
+  color: #fff;
+  font-size: 0.7vmax;
+  padding-top: 0.8vmax;
+  text-align: center;
+}
+
+#axis > .labels > .label:nth-child(1) {
+  margin-left: 3vmax;
+}
+
+#axis > .labels > .label:nth-child(2) {
+  margin-left: 1.8vmax;
+}
+
+#axis > .labels > .label:nth-child(3) {
+  margin-left: 0.8vmax;
+}
+
+#axis > .labels > .label:nth-child(4) {
+  margin-left: 1.25vmax;
+}
+
+#axis > .labels > .label:nth-child(5) {
+  margin-left: 0.9vmax;
+}
+
+/* #axis > .splits > .split {
+  background-color: #e2c477;
+  border-radius: 50%;
+  width: 1vmax;
+  height: 1vmax;
+  position: relative;
+  bottom: 0.6vmax;
+}
+
+#axis > .splits > .split:nth-child(1) {
+  float: left;
+  left: 13vmax;
+}
+
+#axis > .splits > .split:nth-child(2) {
+  float: right;
+  right: 17vmax;
+}
+
+#axis > .splits > .split > .split-inner {
+  background-color: #fff;
+  border-radius: 50%;
+  width: 0.6vmax;
+  height: 0.6vmax;
+  position: relative;
+  left: 0.2vmax;
+  top: 0.2vmax;
+} */
+
+#note {
+  width: 42vmax;
+  text-align: left;
+  padding-top: 4vmax;
+  padding-bottom: 5vmax;
+  font-family: "苹方字体";
+  font-size: 0.6vmax;
+}

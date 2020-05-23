@@ -1,0 +1,95 @@
+#intro {
+  height: 140vmax;
+}
+
+#intro .divide-line {
+  padding-top: 3vmax;
+}
+
+#intro h2 {
+  text-align: center;
+}
+
+#intro p {
+  width: 36vmax;
+}
+
+/* 琴器 */
+#object h2 {
+  margin: 0 auto;
+  padding-top: 3vmax;
+}
+
+#object img {
+  display: block;
+  margin: 0 auto;
+  padding-top: 4vmax;
+  width: 36vmax;
+}
+
+/* 形制 */
+#shape h2 {
+  margin: 0 auto;
+  padding-top: 4vmax;
+}
+
+#shape-list {
+  position: absolute;
+  top: 24vmax;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.shape-img {
+  display: inline-block;
+  margin: 1vmax 4vmax;
+  width: 6vmax;
+  cursor: pointer;
+}
+
+#shape-intro {
+  display: none;
+  position: fixed;
+  left: 30vmax;
+  top: 30vmax;
+  width: 10vmax;
+  border: 0.06vmax solid #204a46;
+  border-radius: 0.5vmax;
+  background-color: #fef5e4;
+  font-size: 0.8vmax;
+}
+
+#shape-intro span {
+  position: absolute;
+  display: block;
+  background-color: #204a46;
+  border-radius: 50%;
+  width: 0.3vmax;
+  height: 0.3vmax;
+}
+
+#shape-intro p {
+  width: 8vmax;
+  padding: 1vmax;
+  padding-left: 1.1vmax;
+}
+
+#shape-intro span:nth-of-type(1) {
+  left: 0.3vmax;
+  top: 0.3vmax;
+}
+
+#shape-intro span:nth-of-type(2) {
+  right: 0.3vmax;
+  top: 0.3vmax;
+}
+
+#shape-intro span:nth-of-type(3) {
+  left: 0.3vmax;
+  bottom: 0.3vmax;
+}
+
+#shape-intro span:nth-of-type(4) {
+  right: 0.3vmax;
+  bottom: 0.3vmax;
+}

@@ -1,0 +1,111 @@
+/* part4 */
+#part4 {
+  height: 105vmax;
+}
+
+#instruments > p {
+  /* position: absolute;
+  top: 11.4vmax;
+  left: 50%;
+  transform: translateX(-50%); */
+  margin: 2vmax auto 0;
+  width: 56.9vmax;
+}
+
+#yq-circle {
+  background-color: #f9e9e5;
+  border-radius: 50%;
+  width: 17.9vmax;
+  position: absolute;
+  left: 31.4vmax;
+  top: 18.6vmax;
+}
+
+#yq-circle-inner {
+  border: 0.2vmax solid #c42c2c;
+  border-radius: 50%;
+  width: 15.7vmax;
+  height: 5.7vmax;
+  margin: 0 auto;
+  text-align: center;
+}
+
+#wq-circle {
+  background-color: #f9e9e5;
+  border-radius: 50%;
+  width: 10.7vmax;
+  height: 10.7vmax;
+  position: absolute;
+  left: 52.1vmax;
+  top: 22vmax;
+}
+
+#wq-circle-inner {
+  background-color: #c42c2c;
+  color: #fff;
+  border-radius: 50%;
+  width: 8.6vmax;
+  height: 8.6vmax;
+  margin: 0 auto;
+  text-align: center;
+}
+
+#remarks {
+  list-style-type: disc;
+  color: #000;
+  font-size: 1.2vmax;
+  width: 55vmax;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  right: 5.7vmax;
+  top: 40vmax;
+}
+
+#remarks li {
+  line-height: 1.1vmax;
+  margin-bottom: 1.4vmax;
+}
+
+#chart-instruction {
+  position: absolute;
+  width: 18vmax;
+  top: 56vmax;
+  left: 14.5vmax;
+}
+
+#current-frame {
+  position: absolute;
+  top: 64vmax;
+  left: 10vmax;
+  width: 21.4vmax;
+}
+
+#current-material {
+  position: absolute;
+  top: 78.05vmax;
+  left: 16vmax;
+  width: 2.4vmax;
+}
+
+#current-name {
+  position: absolute;
+  top: 78vmax;
+  left: 15.3vmax;
+  width: 16vmax;
+  color: #c42c2c;
+  font-size: 2.1vmax;
+  font-family: "方正粗金陵";
+  text-align: center;
+  letter-spacing: 0.85vmax;
+}
+
+#current-info {
+  position: absolute;
+  top: 82vmax;
+  left: 14.5vmax;
+  width: 18vmax;
+  font-size: 1.2vmax;
+  line-height: 1.6vmax;
+}
+

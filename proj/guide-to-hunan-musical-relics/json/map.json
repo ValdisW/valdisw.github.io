@@ -1,0 +1,74 @@
+{
+  "zhepai": {
+    "name_en": "Zhe",
+    "birthplace-id": "zhejiang",
+    "origin-time": "Southern Song Dynasty",
+    "birthplace": "Hangzhou, Zhejiang",
+    "representative": "Chuwang Guo",
+    "features": "Smooth and peaceful"
+  },
+  "yushanpai": {
+    "name_en": "Yushan",
+    "birthplace-id": "jiangsu",
+    "origin-time": "Late Ming Dynasty",
+    "birthplace": "Changshu, Jiangsu",
+    "representative": "Zheng Yan",
+    "features": "Fresh and light"
+  },
+  "guanglingpai": {
+    "name_en": "Guangling",
+    "birthplace-id": "jiangsu",
+    "origin-time": "Qing Dynasty",
+    "birthplace": "Yangzhou, Jiangsu",
+    "representative": "Changyu Xu",
+    "features": "Ups and downs"
+  },
+  "puchengpai": {
+    "name_en": "Pucheng",
+    "birthplace-id": "shaanxi",
+    "origin-time": "Qing Dynasty",
+    "birthplace": "Weinan, Shaanxi",
+    "representative": "Tongjun Zhu",
+    "features": "Slow and moderate"
+  },
+  "fanchuanpai": {
+    "name_en": "Fanchuan",
+    "birthplace-id": "sichuan",
+    "origin-time": "Qing Dynasty",
+    "birthplace": "Sichuan",
+    "representative": "Hexiu Zhang",
+    "features": "Unrestrained"
+  },
+  "jiuyipai": {
+    "name_en": "Jiuyi",
+    "birthplace-id": "beijing",
+    "origin-time": "Late Qing Dynasty",
+    "birthplace": "Beijing",
+    "representative": "Zongji Yang",
+    "features": "Vigorous and solid"
+  },
+  "meianpai": {
+    "name_en": "Mei'an",
+    "birthplace-id": "shandong",
+    "origin-time": "Qing Dynasty",
+    "birthplace": "Shandong",
+    "representative": "Binlu Wang",
+    "features": "Gorgeous and lingering"
+  },
+  "zhuchengpai": {
+    "name_en": "Zhucheng",
+    "birthplace-id": "shandong",
+    "origin-time": "Qing Dynasty",
+    "birthplace": "Zhucheng, Shandong",
+    "representative": "Puchang Wang",
+    "features": "Gorgeous and lingering"
+  },
+  "lingnanpai": {
+    "name_en": "Lingnan",
+    "birthplace-id": "guangdong",
+    "origin-time": "Qing Dynasty",
+    "birthplace": "Guangdong",
+    "representative": "Jingxing Huang",
+    "features": "Clean and elegant"
+  }
+}

@@ -1,0 +1,326 @@
+#sound {
+  height: 60vmax;
+}
+
+#audio {
+  display: none;
+}
+
+#sound h2 {
+  padding-top: 7vmax;
+  padding-left: 10.7vmax;
+}
+
+#sound .main-text {
+  color: #fef5e4;
+  width: 33vw;
+  padding-left: 10.7vmax;
+  margin: 0;
+}
+
+#sound > .para1 {
+  padding-top: 4vmax;
+}
+
+#string-intro {
+  padding-top: 2vmax;
+  padding-left: 10.7vmax;
+}
+
+#string-intro:after {
+  display: block;
+  clear: both;
+  content: "";
+  visibility: hidden;
+}
+
+#string-intro li {
+  list-style-type: none;
+  /* margin: 0 1.5vmax; */
+  width: 4.5vmax;
+  border-left: 0.06vmax solid #fff;
+  color: #fef5e4;
+  padding-left: 0.3vmax;
+  font-size: 1.2vmax;
+  font-family: "方正粗金陵";
+  float: left;
+}
+
+.string-spot {
+  width: 0.8vmax;
+  height: 0.8vmax;
+  background-color: #fef5e4;
+  color: #204a46;
+  border-radius: 50%;
+  font-size: 0.8vmax;
+  text-align: center;
+  position: relative;
+  left: -0.7vmax;
+  top: -0.2vmax;
+}
+
+.string-en {
+  font-size: 0.7vmax;
+}
+
+#sound > .para2 {
+  padding-top: 2vmax;
+}
+
+#tones-intro {
+  padding-top: 2vmax;
+  padding-left: 10.7vmax;
+}
+
+#tones-intro:after {
+  display: block;
+  clear: both;
+  content: "";
+  visibility: hidden;
+}
+
+#tones-intro li {
+  margin: 0 2.45vmax;
+  list-style-type: none;
+  float: left;
+  text-align: center;
+}
+
+#tones-intro > li > img {
+  width: 5vmax;
+  margin-bottom: 0.5vmax;
+}
+
+#tones-intro li p {
+  font-family: "方正粗金陵";
+  color: #fef5e4;
+  font-size: 1vmax;
+}
+
+/* 演奏面板 */
+#playpanel-qin {
+  position: absolute;
+  top: 19.8vmax;
+  right: 24.6vmax;
+  height: 30vmax;
+}
+
+/* #playpanel-circle {
+  position: absolute;
+  top: 10vmax;
+  right: 7vmax;
+  height: 40vmax;
+} */
+
+#playpanel-circle2 {
+  position: absolute;
+  top: 12.7vmax;
+  right: 11.3vmax;
+  width: 37.4vmax;
+  height: 37.4vmax;
+}
+
+#circle-outer {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: #fef5e4;
+}
+
+#circle-inner {
+  width: 98%;
+  height: 98%;
+  border-radius: 50%;
+  background-color: #204a46;
+  position: relative;
+  bottom: 99%;
+  left: 1%;
+}
+
+.symb {
+  position: absolute;
+  height: 4vmax;
+}
+
+.ele-name,
+.ele-mtp {
+  color: #fef5e4;
+  position: absolute;
+  font-size: 1.2vmax;
+  text-align: center;
+}
+
+#symb-fire {
+  right: 28.5vmax;
+  top: 10vmax;
+}
+
+/* #ele-name-fire {
+  right: 29vmax;
+  top: 8vmax;
+} */
+
+#ele-name-fire {
+  right: 29vmax;
+  top: 16vmax;
+}
+
+#symb-wood {
+  right: 46vmax;
+  top: 27vmax;
+}
+
+/* #ele-name-wood {
+  right: 51vmax;
+  top: 29vmax;
+} */
+
+#ele-name-wood {
+  right: 42vmax;
+  top: 29vmax;
+}
+
+#symb-earth {
+  right: 9.5vmax;
+  top: 27vmax;
+}
+
+/* #ele-name-earth {
+  right: 5.5vmax;
+  top: 29vmax;
+} */
+
+#ele-name-earth {
+  right: 14vmax;
+  top: 29vmax;
+}
+
+#symb-water {
+  right: 40vmax;
+  top: 44vmax;
+}
+
+/* #ele-name-water {
+  right: 41vmax;
+  top: 49vmax;
+} */
+
+#ele-name-water {
+  right: 37vmax;
+  top: 41.5vmax;
+}
+
+#symb-metal {
+  right: 16vmax;
+  top: 44vmax;
+}
+
+/* #ele-name-metal {
+  right: 16vmax;
+  top: 49vmax;
+} */
+
+#ele-name-metal {
+  right: 19.7vmax;
+  top: 41.5vmax;
+}
+
+#play-tip {
+  position: absolute;
+  top: 30vmax;
+  right: 20vmax;
+  width: 20vmax;
+  height: 4vmax;
+  background-color: rgba(145, 216, 192, 0.8);
+  border-radius: 0.8vmax;
+  z-index: 10;
+}
+
+.play-tip-circle {
+  position: absolute;
+  top: 1.7vmax;
+  width: 0.6vmax;
+  height: 0.6vmax;
+  border-radius: 50%;
+  background-color: rgba(254, 245, 228, 1);
+}
+
+.play-tip-circle:nth-of-type(1) {
+  left: 1vmax;
+}
+
+.play-tip-circle:nth-of-type(2) {
+  right: 1vmax;
+}
+
+#play-tip p {
+  position: absolute;
+  top: 1.3vmax;
+  color: rgba(32, 74, 70, 1);
+  text-align: center;
+  width: 100%;
+  font-size: 1.4vmax;
+}
+
+.string {
+  position: absolute;
+  width: 0.15vmax;
+  background-color: #000;
+  cursor: pointer;
+}
+
+/* 少宫 */
+#string-gong {
+  height: 25.55vmax;
+  right: 32.9vmax;
+  top: 24vmax;
+  transform: rotate(-2.7deg);
+}
+
+/* 少商 */
+#string-shang {
+  height: 25.76vmax;
+  right: 31.9vmax;
+  top: 23.9vmax;
+  transform: rotate(-2.1deg);
+}
+
+/* 宫 */
+#string-jue {
+  height: 26.04vmax;
+  right: 30.85vmax;
+  top: 23.7vmax;
+  transform: rotate(-1.4deg);
+}
+
+/* 商 */
+#string-zhi {
+  height: 26.17vmax;
+  right: 29.85vmax;
+  top: 23.6vmax;
+  transform: rotate(-0.5deg);
+}
+
+/* 角 */
+#string-yu {
+  height: 26.03vmax;
+  right: 28.8vmax;
+  top: 23.7vmax;
+  transform: rotate(0.3deg);
+}
+
+/* 徵 */
+#string-shaogong {
+  height: 25.9vmax;
+  right: 27.75vmax;
+  top: 23.8vmax;
+  transform: rotate(1.1deg);
+}
+
+/* 羽 */
+#string-shaoshang {
+  height: 25.7vmax;
+  right: 26.7vmax;
+  top: 23.9vmax;
+  transform: rotate(2deg);
+}

@@ -1,0 +1,204 @@
+/* Group */
+#group {
+  height: 71.4vmax;
+}
+
+/* 阵型 */
+#ranking-figure {
+  background-color: #fff9f0;
+  border: 0.1vmax solid #c42c2c;
+  margin: 4vmax auto 0;
+}
+
+#ranking-label {
+  font-size: 1vmax;
+  color: #c42c2c;
+  font-family: "方正粗金陵";
+  text-align: center;
+  width: 10vmax;
+  height: 2.14vmax;
+  line-height: 2.14vmax;
+  border: 1px solid #c42c2c;
+  margin: 2vmax auto 0;
+}
+
+#mp {
+  display: block;
+  width: 56.9vmax;
+  margin: 5vmax auto;
+}
+
+#group-intro {
+  margin: 2vmax auto 0;
+  width: 56.9vmax;
+  line-height: 1.9vmax;
+}
+
+/* 种类统计 */
+#queues {
+  top: 56.9vmax;
+  width: 56.9vmax;
+  margin: 2px auto;
+}
+
+#queues tr td:nth-child(2) {
+  /* width: 33%; */
+  padding: 0 2vmax;
+}
+
+#singer > .queue-type > span:nth-child(2) {
+  color: #e9c026;
+}
+#player > .queue-type > span:nth-child(2) {
+  color: #006156;
+}
+#dancer > .queue-type > span:nth-child(2) {
+  color: #c42c2c;
+}
+
+.queue-type {
+  position: relative;
+  bottom: 2.7vmax;
+  left: 4.5vmax;
+  font-size: 1.2vmax;
+}
+
+.queue-type > span:nth-child(2) {
+  font-size: 1.8vmax;
+}
+
+.icon {
+  width: 3.6vmax;
+  margin-top: 1.8vmax;
+}
+
+/* 统计的小点点 */
+#temp-singer-queue {
+  width: 11.9vmax;
+  position: relative;
+  left: 4.5vmax;
+  top: -4.2vmax;
+}
+
+#temp-musician-queue {
+  width: 12vmax;
+  position: relative;
+  left: 5vmax;
+  top: -2.8vmax;
+}
+
+#temp-dancer-queue {
+  width: 12vmax;
+  position: relative;
+  left: 4.5vmax;
+}
+
+#queue-singer span,
+#queue-musician span,
+#queue-dancer span {
+  position: absolute;
+  width: 0.7vmax;
+  height: 0.7vmax;
+  background-color: #666;
+  border-radius: 50%;
+}
+
+#queue-singer span:nth-of-type(1) {
+  top: 6vmax;
+  left: 4vmax;
+}
+
+#queue-singer span:nth-of-type(2) {
+  top: 6vmax;
+  left: 5vmax;
+}
+
+#queue-singer span:nth-of-type(3) {
+  top: 6vmax;
+  left: 6vmax;
+}
+
+#queue-singer span:nth-of-type(4) {
+  top: 6vmax;
+  left: 7vmax;
+}
+
+#queue-singer span:nth-of-type(5) {
+  top: 6vmax;
+  left: 8vmax;
+}
+
+#queue-singer span:nth-of-type(6) {
+  top: 6vmax;
+  left: 9vmax;
+}
+
+#queue-singer span:nth-of-type(7) {
+  top: 6vmax;
+  left: 10vmax;
+}
+
+#queue-singer span:nth-of-type(8) {
+  top: 6vmax;
+  left: 11vmax;
+}
+
+#queue-singer span:nth-of-type(9) {
+  top: 7vmax;
+  left: 4vmax;
+}
+
+#queue-singer span:nth-of-type(10) {
+  top: 7vmax;
+  left: 5vmax;
+}
+
+#queue-singer span:nth-of-type(11) {
+  top: 7vmax;
+  left: 6vmax;
+}
+
+#queue-singer span:nth-of-type(12) {
+  top: 7vmax;
+  left: 7vmax;
+}
+
+#queue-singer span:nth-of-type(13) {
+  top: 7vmax;
+  left: 8vmax;
+}
+
+#queue-singer span:nth-of-type(14) {
+  top: 7vmax;
+  left: 9vmax;
+}
+
+#queue-singer span:nth-of-type(15) {
+  top: 7vmax;
+  left: 10vmax;
+}
+
+#queue-singer span:nth-of-type(16) {
+  top: 7vmax;
+  left: 11vmax;
+}
+
+#queue-singer span:nth-of-type(17) {
+  top: 8vmax;
+  left: 4vmax;
+}
+
+#queue-singer span:nth-of-type(18) {
+  top: 8vmax;
+  left: 5vmax;
+}
+
+#queue-singer span:nth-of-type(19) {
+  top: 8vmax;
+  left: 6vmax;
+}
+
+#queue-singer span:nth-of-type(20) {
+  top: 8vmax;
+  left: 7vmax;
+}

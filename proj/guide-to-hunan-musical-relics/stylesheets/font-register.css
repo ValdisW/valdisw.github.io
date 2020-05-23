@@ -1,0 +1,46 @@
+/* @font-face {
+    font-family: "思源宋体";
+    src: url(../fonts/SourceHanSerifSC-Medium.otf);
+}
+
+@font-face {
+    font-family: "思源黑体";
+    src: url(../fonts/SourceHanSansSC-Normal.otf);
+} */
+
+@font-face {
+  font-family: "MinionPro-regular";
+  src: url(../fonts/MinionPro-Regular.otf);
+  font-weight: lighter;
+}
+
+@font-face {
+  font-family: "MinionPro-semibold";
+  src: url(../fonts/MinionPro-Semibold.otf);
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "北师大说文小篆";
+  src: url(../fonts/北师大说文小篆_0.TTF);
+}
+
+@font-face {
+  font-family: "方正粗金陵";
+  src: url(../fonts/方正粗金陵.TTF);
+}
+
+@font-face {
+  font-family: "方正小篆体";
+  src: url(../fonts/方正小篆体.TTF);
+}
+
+@font-face {
+  font-family: "苹方字体";
+  src: url(../fonts/苹方字体.TTF);
+}
+
+@font-face {
+  font-family: "青羊字体";
+  src: url(../fonts/青羊字体.TTF);
+}

@@ -1,0 +1,162 @@
+#factions {
+  height: 57.1vmax;
+  padding-bottom: 30vmax;
+}
+
+#factions h2 {
+  padding-top: 6vmax;
+  text-align: center;
+}
+
+#factions svg {
+  display: block;
+  padding-top: 4vmax;
+  margin: 0 auto;
+  width: 57.7vw;
+  height: 60vmax;
+}
+
+#factions svg g {
+  background-color: red;
+}
+
+#map-click-tip {
+  height: 25vmax;
+  position: absolute;
+  top: 41.8vmax;
+  left: 14vmax;
+}
+
+#faction-info ul {
+  position: absolute;
+  top: 42vmax;
+  left: 17vmax;
+}
+
+#faction-info ul li {
+  list-style-type: none;
+  font-family: "方正粗金陵";
+  font-weight: bold;
+  border: 0.15vmax solid #204a46;
+  border-radius: 0.5vmax;
+  color: #204a46;
+  width: 6vmax;
+  height: 2vmax;
+  line-height: 2vmax;
+  font-size: 0.7vmax;
+  text-align: center;
+  margin-bottom: 0.5vmax;
+  cursor: pointer;
+  transition: 0.1s;
+}
+
+#faction-info ul li:hover {
+  transform: scale(1.1);
+}
+
+/* 当前流派信息 */
+#current-faction {
+  position: absolute;
+  top: 46.3vmax;
+  left: 25vmax;
+  border: 0.15vmax solid #204a46;
+  border-radius: 0.9vmax;
+  width: 17vmax;
+  height: 20vmax;
+}
+
+
+#current-faction span {
+  display: block;
+  width: 0.3vmax;
+  height: 0.3vmax;
+  border-radius: 50%;
+  background-color: #204a46;
+  position: absolute;
+}
+
+#current-faction span:nth-of-type(1) {
+  top: 0.5vmax;
+  left: 0.5vmax;
+}
+
+#current-faction span:nth-of-type(2) {
+  top: 0.5vmax;
+  right: 0.5vmax;
+}
+
+#current-faction span:nth-of-type(3) {
+  bottom: 0.5vmax;
+  left: 0.5vmax;
+}
+
+#current-faction span:nth-of-type(4) {
+  bottom: 0.5vmax;
+  right: 0.5vmax;
+}
+
+#current-faction > div {
+  background-color: #fef5e4;
+  border-radius: 0.5vmax;
+  width: 15vmax;
+  height: 18vmax;
+  margin: 1vmax auto;
+}
+
+/* 流派标志 */
+#faction-icon {
+  position: absolute;
+  top: 2.7vmax;
+  left: 3.6vmax;
+  width: 2.56vmax;
+}
+
+/* 当前流派名称 */
+#faction-name {
+  margin-left: 5.78vmax;
+  font-size: 1.4vmax;
+  font-family: "方正粗金陵";
+  color: #204a46;
+  height: 3.5vmax;
+  line-height: 6vmax;
+  padding-right: 3vmax;
+  margin-bottom: 1.4vmax;
+}
+
+/* 流派信息内容 */
+#current-faction div dl {
+  margin-left: 3.9vmax;
+}
+
+#origin-time,
+#birthplace,
+#representative,
+#features {
+  font-family: "MinionPro-regular";
+  font-size: 0.92vmax;
+  height: 1.8vmax;
+  margin-top: -0.2vmax;
+}
+
+#origin-time-title,
+#birthplace-title,
+#representative-title,
+#features-title {
+  color: #1f4945;
+  font-size: 1.23vmax;
+}
+
+/* 时间轴 */
+#time-note {
+  position: absolute;
+  left: 36.8vmax;
+  top: 71vmax;
+  width: 2.3vmax;
+}
+
+#faction-time-axis {
+  position: absolute;
+  top: 75vmax;
+  width: 70vmax;
+  left: 15vmax;
+}

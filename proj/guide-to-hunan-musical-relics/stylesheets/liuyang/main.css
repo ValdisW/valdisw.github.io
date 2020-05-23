@@ -1,0 +1,87 @@
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  user-select: text;
+  font-family: "MinionPro-semibold";
+}
+
+::selection {
+  color: #fff;
+  background: #c42c2c;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+
+.normal-font-size {
+  font-size: 1.2vmax;
+}
+
+/* Main parts */
+.parts {
+  position: relative;
+  padding-bottom: 5vmax;
+}
+
+.subtitle {
+  /* position: absolute;
+    left: 50%;
+    transform: translateX(-50%); */
+  font-family: "方正粗金陵";
+  color: #c42c2c;
+  font-weight: lighter;
+  font-size: 2.5vmax;
+  text-align: center;
+  line-height: 2vmax;
+  padding-top: 5.7vmax;
+}
+
+.subtitle span {
+  font-size: 1.7vmax;
+}
+
+/* 分割线 */
+.divide-line {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: block;
+  width: 80vw;
+}
+
+.divide-line .ball {
+  width: 0.61vw;
+  height: 0.61vw;
+  border-radius: 50%;
+  background-color: #c42c2c;
+  bottom: 0.22vw;
+}
+
+.divide-line .ball:nth-child(1) {
+  float: left;
+  position: relative;
+  right: 4px;
+}
+
+.divide-line .ball:nth-child(2) {
+  float: right;
+  position: relative;
+  left: 4px;
+}
+
+.divide-line .line {
+  width: 43.5%;
+  height: 0.13vw;
+  background-color: #c42c2c;
+}
+
+.divide-line .line:nth-child(1) {
+  float: left;
+}
+.divide-line .line:nth-child(2) {
+  float: right;
+}
