@@ -20,6 +20,13 @@
     <div id="prev-button"></div>
     <div id="next-button"></div>
 
+    <div id="chapter-buttons">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+
     <!-- control panel -->
     <div id="control-panel">
       <div id="audio-control">
@@ -34,7 +41,7 @@
 
     <!-- title -->
     <div id="title">
-      <video src="./video/new2.mp4" autoplay loop></video>
+      <video src="./video/bg.mp4" autoplay loop></video>
       <canvas id="canvas-bg"></canvas>
       <canvas id="title-canvas"></canvas>
       <p>2020年新冠疫情数据可视化</p>
@@ -58,7 +65,7 @@
       <div id="timeline-label"></div>
       <div class="num-label">
         <p>全国确诊人数</p>
-        <p>47786</p>
+        <p>0</p>
       </div>
     </div>
 
@@ -79,6 +86,14 @@
       </div>
     </div>
 
+    <!-- bloom -->
+    <div id="bloom">
+      <div class="num-label">
+        <p>全国累计治愈病例</p>
+        <p>500</p>
+      </div>
+    </div>
+
     <div id="cursor">
       <!-- <div id="cursor-center"></div> -->
     </div>
@@ -89,6 +104,7 @@
     <script src="http://tgideas.qq.com/2017/three/lib/tween.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/d3/5.16.0/d3.min.js"></script>
     <script src="../../javascripts/three115.min.js"></script>
+    <script src="../../javascripts/CSS2DRenderer.js"></script>
     <script src="../../javascripts/EffectComposer.js"></script>
     <script src="../../javascripts/UnrealBloomPass.js"></script>
     <script src="../../javascripts/OrbitControls.js"></script>
