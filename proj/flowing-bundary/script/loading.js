@@ -14,7 +14,7 @@ const gl = main_canvas.getContext("webgl");
 load_list = [
   "./GLSL/particles.vert",
   "./GLSL/particles.frag",
-  "./video/new2.mp4",
+  "./video/bg.mp4",
   "./audio/气泡点击.wav",
   "./audio/bgm.mp3",
   "./image/svg/title-text.svg",

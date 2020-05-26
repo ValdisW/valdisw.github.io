@@ -29,25 +29,25 @@ bgm.forEach((e) => {
 let chapter_buttons = document.querySelectorAll("#chapter-buttons > div");
 chapter_buttons[0].onclick = function () {
   casesStartup();
-  $("#sos").fadeOut(1000);
+  helpDestroy();
   rainDestroy();
   $("#bloom").fadeOut(1000);
 };
 chapter_buttons[1].onclick = function () {
   casesDestroy();
-  $("#sos").fadeIn(1000);
+  helpStartup();
   rainDestroy();
   $("#bloom").fadeOut(1000);
 };
 chapter_buttons[2].onclick = function () {
   casesDestroy();
-  $("#sos").fadeOut(1000);
+  helpDestroy();
   rainStartup();
   $("#bloom").fadeOut(1000);
 };
 chapter_buttons[3].onclick = function () {
   casesDestroy();
-  $("#sos").fadeOut(1000);
+  helpDestroy();
   rainDestroy();
   $("#bloom").fadeIn(1000);
 };
