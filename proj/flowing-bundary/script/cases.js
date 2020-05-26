@@ -1,3 +1,11 @@
+let cases_animator;
+
+function casesDestroy() {
+  console.log(cases_animator);
+  cancelAnimationFrame(cases_animator);
+  $("#cases").fadeOut(1000);
+}
+
 function casesStartup() {
   let cases_data,
     xAxis,
@@ -15,15 +23,17 @@ function casesStartup() {
     renderer,
     composer,
     points_num,
-    active_points,
     particles,
     mouseX,
     mouseY,
     windowHalfX,
     windowHalfY;
+  let points_geometry, position_buffer_attr, position2_buffer_attr;
+  let arr1, arr2;
   xAxis = new THREE.Vector3(1, 0, 0);
   yAxis = new THREE.Vector3(0, 1, 0);
   zAxis = new THREE.Vector3(0, 0, 1);
+  $("#cases").fadeIn(1000);
 
   // 上一页
   prev_button.click(function () {
@@ -50,7 +60,7 @@ function casesStartup() {
       .then((res) => res.json())
       .then((data) => {
         // 确诊数字过渡
-        current_case = { val: 83332 };
+        current_case = { val: 0 };
         current_case_tween = new TWEEN.Tween(current_case)
           .easing(TWEEN.Easing.Quadratic.Out)
           .delay(0)
@@ -107,10 +117,21 @@ function casesStartup() {
             timeline_label.style("display", "none");
           })
           .on("click", (d, i) => {
-            let sum = 0;
-            for (let j = 0; j <= i; j++) sum += data[j].case;
-            // $("#cases>.num-label>p:nth-of-type(2)").text(sum);
-            current_case_tween.to({ val: sum }, 800);
+            // 粒子变化
+            if (pos.val == 1) {
+              position2_buffer_attr.set(getVirusScene(arr1, arr2, d.total_case));
+              points_geometry.setAttribute("position2", position2_buffer_attr);
+              particles.geometry.attributes.position2.needsUpdate = true;
+              tween.start();
+            } else if (pos.val == 0) {
+              position_buffer_attr.set(getVirusScene(arr1, arr2, d.total_case));
+              points_geometry.setAttribute("position", position_buffer_attr);
+              particles.geometry.attributes.position.needsUpdate = true;
+              tweenBack.start();
+            }
+
+            // 右下角数字变化
+            current_case_tween.to({ val: d.total_case }, 800);
             current_case_tween.start();
           })
           .append("div")
@@ -182,6 +203,14 @@ function casesStartup() {
     return pos_arr;
   }
 
+  function getVirusScene(arr_d, arr_f, d_num) {
+    console.log(d_num);
+    let r = new Float32Array(arr_d.length);
+    for (let i = 0; i < d_num * 3; i++) r[i] = arr_f[i];
+    for (let i = d_num * 3; i < arr_d.length; i++) r[i] = arr_d[i];
+    return r;
+  }
+
   // 初始化三维场景
   (function casesInit() {
     let f = Promise.all([fetch("./GLSL/particles.vert").then((d) => d.text()), fetch("./GLSL/particles.frag").then((d) => d.text())]);
@@ -200,20 +229,24 @@ function casesStartup() {
       renderer.setPixelRatio(window.devicePixelRatio);
 
       points_num = 83332;
-      active_points = 40000;
       // let positions = new Float32Array(points_num * 3);
 
       // 几何
-      let arr1 = generateStaticVirus(points_num, points_num); // 规则态
-      let arr2 = generateStaticVirus(points_num, 0); // 游离态
+      let particles_status = [];
+      arr1 = generateStaticVirus(points_num, 0); // 规则态
+      arr2 = generateStaticVirus(points_num, points_num); // 游离态
 
       let sizes = new Float32Array(points_num);
       for (let i = 0; i < points_num; i++) sizes[i] = 30;
 
-      let points_geometry = new THREE.BufferGeometry();
-      points_geometry.setAttribute("position", new THREE.BufferAttribute(arr1, 3));
+      points_geometry = new THREE.BufferGeometry();
+
+      position_buffer_attr = new THREE.BufferAttribute(arr1, 3);
+      position2_buffer_attr = new THREE.BufferAttribute(arr2, 3);
+      points_geometry.setAttribute("position", position_buffer_attr);
+      points_geometry.setAttribute("position2", position2_buffer_attr);
+
       points_geometry.setAttribute("size", new THREE.BufferAttribute(sizes, 1));
-      points_geometry.setAttribute("position2", new THREE.BufferAttribute(arr2, 3));
 
       // 材质
       let point_material = new THREE.ShaderMaterial({
@@ -230,18 +263,16 @@ function casesStartup() {
       });
 
       particles = new THREE.Points(points_geometry, point_material);
+      scene.add(particles);
+
       pos = { val: 1 };
-      tween = new TWEEN.Tween(pos).to({ val: 0 }, 3000).easing(TWEEN.Easing.Quadratic.Out).delay(1200).onUpdate(callback);
-      tweenBack = new TWEEN.Tween(pos).to({ val: 1 }, 2000).easing(TWEEN.Easing.Quadratic.Out).delay(1200).onUpdate(callback);
-      tween.chain(tweenBack);
-      tweenBack.chain(tween);
-      tween.start();
+      tween = new TWEEN.Tween(pos).to({ val: 0 }, 3000).easing(TWEEN.Easing.Quadratic.InOut).delay(0).onUpdate(callback);
+      tweenBack = new TWEEN.Tween(pos).to({ val: 1 }, 2000).easing(TWEEN.Easing.Quadratic.InOut).delay(0).onUpdate(callback);
 
       function callback() {
         particles.material.uniforms.val.value = this.val;
+        console.log(pos);
       }
-
-      scene.add(particles);
 
       $("#cases")[0].onmousemove = function () {
         let width_2 = window.innerWidth / 2,
@@ -271,7 +302,7 @@ function casesStartup() {
 
   // 三维场景动画
   function casesAnimate() {
-    requestAnimationFrame(casesAnimate);
+    cases_animator = requestAnimationFrame(casesAnimate);
     TWEEN.update();
     let positions = particles.geometry.attributes.position.array;
     // let scales = particles.geometry.attributes.scale.array;

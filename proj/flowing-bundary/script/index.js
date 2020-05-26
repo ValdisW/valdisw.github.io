@@ -24,3 +24,30 @@ bgs = document.querySelector("#bgs");
 bgm.forEach((e) => {
   e.play();
 });
+
+// 章节按钮
+let chapter_buttons = document.querySelectorAll("#chapter-buttons > div");
+chapter_buttons[0].onclick = function () {
+  casesStartup();
+  $("#sos").fadeOut(1000);
+  rainDestroy();
+  $("#bloom").fadeOut(1000);
+};
+chapter_buttons[1].onclick = function () {
+  casesDestroy();
+  $("#sos").fadeIn(1000);
+  rainDestroy();
+  $("#bloom").fadeOut(1000);
+};
+chapter_buttons[2].onclick = function () {
+  casesDestroy();
+  $("#sos").fadeOut(1000);
+  rainStartup();
+  $("#bloom").fadeOut(1000);
+};
+chapter_buttons[3].onclick = function () {
+  casesDestroy();
+  $("#sos").fadeOut(1000);
+  rainDestroy();
+  $("#bloom").fadeIn(1000);
+};

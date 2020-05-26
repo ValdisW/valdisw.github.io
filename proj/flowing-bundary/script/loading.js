@@ -1,3 +1,7 @@
+/**
+ * 加载界面和标题界面
+ */
+
 // global variables
 let load_list, loading_animation, bg_animation, title_text_animation, current_part_index;
 
@@ -105,7 +109,7 @@ function _load(ctx) {
       ctx.clearRect(0, 0, 10000, 10000);
       _drawRoundedRect(ctx, window.innerWidth / 3, window.innerHeight / 2, window.innerWidth / 3, 8, 4, false, true);
       _drawRoundedRect(ctx, window.innerWidth / 3, window.innerHeight / 2, ((window.innerWidth / 3) * loading_percent) / 100, 8, 4, true, true);
-      ctx.fillText(loading_percent.toFixed(0) + "%", (window.innerWidth / 3) * 2 + 20, window.innerHeight / 2);
+      ctx.fillText(loading_percent.toFixed(0) + "%", (window.innerWidth / 3) * 2 + 20, window.innerHeight / 2 + 6);
     });
   }
 }
@@ -122,7 +126,7 @@ function setupLoadingBar() {
   ctx.font = "18px bold 黑体";
   ctx.textBaseline = "middle";
   _drawRoundedRect(ctx, window.innerWidth / 3, window.innerHeight / 2, window.innerWidth / 3, 8, 4, false, true);
-  ctx.fillText("0%", (window.innerWidth / 3) * 2 + 20, window.innerHeight / 2);
+  ctx.fillText("0%", (window.innerWidth / 3) * 2 + 20, window.innerHeight / 2 + 6);
   _load(ctx);
 }
 
@@ -165,13 +169,13 @@ function titleStartup() {
   });
 
   // 上一页
-  prev_button.click(function () {
-    bgs.play();
-    $("#title").fadeIn(1000);
-    $("#cases").fadeOut(1000);
-    TweenMax.to($("#prev-button")[0], 0.5, { opacity: 0 });
-    TweenMax.to($("#next-button")[0], 0.5, { left: "50%", top: "83%", width: "50px", height: "50px" });
-  });
+  // prev_button.click(function () {
+  //   bgs.play();
+  //   $("#title").fadeIn(1000);
+  //   $("#cases").fadeOut(1000);
+  //   TweenMax.to($("#prev-button")[0], 0.5, { opacity: 0 });
+  //   TweenMax.to($("#next-button")[0], 0.5, { left: "50%", top: "83%", width: "50px", height: "50px" });
+  // });
 
   // 下一页
   next_button.click(function () {
@@ -181,8 +185,9 @@ function titleStartup() {
     $("#title").fadeOut(1000);
     $("#cases").fadeIn(1000);
     casesStartup();
-    TweenMax.to($(this)[0], 0.5, { left: "95%", top: "50%", width: "35px", height: "35px" });
-    TweenMax.to($("#prev-button")[0], 0.5, { opacity: 1 });
+    // TweenMax.to($(this)[0], 0.5, { left: "95%", top: "50%", width: "35px", height: "35px" });
+    // TweenMax.to($("#prev-button")[0], 0.5, { opacity: 1 });
+    $(this).fadeOut(300);
   });
 
   // 侧边栏

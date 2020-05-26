@@ -1,4 +1,10 @@
-//////// rain
+let rain_animator;
+
+function rainDestroy() {
+  cancelAnimationFrame(rain_animator);
+  $("#rain").fadeOut(1000);
+}
+
 function rainStartup() {
   let main_canvas;
   let scene, camera, renderer, label_renderer;
@@ -11,6 +17,7 @@ function rainStartup() {
   let label_div, label;
   let mouse_is_down;
   let theta;
+  $("#rain").fadeIn(1000);
 
   class Drop {
     constructor() {
@@ -127,7 +134,7 @@ function rainStartup() {
     });
 
     scene = new THREE.Scene();
-    scene.background = new THREE.Color("#000");
+    scene.background = new THREE.Color("#322c37");
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.height = 55;
     camera.distance = 250;
@@ -192,13 +199,13 @@ function rainStartup() {
     label_renderer.domElement.style.position = "absolute";
     label_renderer.domElement.style.zIndex = 1;
     label_renderer.domElement.style.top = 0;
-    document.body.appendChild(label_renderer.domElement);
+    // document.body.appendChild(label_renderer.domElement);
 
     // scene.add(new THREE.AxesHelper(10, 10, 10));
   }
 
   function animate(data) {
-    requestAnimationFrame(animate);
+    rain_animator = requestAnimationFrame(animate);
 
     for (let d of drops) if (frame > (d.data["时间戳"] - timestamp_min) / 3e6) d.play();
 
