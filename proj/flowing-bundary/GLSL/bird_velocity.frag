@@ -1,3 +1,7 @@
+#ifdef GL_ES
+precision mediump float;
+#endif
+
 uniform float time;
 uniform float testing;
 uniform float delta;// about 0.016

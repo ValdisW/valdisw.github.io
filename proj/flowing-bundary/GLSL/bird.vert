@@ -11,15 +11,14 @@ varying float z;
 uniform float time;
 
 void main(){
-  
   vec4 tmpPos=texture2D(texturePosition,reference);
   vec3 pos=tmpPos.xyz;
   vec3 velocity=normalize(texture2D(textureVelocity,reference).xyz);
   
   vec3 newPosition=position;
   
+  // flap wings
   if(birdVertex==4.||birdVertex==7.){
-    // flap wings
     newPosition.y=sin(tmpPos.w)*5.;
   }
   

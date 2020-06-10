@@ -1,5 +1,26 @@
 let cases_animator;
 
+function playBubble(audio_ctx) {
+  let oscillator = audio_ctx.createOscillator();
+  let gainNode = audio_ctx.createGain();
+  oscillator.connect(gainNode);
+  gainNode.connect(audio_ctx.destination);
+
+  oscillator.type = "sine";
+  oscillator.frequency.value = 126.0;
+
+  // 先把当前音量设为0
+  gainNode.gain.setValueAtTime(0, audio_ctx.currentTime);
+  // 0.01秒时间内音量从刚刚的0变成1，线性变化
+  gainNode.gain.linearRampToValueAtTime(10, audio_ctx.currentTime + 0.01);
+  // 声音走起
+  oscillator.start(audio_ctx.currentTime);
+  // 1秒时间内音量从刚刚的1变成0.001，指数变化
+  gainNode.gain.exponentialRampToValueAtTime(0.001, audio_ctx.currentTime + 1);
+  // 1秒后停止声音
+  oscillator.stop(audio_ctx.currentTime + 1);
+}
+
 function casesDestroy() {
   console.log(cases_animator);
   cancelAnimationFrame(cases_animator);
@@ -27,31 +48,15 @@ function casesStartup() {
     mouseX,
     mouseY,
     windowHalfX,
-    windowHalfY;
+    windowHalfY,
+    audio_ctx;
   let points_geometry, position_buffer_attr, position2_buffer_attr;
   let arr1, arr2;
   xAxis = new THREE.Vector3(1, 0, 0);
   yAxis = new THREE.Vector3(0, 1, 0);
   zAxis = new THREE.Vector3(0, 0, 1);
   $("#cases").fadeIn(1000);
-
-  // 上一页
-  prev_button.click(function () {
-    bgs.play();
-    $("#title").fadeIn(1000);
-    $("#cases").fadeOut(1000);
-    TweenMax.to($("#prev-button")[0], 0.5, { opacity: 0 });
-    TweenMax.to($("#next-button")[0], 0.5, { left: "50%", top: "83%", width: "50px", height: "50px" });
-  });
-
-  // 下一页
-  next_button.click(function () {
-    bgs.play();
-    $("#cases").fadeOut(1000);
-    $("#sos").fadeIn(1000);
-    TweenMax.to($(this)[0], 0.5, { left: "95%", top: "50%", width: "35px", height: "35px" });
-    TweenMax.to($("#prev-button")[0], 0.5, { opacity: 1 });
-  });
+  audio_ctx = new AudioContext();
 
   // 时间轴
   (function initTimeline() {
@@ -78,9 +83,10 @@ function casesStartup() {
           }
         }
 
-        let margin_top = 20,
-          margin_left = 120,
-          spacing = (window.innerHeight - margin_top * 2) / data.length,
+        let margin_top = 0.14 * window.innerHeight,
+          margin_bottom = 0.06 * window.innerHeight,
+          margin_left = 0,
+          spacing = (window.innerHeight - margin_top - margin_bottom) / data.length,
           selection_width = 100;
         d3.select("#cases-timeline")
           .selectAll("div")
@@ -89,7 +95,7 @@ function casesStartup() {
           .append("div")
           .classed("hover-detector", true)
           .style("position", "absolute")
-          .style("left", "30px")
+          .style("left", margin_left + "px")
           .style("width", selection_width + "px")
           .style("height", spacing + "px")
           .style("transition", "0.2s")
@@ -97,6 +103,7 @@ function casesStartup() {
 
         d3.selectAll("div.hover-detector")
           .on("mouseenter", (d, i, s) => {
+            // playBubble(audio_ctx);
             // bgs.src = "./audio/气泡点击.wav";
             // bgs.play();
             for (let j = 0; j < i; j++) d3.select(s[j]).style("transform", "translateY(-25px)");
@@ -105,7 +112,9 @@ function casesStartup() {
             d3.select(s[i])
               .style("height", spacing + 50 + "px")
               .style("transform", "translateY(-25px)");
-            timeline_label.style("display", "block").style("left", d3.select(s[i]).style("left")).style("top", d3.select(s[i]).style("top")).text(`${d.time} ${d.case}例`);
+            timeline_label.style("display", "block").style("left", d3.select(s[i]).style("left")).style("top", d3.select(s[i]).style("top"));
+            d3.select("#timeline-label-date").text(`${d.time}`);
+            d3.select("#timeline-label-cases").text(`${d.case} 例`);
           })
           .on("mouseleave", (d, i, s) => {
             for (let j = 0; j < i; j++) d3.select(s[j]).style("transform", "none");
@@ -169,18 +178,18 @@ function casesStartup() {
     let scales = new Float32Array(num);
 
     // 触角
-    // for (let i = 0; i < out_num; ) {
-    //   let z = 200 * Math.random() - 100,
-    //     phi = Math.random() * Math.PI * 2;
+    for (let i = 0; i < out_num; ) {
+      let z = 200 * Math.random() - 100,
+        phi = Math.random() * Math.PI * 2;
 
-    //   let v = virusSurface(z, phi);
-    //   if (v.length() > 101) {
-    //     pos_arr[i * 3] = v.x;
-    //     pos_arr[i * 3 + 1] = v.y;
-    //     pos_arr[i * 3 + 2] = v.z;
-    //     i++;
-    //   }
-    // }
+      let v = virusSurface(z, phi);
+      if (v.length() > 101) {
+        pos_arr[i * 3] = v.x;
+        pos_arr[i * 3 + 1] = v.y;
+        pos_arr[i * 3 + 2] = v.z;
+        i++;
+      }
+    }
 
     // 本体
     for (let i = 0; i < a_num; i++) {
@@ -266,8 +275,8 @@ function casesStartup() {
       scene.add(particles);
 
       pos = { val: 1 };
-      tween = new TWEEN.Tween(pos).to({ val: 0 }, 3000).easing(TWEEN.Easing.Quadratic.InOut).delay(0).onUpdate(callback);
-      tweenBack = new TWEEN.Tween(pos).to({ val: 1 }, 2000).easing(TWEEN.Easing.Quadratic.InOut).delay(0).onUpdate(callback);
+      tween = new TWEEN.Tween(pos).to({ val: 0 }, 3000).easing(TWEEN.Easing.Quadratic.Out).delay(0).onUpdate(callback);
+      tweenBack = new TWEEN.Tween(pos).to({ val: 1 }, 2000).easing(TWEEN.Easing.Quadratic.Out).delay(0).onUpdate(callback);
 
       function callback() {
         particles.material.uniforms.val.value = this.val;
