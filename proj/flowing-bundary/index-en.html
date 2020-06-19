@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="format-detection" content="telephone=no" />
     <title>FLOWING BUNDARY</title>
-    <link rel="stylesheet" href="./style/index.css" />
+    <link rel="stylesheet" href="./style/index-en.css" />
   </head>
   <body>
     <audio id="bgm" src="./audio/bgm.mp3" loop></audio>
@@ -23,7 +23,7 @@
       </div>
 
       <!-- 语言切换 -->
-      <div id="language"><a href="./index-en.html">EN/CH</a></div>
+      <div id="language"><a href="./index.html">EN/CH</a></div>
 
       <!-- 菜单按钮 -->
       <div id="info">
@@ -35,9 +35,9 @@
       <!-- 菜单 -->
       <div id="info-panel">
         <ul>
-          <li id="menu-homepg">返回首页</li>
-          <li id="menu-proj">关于项目</li>
-          <li id="menu-team">关于团队</li>
+          <li id="menu-homepg">Home</li>
+          <li id="menu-proj">Project</li>
+          <li id="menu-team">Team</li>
         </ul>
       </div>
 
@@ -65,8 +65,8 @@
       <video src="./video/bg.mp4" autoplay loop></video>
       <canvas id="canvas-bg"></canvas>
       <canvas id="title-canvas"></canvas>
-      <p>2020年新冠疫情数据可视化</p>
-      <p>点击体验更多</p>
+      <p>Data exploration of COVID-19 in China</p>
+      <p>Click to Explore More</p>
     </div>
 
     <!-- cases -->
@@ -78,34 +78,40 @@
         <span id="timeline-label-cases"></span>
       </div>
       <div class="num-label">
-        <p>全国累计确诊人数</p>
+        <p>Confirmed Cases Nationwide</p>
         <p>0</p>
       </div>
       <div class="opening">
         <div>
           <h2>1</h2>
-          <h1>浮 尘</h1>
+          <h1>Dust</h1>
           <div>
-            <p>我们是无缘无故的尘埃</p>
-            <p>无缘无故地游走</p>
-            <p>黑暗只需要张开一条缝隙</p>
-            <p>就能刮起飓风</p>
+            <p>We are dust for no reason</p>
+            <p>Walk for no reason</p>
+            <p>The darkness only needs to open a gap</p>
+            <p>Can blow up a hurricane</p>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- help -->
+    <!-- sos -->
     <div id="sos">
       <canvas id="help-canvas"></canvas>
-      <div class="num-label">
-        <p>微博新冠肺炎求助超话部分信息</p>
+      <div class="num-label" id="label-to-disappear">
+        <!-- <p>微博新冠肺炎求助超话部分信息</p> -->
+        <p>Patients Seeking Help on Weibo</p>
         <p>510</p>
       </div>
       <div id="windows">
         <div id="help-container"></div>
         <div id="kwds"></div>
         <div id="help-back-button" class="back-button"></div>
+        <div class="num-label">
+          <p>The number of Weibo the word appears</p>
+          <p>0</p>
+        </div>
+
         <div id="help-detail">
           <div id="help-detail-back-button">
             <div></div>
@@ -118,7 +124,7 @@
       <div class="opening">
         <div>
           <h2>2</h2>
-          <h1>灯 火</h1>
+          <h1>Lights</h1>
           <div>
             <p>想要在黑夜里装满灯火</p>
             <p>让报讯的鸟不再迷途</p>
@@ -134,13 +140,15 @@
     <div id="rain">
       <canvas id="rain-canvas"></canvas>
       <div class="num-label">
-        <p>全国殉职人员累计</p>
+        <!-- <p>全国殉职人员累计</p> -->
+        <p>Accumulated Martyrs Nationwide</p>
         <p>486</p>
       </div>
       <div id="rain-subscene">
         <div id="rain-container"></div>
         <div class="num-label">
-          <p>全国殉职人员累计</p>
+          <!-- <p>全国殉职人员累计</p> -->
+          <p>Accumulated Martyrs Nationwide</p>
           <p>486</p>
         </div>
         <div id="rain-back-button" class="back-button"></div>
@@ -152,27 +160,27 @@
         </div>
         <ul id="sacrifice-info-list">
           <li>
-            <p class="sacrifice-label">性别</p>
+            <p class="sacrifice-label">Gender</p>
             <p class="sacrifice-value" id="sacrifice-value-gender"></p>
           </li>
           <li>
-            <p class="sacrifice-label">年龄</p>
+            <p class="sacrifice-label">Age</p>
             <p class="sacrifice-value" id="sacrifice-value-age"></p>
           </li>
           <li>
-            <p class="sacrifice-label">职业</p>
+            <p class="sacrifice-label">Occupation</p>
             <p class="sacrifice-value" id="sacrifice-value-occupation"></p>
           </li>
           <li>
-            <p class="sacrifice-label">地点</p>
+            <p class="sacrifice-label">Location</p>
             <p class="sacrifice-value" id="sacrifice-value-location"></p>
           </li>
           <li>
-            <p class="sacrifice-label">殉职原因</p>
+            <p class="sacrifice-label">Cause of Martyrdom</p>
             <p class="sacrifice-value" id="sacrifice-value-cause"></p>
           </li>
           <li>
-            <p class="sacrifice-label">殉职时间</p>
+            <p class="sacrifice-label">Martyrdom time</p>
             <p class="sacrifice-value" id="sacrifice-value-time"></p>
           </li>
         </ul>
@@ -180,7 +188,7 @@
       <div class="opening">
         <div>
           <h2>3</h2>
-          <h1>夜 雨</h1>
+          <h1>Tear of Rain</h1>
           <div>
             <p>每个流泪的名字</p>
             <p>雨都在夜里偷偷偿还</p>
@@ -194,13 +202,14 @@
     <!-- bloom -->
     <div id="bloom">
       <div class="num-label">
-        <p>全国累计治愈病例</p>
+        <!-- <p>全国累计治愈病例</p> -->
+        <p>Cured Cases Nationwide</p>
         <p>62223</p>
       </div>
       <div class="opening">
         <div>
           <h2>4</h2>
-          <h1>春 华</h1>
+          <h1>Bloom</h1>
           <div>
             <p>春的欢愉</p>
             <p>裹着露水晶莹的叹息</p>

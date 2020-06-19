@@ -15,7 +15,7 @@ load_list = [
   "./GLSL/particles.vert",
   "./GLSL/particles.frag",
   "./video/bg.mp4",
-  "./audio/气泡点击.wav",
+  "./audio/bubble-click.wav",
   "./audio/bgm.mp3",
   "./image/svg/title-text.svg",
   "./image/svg/down-arrow.svg",

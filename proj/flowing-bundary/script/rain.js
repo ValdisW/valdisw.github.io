@@ -335,7 +335,7 @@ function rainStartup() {
   }
 
   function startup() {
-    fetch("../../../../data/sacrifice_total.json")
+    fetch("./data/sacrifice_total.json")
       .then((res) => res.json())
       .then((data) => {
         init(data);
