@@ -1,0 +1,312 @@
+@font-face {
+	font-family: font;
+	src: url('../font/ylhg.otf');
+}
+* {margin: 0; padding: 0; color: #FFF;}
+html, body, #main {
+	height: 100%; width: 100%;
+}
+#videoBg {
+	object-fit: fill;
+	width: 100%; height: 100%;
+	position: absolute;
+	top: 0; left: 0;
+}
+#black {
+	background-color: #000;
+	opacity: 0.3;
+	position: absolute;
+	width: 100%; height: 100%;
+}
+#cover {
+	width: 100%; height: 100%;
+	position: absolute;
+	top: 0; left: 0;
+	background-image: url("../img/background2.png");
+	background-size: 100% 100%;
+}
+#myCanvas {
+	width: 100%; height: 100%;
+	position: absolute;
+	top: 0; left: 0;
+	z-index: 10;
+ background-color(0, 0, 0, 0);
+}
+#main {
+	background-size: 100% 100%;
+}
+#title {
+	width: 39%; height: 13%;
+	position: absolute;
+	left: 30.5%;
+	font-size: 4.5vh;
+	text-align: center; line-height: 8vh;
+}
+#title span {
+	background: linear-gradient(to bottom, rgb(28, 196, 225), rgb(0, 106, 147));
+	-webkit-background-clip: text;
+	color: transparent;
+	font-family: font;
+}
+
+#left {
+    width: 15%; height: 100%;
+    position: absolute;
+    left: 0;
+}
+#mid {
+    width: 45%; height: 100%;
+    position: absolute;
+    left: 15%;
+}
+#right {
+    width: 40%; height: 100%;
+    position: absolute;
+    left: 60%;
+}
+
+.blocks {
+	position: absolute;
+	box-shadow: 0 0 40px 30px rgba(36, 41, 82, 0.5) inset;
+	box-sizing: border-box;
+	border: 3px solid #FFF;
+	border-image: url(../img/border.png) 5 round;
+}
+
+#range {
+    width: 95%; height: 50%;
+    top: 10%; left: 5%;
+}
+
+#dataRange {
+    width: 95%; height: 35%;
+    top: 61%; left: 5%;
+}
+#CommunityRange {
+    width: 50%; height: 20%;
+    left: 43%; top: 54%;
+}
+#user {
+    width: 48.5%; height: 51%;
+    left: 51.5%; top: 0%;
+}
+#age {
+    width: 100%; height: 33%;
+    top: 62%;
+}
+
+.info {
+	width: 100%; height: 5%;
+	font-size: 80%;
+	color: #FFF;
+	background-image: url("../img/label.png");
+	background-size: 100% 100%;
+	font-size: 1.8vh;
+	line-height: 5.2vh;
+	padding-left: 2vh;
+}
+#info1 {
+	position: absolute;
+	top: 11%;
+	left: 5%;
+}
+#info2 {
+	position: absolute;
+	top: 18%;
+	left: 5%;
+}
+#info3 {
+	position: absolute;
+	top: 25%;
+	left: 5%;
+}
+#gridNum, #online, #mile {
+	font-family: font;
+}
+#bottom {
+	position: absolute;
+	width: 100%;
+	height: 83%;
+	top: 17%;
+}
+#rate {
+	float: left;
+	position: absolute;
+	width: 100%;
+	height: 58%;
+}
+#block1 {
+	float: left;
+	position: absolute;
+	width: 100%;
+	height: 50%;
+}
+#block2 {
+	float: left;
+	position: absolute;
+	width: 100%;
+	height: 50%;
+	top: 50%;
+}
+#serviceMode {
+	position: absolute;
+	width: 40%;
+	height: 41%;
+	left: 0%;
+	top: 54%;
+}
+#inspect {
+	position: absolute;
+	width: 94%;
+	height: 46%;
+}
+#record {
+	position: absolute;
+	width: 94%;
+	height: 46%;
+	top: 49%;/*    font-size: 3px; color: #FFF;*/
+}
+#table {
+	position: absolute;
+	width: 88%;
+	height: 40%;
+	left: 4%;
+	top: 51%;
+	font-size: 12px;
+	color: #FFF;
+}
+table {
+	border-collapse: collapse;
+	width: 98%;
+	height: 90%;
+	position: relative;
+	top: 15%;
+}
+table, th, td {
+	border: none;
+	text-align: center
+}
+th {
+	border-bottom: 1px solid #FFF;
+}
+#totalNum {
+	font-family: font;
+}
+.compo {
+	height: 80%;
+	border: 1px solid transparent;
+	border-right: 2.5px solid rgb(28, 196, 223);
+	float: right;
+	position: relative;
+}
+.compo:nth-child(2) {
+	height: 40%;
+	top: 19%;
+	right: 5%
+}
+.compo:nth-child(3) {
+	height: 12%;
+	top: 34%;
+	right: 9%
+}
+.compo0 {
+	height: 80%;
+	border: 1px solid transparent;
+	border-left: 2.5px solid rgb(28, 196, 223);
+	float: left;
+	position: relative;
+}
+.compo0:nth-child(2) {
+	height: 40%;
+	top: 19%;
+	left: 5%
+}
+.compo0:nth-child(3) {
+	height: 12%;
+	top: 34%;
+	left: 9%
+}
+#decoLeft1 {
+	position: absolute;
+	width: 50px;
+	height: 14px;
+	top: 39.5%;
+	left: 0.9%;
+}
+#decoLeft2 {
+	position: absolute;
+	width: 50px;
+	height: 14px;
+	top: 71.2%;
+	left: 14.9%;
+}
+#decoLeft3 {
+	position: absolute;
+	width: 50px;
+	height: 14px;
+	top: 64.7%;
+	left: 31%;
+}
+#decoLeft4 {
+	position: absolute;
+	width: 50px;
+	height: 14px;
+	top: 64.7%;
+	left: 51.7%;
+}
+#decoLeft5 {
+	position: absolute;
+	width: 50px;
+	height: 14px;
+	top: 20%;
+	left: 76.9%;
+}
+#decoLeft6 {
+	position: absolute;
+	width: 50px;
+	height: 14px;
+	top: 60.5%;
+	left: 77.5%;
+}
+#decoRight1 {
+	position: absolute;
+	width: 50px;
+	height: 14px;
+	top: 39.5%;
+	left: 12.4%;
+}
+#decoRight2 {
+	position: absolute;
+	width: 50px;
+	height: 14px;
+	top: 71.2%;
+	left: 26.4%;
+}
+#decoRight3 {
+	position: absolute;
+	width: 50px;
+	height: 14px;
+	top: 64.7%;
+	left: 41.4%;
+}
+#decoRight4 {
+	position: absolute;
+	width: 50px;
+	height: 14px;
+	top: 64.7%;
+	left: 61.8%;
+}
+#decoRight5 {
+	position: absolute;
+	width: 50px;
+	height: 14px;
+	top: 20%;
+	left: 88.6%;
+}
+#decoRight6 {
+	position: absolute;
+	width: 50px;
+	height: 14px;
+	top: 60.5%;
+	left: 87.9%;
+}

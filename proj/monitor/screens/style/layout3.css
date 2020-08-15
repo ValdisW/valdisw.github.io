@@ -1,0 +1,496 @@
+@font-face {
+    font-family: font;
+    src: url('../font/ylhg.otf');
+}
+* {margin: 0; padding: 0;color: #FFF}
+html, body, #main {height: 100%; width: 100%;}
+body{overflow:-Scroll; overflow-y:hidden}
+hr{width: 80%; margin: 20px auto}
+
+.title {
+    text-align: center; line-height: 30px;
+    color: #FFF;
+}
+
+.rows1{
+    width: 90%; height: 35px;
+    margin: 5px auto;
+}
+.rows1 *{color: #FFF; font-size: 11px}
+
+.row-left{float: left}
+.row-right{float: right}
+
+.blue{
+    background-color: rgb(2, 149, 226);
+    border-radius: 3px;
+    width: 10px;
+}
+
+.red{
+    background-color: rgb(195, 68, 79);
+    border-radius: 3px;
+    width: 10px;
+}
+
+.name{
+    text-align: center;
+    margin-top: 40px;
+}
+
+
+.content span{font-size: 11px;}
+.content .num{color: rgb(45, 235, 198); font-size: 20px; font-weight: bold}
+
+#videoBg {
+    object-fit: fill;
+    width: 100%; height: 100%;
+    position: absolute; top: 0; left: 0;
+}
+#black {
+    background-color: #000;
+    opacity: 0.3;
+    position: absolute;
+    width: 100%; height: 100%;
+}
+
+#cover {
+    width: 100%; height: 100%;
+    position: absolute; top: 0; left: 0;
+    background-image: url("../img/background2.png");
+    background-size: 100% 100%;
+}
+
+#myCanvas {
+    width: 100%; height: 100%;
+    position: absolute; top: 0; left: 0;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0);
+}
+#myCanvasBack {
+    width: 100%; height: 100%;
+    position: absolute; top: 0; left: 0;
+    z-index: 18;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+#main {background-size: 100% 100%;}
+
+#top {width: 88%; height: 10%;}
+
+#midH {
+    width: 100%; height: 62%;
+    position: absolute; top: 10%;
+}
+
+#bottom {
+    width: 100%; height: 26.5%;
+    position: absolute; top: 72%;
+}
+#title {
+    width: 39%; height: 13%;
+    position: absolute; left: 30.5%;
+    font-size: 4.5vh;
+    text-align: center; line-height: 8vh;
+}
+/*
+#title span{
+    background: linear-gradient(to bottom, rgb(28, 196, 225), rgb(0, 106, 147));
+    -webkit-background-clip: text;
+    color: transparent;
+    font-family: font;
+}
+*/
+#title img{
+    width: 95%;
+    margin-top: 2%;
+}
+.blocks {
+    position: absolute;
+    box-shadow: 0 0 40px 30px rgba(36, 41, 82, 0.5) inset;
+    box-sizing: border-box;
+    border: 3px solid transparent;
+    border-image: url(../img/border.png) 5 round;
+}
+#left {
+    position: absolute;
+    width: 31.2%;
+    left: 2%;
+    height: 100%;
+}
+
+
+/*  公共数据交换平台 */
+#platform {
+    position: absolute;
+    width: 48%; height: 100%;
+}
+
+#platform .content{
+    margin-left: 20px; margin-top: 15px;
+}
+
+#input{
+    font-size: 11px;
+    text-align: center;
+    width: 33%; height: 10%;
+    float: left;
+}
+
+#output{
+    font-size: 11px;
+    text-align: center;
+    width: 33%; height: 10%;
+    float: left;
+}
+
+#stay{
+    font-size: 11px;
+    text-align: center;
+    width: 33%; height: 10%;
+    float: right;
+}
+
+#chart{
+    width: 90%; height: 45%;
+    margin: 0px auto;
+}
+
+/*  重点数据交换*/
+#change {
+    width: 48%; height: 56%;
+    position: absolute; left: 52%; top: 10%;
+}
+
+/* 区县数据上报 */
+#block1 {
+    width: 22%; height: 30%;
+    position: absolute; top: 70%; left: 52%;
+    font-size: 10px;
+}
+
+.rows0{
+    width: 90%; height: 15px;
+    margin: 5px auto;
+}
+
+
+/* 省厅数据上传 */
+#block2 {
+    width: 22%; height: 30%;
+    position: absolute; top: 70%; left: 78%;
+    font-size: 10px; color: #FFF;
+}
+
+/* 本周市级部门交换 */
+#leftB {
+    position: absolute; left: 2%;
+    width: 31.2%; height: 75%;
+	top:15%;
+    font-size: 10px;
+}
+
+.exchange-blocks{
+    width: 18%; height: 70%;
+    font-size: 12px;
+    float: left;
+    margin-left: 6px; margin-top: 15px;
+}
+
+.exchange-blocks p:nth-child(1){
+    font-size: 13px;
+}
+
+.exchange-blocks p{
+    margin-top: 5px;
+}
+
+.exchange-blocks .row-right{
+    font-size: 5px;
+}
+/* 委办局 */
+#midB {
+    position: absolute; left: 34.5%;
+    width: 31.2%; height: 90%;
+}
+
+/* 电子政务配套应用系统 */
+#rightB {
+    position: absolute; left: 66.8%;
+    width: 31.2%; height: 75%;
+	top:15%;
+}
+
+.system-blocks{
+    height: 70%; width: 30%;
+    float: left;
+    margin-top: 10px; margin-left: 50px;
+    font-size: 12px;
+    text-align: center;
+}
+.system-blocks p:nth-child(1){font-size: 13px;}
+.system-blocks p{margin-top: 10px;}
+.system-blocks .row-right *{color: rgb(42, 219, 189)}
+
+#mid {
+    position: absolute; left: 34.5%; top: 10%;
+    width: 31.2%; height: 90%;
+}
+
+#region {
+    position: absolute;
+    width: 100%; height: 35%;
+}
+
+/*  全要素网格信息系统 */
+#dataCenter {
+    position: absolute; top: 40%;
+    width: 56%; height: 55%;
+    text-align: center;
+}
+#total-data{color: rgb(45, 235, 198); font-size: 20px; font-weight: bold}
+#bureau1-data{color: rgb(45, 235, 198); font-size: 18px; font-weight: bold}
+#bureau2-data{color: rgb(45, 235, 198); font-size: 18px; font-weight: bold}
+#bureau3-data{color: rgb(45, 235, 198); font-size: 18px; font-weight: bold}
+#bureau4-data{color: rgb(45, 235, 198); font-size: 18px; font-weight: bold}
+#bureau5-data{color: rgb(45, 235, 198); font-size: 18px; font-weight: bold}
+#bureau6-data{color: rgb(45, 235, 198); font-size: 18px; font-weight: bold}
+
+#dataCenter p{
+    margin-bottom: 5px;
+}
+
+/* 无锡市公安数据中心 */
+#policeCenter {
+    width: 42%; height: 55%;
+    position: absolute; left: 58%; top: 40%;
+}
+
+#right {
+    position: absolute; left: 67%;
+    width: 30.8%; height: 100%;
+}
+
+#logo{
+    margin: 0 auto;
+}
+
+#logo img{
+    height: 70%; width: 70%;
+}
+/*  */
+#all {
+    position: absolute; top: 10%;
+    width: 24%; height: 90%;
+    text-align: center;
+}
+
+/* 共享健康度 */
+#score {
+    width: 24%; height: 90%;
+    position: absolute; left: 26%; top: 10%;
+    text-align: center;
+}
+
+.level{
+    width: 70%; height: 30px;
+    margin: 30px auto;
+    background-color: rgb(44, 235, 201);
+    color: #FFF; font-weight: bold;
+    text-align: center; line-height: 30px;
+    border-radius: 5px;
+}
+
+#important {
+    position: absolute; left: 52%;
+    width: 48%; height: 100%;
+}
+
+
+/* icons */
+.icon {
+    width: 100%; height: 100%;
+    position: absolute; top: 0; left: 0;
+    background: url("../img/house.png") no-repeat;
+    background-size: 15%;
+}
+#icon1 {
+    width: 10%;
+    height: 10%;
+    position: absolute;
+    left: 36.4%;
+    top: 26.8%;
+}
+#icon2 {
+    width: 10%;
+    height: 10%;
+    position: absolute;
+    left: 40.7%;
+    top: 26.8%;
+}
+#icon3 {
+    width: 10%;
+    height: 10%;
+    position: absolute;
+    left: 45%;
+    top: 26.8%;
+}
+#icon4 {
+    width: 10%; height: 10%;
+    position: absolute; left: 49.3%; top: 26.8%;
+}
+#icon5 {
+    width: 10%; height: 10%;
+    position: absolute; left: 53.6%; top: 26.8%;
+}
+#icon6 {
+    width: 10%; height: 10%;
+    position: absolute; left: 57.9%; top: 26.8%;
+}
+#icon7 {
+    width: 10%;
+    height: 10%;
+    position: absolute;
+    left: 62.2%;
+    top: 26.8%;
+}
+#icon11 {
+    width: 10%;
+    height: 10%;
+    position: absolute;
+    left: 36.4%;
+    top: 78%;
+}
+#icon12 {
+    width: 10%;
+    height: 10%;
+    position: absolute;
+    left: 40.7%;
+    top: 78%;
+}
+#icon13 {
+    width: 10%;
+    height: 10%;
+    position: absolute;
+    left: 45%;
+    top: 78%;
+}
+#icon14 {
+    width: 10%;
+    height: 10%;
+    position: absolute;
+    left: 49.3%;
+    top: 78%;
+}
+#icon15 {
+    width: 10%;
+    height: 10%;
+    position: absolute;
+    left: 53.6%;
+    top: 78%;
+}
+#icon16 {
+    width: 10%;
+    height: 10%;
+    position: absolute;
+    left: 57.9%;
+    top: 78%;
+}
+#icon17 {
+    width: 10%;
+    height: 10%;
+    position: absolute;
+    left: 62.2%;
+    top: 78%;
+}
+#icon21 {
+    width: 10%;
+    height: 10%;
+    position: absolute;
+    left: 36.4%;
+    top: 84%;
+}
+#icon22 {
+    width: 10%;
+    height: 10%;
+    position: absolute;
+    left: 40.7%;
+    top: 84%;
+}
+#icon23 {
+    width: 10%;
+    height: 10%;
+    position: absolute;
+    left: 45%;
+    top: 84%;
+}
+#icon24 {
+    width: 10%;
+    height: 10%;
+    position: absolute;
+    left: 49.3%;
+    top: 84%;
+}
+#icon25 {
+    width: 10%;
+    height: 10%;
+    position: absolute;
+    left: 53.6%;
+    top: 84%;
+}
+#icon26 {
+    width: 10%;
+    height: 10%;
+    position: absolute;
+    left: 57.9%;
+    top: 84%;
+}
+#icon27 {
+    width: 10%;
+    height: 10%;
+    position: absolute;
+    left: 62.2%;
+    top: 84%;
+}
+#icon31 {
+    width: 10%;
+    height: 10%;
+    position: absolute;
+    left: 36.4%;
+    top: 90%;
+}
+#icon32 {
+    width: 10%;
+    height: 10%;
+    position: absolute;
+    left: 40.7%;
+    top: 90%;
+}
+#icon33 {
+    width: 10%;
+    height: 10%;
+    position: absolute;
+    left: 45%;
+    top: 90%;
+}
+#icon34 {
+    width: 10%;
+    height: 10%;
+    position: absolute;
+    left: 49.3%;
+    top: 90%;
+}
+#icon35 {
+    width: 10%;
+    height: 10%;
+    position: absolute;
+    left: 53.6%;
+    top: 90%;
+}
+#icon36 {
+    width: 10%;
+    height: 10%;
+    position: absolute;
+    left: 57.9%;
+    top: 90%;
+}

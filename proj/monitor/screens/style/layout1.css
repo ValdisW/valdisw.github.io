@@ -1,0 +1,278 @@
+@font-face {
+    font-family: font;
+    src: url('../font/ylhg.otf');
+}
+
+*{margin: 0; padding: 0;}
+html, body, #main{height: 100%; width: 100%;}
+
+#videoBg{
+    object-fit:fill;
+    width: 100%; height: 100%;
+    position: absolute; top: 0; left: 0;
+}
+
+#black{
+    background-color: #000;
+    opacity: 0.4;
+    position: absolute;
+    width: 100%; height: 100%;
+}
+
+#cover{
+    width: 100%; height: 100%;
+    position: absolute; top: 0; left: 0;
+    background-image: url("../img/background.png");
+    background-size: 100% 100%;
+}
+
+#main{
+    background-size: 100% 100%;
+}
+
+#top{
+    width: 100%; height: 13%;
+}
+
+#weather{
+    width: 14%; height: 13%;
+    text-align: center; line-height: 12vh;
+    color: rgb(29, 210, 237); font-size: 0.9vw;
+    position: absolute;
+}
+
+#title{
+    width: 39%; height: 13%;
+    position: absolute; left: 30.5%;
+    font-size: 4.5vh;
+    text-align: center; line-height: 8vh;
+}
+
+/*
+#title span{
+    background: linear-gradient(to bottom, rgb(28, 196, 225), rgb(0, 106, 147));
+    -webkit-background-clip: text;
+    color: transparent;
+    font-family: font;
+}
+*/
+#title img{
+    width: 95%;
+    margin-top: 2%;
+}
+
+
+#date{
+    width: 14%; height: 13%;
+    position: absolute; right: 0;
+    text-align: center; line-height: 12vh;
+    color: rgb(29, 210, 237); font-size: 0.9vw;
+}
+
+#bottom{
+    width: 100%; height: 87%;
+}
+
+#left{
+    width: 36%; height: 100%;
+    float: left;
+}
+
+.blocks{
+    width: 16.3%; height: 36%;
+    position: absolute;
+    box-shadow:  0 0 40px 30px rgba(36, 41, 82, 0.5) inset;
+    box-sizing: border-box;
+    border: 3px solid transparent;
+    border-image: url(../img/border.png) 5 round;
+}
+
+#block1{
+    top: 20%; left: 2%;
+}
+
+#block2{
+    top: 20%; left: 19.5%;
+}
+
+#block3{
+    top: 60%; left: 2%;
+}
+
+#block4{
+    top: 60%; left: 19.5%;
+}
+
+#block5{
+    top: 20%; right: 19.5%;
+}
+
+#block6{
+    top: 20%; right: 2%;
+}
+
+#block7{
+    top: 60%; right: 19.5%;
+}
+
+#tip{
+    position: absolute;
+    top: 76%; left: 67.4%;
+    width: 10%; height: 5%;
+    color: #FFF; font-size: 13px;
+    text-align: center;
+}
+
+#totalNum{
+    font-family: font;
+}
+
+#block8{
+    top: 60%; right: 2%;
+}
+
+#table{
+    width: 16.3%; height: 30%;
+    position: absolute;
+    top: 67%; right: 2%;
+    font-size: 5px; color: #FFF;
+}
+
+table{
+    border-collapse:collapse;
+    width: 80%;
+    height: 90%;
+    position: relative;
+    left: 10%; top: -3%;
+}
+table, th, td{border: none; text-align: center}
+th{border-bottom: 1px solid #FFF;}
+
+#middle{
+    width: 28%; height: 100%;
+    float: left;
+}
+
+#map{
+    width: 100%; height: 100%;
+}
+
+.info{
+    width: 10%; height: 5%;
+    font-size: 80%; color: #FFF;
+    background-image: url("../img/label.png");
+    background-size: 100% 100%;
+    font-size: 1.5vh; line-height: 5.2vh;
+    padding-left: 2vh;
+}
+
+#info1{position: absolute; top: 21%; left: 37%;}
+#info2{position: absolute; top: 28%; left: 37%;}
+#info3{position: absolute; top: 35%; left: 37%;}
+#gridNum, #gridPeoNum, #infoCollectNum{font-family: font;}
+#right{
+    width: 36%; height: 100%;
+    float: left;
+}
+
+.compo{
+    height: 80%;
+    border: 1px solid transparent;
+    border-right: 2.5px solid rgb(28, 196, 223);
+    float: right;
+    position: relative;
+}
+.compo:nth-child(2){height: 40%; top: 19%; right: 5%}
+.compo:nth-child(3){height: 12%; top: 34%; right: 9%}
+
+.compo0{
+    height: 80%;
+    border: 1px solid transparent;
+    border-left: 2.5px solid rgb(28, 196, 223);
+    float: left;
+    position: relative;
+}
+.compo0:nth-child(2){height: 40%; top: 19%; left: 5%}
+.compo0:nth-child(3){height: 12%; top: 34%; left: 9%}
+
+#decoLeft1{
+    position: absolute;
+    width: 50px; height: 14px;
+    top: 22.1%; left: 4%;
+}
+#decoLeft2{
+    position: absolute;
+    width: 50px; height: 14px;
+    top: 22.1%; left: 20.9%;
+}
+#decoLeft3{
+    position: absolute;
+    width: 50px; height: 14px;
+    top: 62.2%; left: 1.7%;
+}
+#decoLeft4{
+    position: absolute;
+    width: 50px; height: 14px;
+    top: 62.2%; left: 19.7%;
+}
+#decoLeft5{
+    position: absolute;
+    width: 50px; height: 14px;
+    top: 22.1%; left: 65%;
+}
+#decoLeft6{
+    position: absolute;
+    width: 50px; height: 14px;
+    top: 22.1%; left: 81.9%;
+}
+#decoLeft7{
+    position: absolute;
+    width: 50px; height: 14px;
+    top: 62.2%; left: 66%;
+}
+#decoLeft8{
+    position: absolute;
+    width: 50px; height: 14px;
+    top: 62.2%; left: 80.7%;
+}
+
+#decoRight1{
+    position: absolute;
+    width: 50px; height: 14px;
+    top: 22.1%; left: 13.1%;
+}
+#decoRight2{
+    position: absolute;
+    width: 50px; height: 14px;
+    top: 22.1%; left: 31.2%;
+}
+#decoRight3{
+    position: absolute;
+    width: 50px; height: 14px;
+    top: 62.2%; left: 15.5%;
+}
+#decoRight4{
+    position: absolute;
+    width: 50px; height: 14px;
+    top: 62.2%; left: 32.4%;
+}
+#decoRight5{
+    position: absolute;
+    width: 50px; height: 14px;
+    top: 22.1%; left: 76.4%;
+}
+#decoRight6{
+    position: absolute;
+    width: 50px; height: 14px;
+    top: 22.1%; left: 94.6%;
+}
+#decoRight7{
+    position: absolute;
+    width: 50px; height: 14px;
+    top: 62.2%; left: 75.5%;
+}
+#decoRight8{
+    position: absolute;
+    width: 50px; height: 14px;
+    top: 62.2%; left: 95.8%;
+}
