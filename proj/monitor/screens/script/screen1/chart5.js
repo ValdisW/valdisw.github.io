@@ -63,5 +63,5 @@ var option5 = {
         data: [[wuxi.activeBureaus0[0].infoCollectPlus, wuxi.activeBureaus0[1].infoCollectPlus, wuxi.activeBureaus0[2].infoCollectPlus, wuxi.activeBureaus0[3].infoCollectPlus, wuxi.activeBureaus0[4].infoCollectPlus, wuxi.activeBureaus0[5].infoCollectPlus]],
     }
 };
-var chart5 = echarts.init(block5);
+var chart5 = echarts.init(block5, null, {renderer: 'svg'});
 chart5.setOption(option5);

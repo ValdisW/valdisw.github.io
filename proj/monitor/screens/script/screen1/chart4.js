@@ -5,7 +5,7 @@ var option4 = {
         left: 'center',
         textStyle: {
             color:  'rgb(255, 255, 255)',
-            fontWeight: 'normal'
+            fontWeight: 'normal',
         }
     },
     tooltip: {
@@ -66,5 +66,5 @@ var option4 = {
     }
 };
 
-var chart4 = echarts.init(block4);
+var chart4 = echarts.init(block4, null, {renderer: 'svg'});
 chart4.setOption(option4);

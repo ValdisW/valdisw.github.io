@@ -32,7 +32,7 @@ var option1 = {
             borderColor: 'rgba(0, 0, 0, 0)'
         },
         label: {
-		    formatter: '{@value}'
+            formatter: '{@value}'
         },
         data: [
             {

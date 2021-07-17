@@ -66,5 +66,5 @@ var option6 = {
     }
 };
 
-var chart6 = echarts.init(block6);
+var chart6 = echarts.init(block6, null, {renderer: 'svg'});
 chart6.setOption(option6);

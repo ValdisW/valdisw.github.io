@@ -82,10 +82,10 @@ var option3 = {
                     color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{offset: 0, color: 'rgb(69, 147, 255)' }, {offset: 1, color: 'rgb(38, 69, 126)'}])
                 }
             },
-            data: [40000, 45000, 46000, 85000, 85000, 72000,63000]
+            data: [40000, 45000, 46000, 85000, 85000, 72000, 63000]
         }
     ]
 };
 
-var chart3 = echarts.init(block3);
+var chart3 = echarts.init(block3, null, {renderer: 'svg'});
 chart3.setOption(option3);
