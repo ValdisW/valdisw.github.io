@@ -30,20 +30,21 @@
       };
       Promise.all([d3.json("./data/sheet1.json"), d3.json("./data/sheet2.json")]).then((data) => {
         let [sheet1, sheet2] = data;
-        sheet1.pop();
         let sheet1_divided = [];
         for (let i = 0; i < sheet1.length; i += 3) sheet1_divided.push(sheet1.slice(i, i + 3));
         const svg = d3.select("body").append("svg").attr("width", 1000).attr("height", window.innerHeight);
+
+        // 药柜
         svg
           .append("rect")
           .attr("x", shelf_offset.x - 25)
           .attr("y", shelf_offset.x - 25)
           .attr("width", 482)
-          .attr("height", 720)
+          .attr("height", 740)
           .attr("fill", "#493100");
-        const drawer = svg.selectAll("g.drawer").data(sheet1_divided).enter().append("g").classed("drawer", true);
 
         // 抽屉
+        const drawer = svg.selectAll("g.drawer").data(sheet1_divided).enter().append("g").classed("drawer", true);
         drawer
           .append("rect")
           .attr("fill", "#261F00")
