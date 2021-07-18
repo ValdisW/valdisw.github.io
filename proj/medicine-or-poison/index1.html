@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>是药三分毒啊朋友们</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background-color: rgb(240, 228, 205);
+      }
+      rect,
+      path {
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="https://cdn.bootcdn.net/ajax/libs/d3/5.9.7/d3.min.js"></script>
+    <script src="./javascripts/d3-sankey.js"></script>
+    <script src="./javascripts/chart.js"></script>
+    <script>
+      const myColorScheme = ["#763e3e", "#8b7648", "#7f8b4b", "#518b4b", "#4b8b7a", "#4b6e8b", "#4b4b8b", "#6b4b8b", "#8b4b86"];
+      Promise.all([d3.json("./data/sheet1.json"), d3.json("./data/sheet2.json")]).then((data) => {
+        const [sheet1, sheet2] = data;
+
+        // 节点表
+        let nodess = [];
+        for (let ele of sheet1) nodess.push({ id: ele["ingredient"] });
+        for (let ele of sheet2) nodess.push({ id: ele["medicine"] });
+        let set = new Set();
+        for (let ele of sheet1) for (let i of ele["organs"]) set.add(i);
+        set = Array.from(set);
+        for (let i in set) set[i] = { id: set[i] };
+        nodess = nodess.concat(set);
+
+        //  边表
+        let linkss = [];
+        for (let ele of sheet2) for (let i of ele["ingredients"]) linkss.push({ source: ele["medicine"], target: i, value: 1 });
+        for (let ele of sheet1) for (let i of ele["organs"]) linkss.push({ source: ele["ingredient"], target: i, value: 1 });
+
+        const config = {
+          margins: { top: 80, left: 50, bottom: 50, right: 0 },
+          textColor: "black",
+          title: "基础桑基图",
+        };
+        const chart = new Chart();
+        chart.margins(config.margins);
+
+        // sankey generator
+        const sankey = d3
+          .sankey()
+          .nodeWidth(7)
+          .nodePadding(3)
+          .nodeAlign(d3.sankeyJustify)
+          .extent([
+            [90, 0],
+            [chart.getBodyWidth(), chart.getBodyHeight()],
+          ])
+          // .size([chart.getBodyWidth(), chart.getBodyHeight()])
+          .nodeId((d) => d.id);
+
+        // data convertion
+        const { nodes, links } = sankey({
+          nodes: nodess,
+          links: linkss,
+        });
+        console.log(nodes);
+        console.log(links);
+        // for (let i in links) links[i].width = 1;
+
+        /* -----节点-----  */
+        chart.renderNodes = function () {
+          const rects = chart.body().append("g").attr("class", "rects").selectAll(".node").data(nodes);
+
+          rects
+            .enter()
+            .append("g")
+            .attr("class", "node")
+            .attr("index", (d) => d.id)
+            .attr("linkNodes", (d) => {
+              const nextNodes = d.sourceLinks.map((link) => link.target.id).join("");
+              const prevNodes = d.targetLinks.map((link) => link.source.id).join("");
+              return nextNodes + d.id + prevNodes;
+            })
+            .append("rect")
+            .merge(rects)
+            .attr("x", (d) => d.x0)
+            .attr("y", (d) => d.y0)
+            .attr("width", (d) => d.x1 - d.x0)
+            .attr("height", (d) => d.y1 - d.y0)
+            .attr("fill", (d) => "#5b4a4a");
+          // .attr("fill", (d) => myColorScheme[d.index % 8]);
+
+          rects.exit().remove();
+        };
+
+        /* -----连线-----  */
+        chart.renderLines = function () {
+          const lines = chart.body().append("g").attr("class", "lines").selectAll("path").data(links);
+          lines
+            .enter()
+            .append("path")
+            .merge(lines)
+            .attr("linkNodes", (d) => d.source.id + "-" + d.target.id)
+            .attr("d", d3.sankeyLinkHorizontal())
+            .attr("stroke", (d) => myColorScheme[d.target.index % 8])
+            .attr("stroke-width", (d) => d.width)
+            .attr("stroke-opacity", "0.4")
+            .attr("fill", "none");
+
+          lines.exit().remove();
+        };
+
+        /* -----文本标签-----  */
+        chart.renderTexts = function () {
+          d3.selectAll(".text").remove();
+
+          chart
+            .body()
+            .selectAll(".node")
+            .append("text")
+            .attr("class", "text")
+            .attr("x", (d) => (d.x0 + d.x1) / 2)
+            .attr("y", (d) => (d.y0 + d.y1) / 2)
+            // .attr("stroke", config.textColor)
+            .attr("text-anchor", "end")
+            .attr("font-size", "4px")
+            .attr("dy", 1.5)
+            .attr("dx", -6)
+            .text((d) => d.id);
+        };
+
+        /* -----鼠标交互-----  */
+        chart.addMouseOn = function () {
+          // 悬停在节点上
+          d3.selectAll(".node")
+            .on("mouseover", function (d) {
+              d3.selectAll(".node, path").attr("fill-opacity", "0.1").attr("stroke-opacity", "0.1");
+              d3.selectAll("[linkNodes*=" + d.id + "]")
+                .attr("fill-opacity", "1")
+                .attr("stroke-opacity", "0.4");
+            })
+            .on("mouseleave", function () {
+              d3.selectAll(".node, path").attr("fill-opacity", "1").attr("stroke-opacity", "0.4");
+            });
+
+          // 悬停在连线上
+          d3.selectAll("path")
+            .on("mouseover", function () {
+              d3.selectAll(".node, path").attr("fill-opacity", "0.1").attr("stroke-opacity", "0.1");
+              const e = d3.event;
+              const hoverNodes = d3.select(e.target).attr("stroke-opacity", "0.4").attr("linkNodes").split("-");
+              hoverNodes.forEach((id) => {
+                d3.selectAll("[index=" + id + "]").attr("fill-opacity", "1");
+              });
+            })
+            .on("mouseleave", function () {
+              d3.selectAll(".node, path").attr("fill-opacity", "1").attr("stroke-opacity", "0.4");
+            });
+        };
+
+        chart.render = function () {
+          chart.renderNodes();
+          chart.renderLines();
+          chart.renderTexts();
+          chart.addMouseOn();
+        };
+        chart.renderChart();
+      });
+    </script>
+  </body>
+</html>
