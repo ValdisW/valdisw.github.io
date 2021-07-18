@@ -16,6 +16,9 @@
       .drawer {
         cursor: pointer;
       }
+      .drawer:hover {
+        transform: translate(1.2);
+      }
     </style>
   </head>
   <body>
@@ -39,6 +42,8 @@
           .attr("height", 720)
           .attr("fill", "#493100");
         const drawer = svg.selectAll("g.drawer").data(sheet1_divided).enter().append("g").classed("drawer", true);
+
+        // 抽屉
         drawer
           .append("rect")
           .attr("fill", "#261F00")
@@ -47,6 +52,7 @@
           .attr("width", 80)
           .attr("height", 50);
 
+        // 顶部文字
         drawer
           .append("text")
           .text((d) => d[0].ingredient)
@@ -57,6 +63,7 @@
           .attr("text-anchor", "middle")
           .attr("fill", "#F4DC00");
 
+        // 左侧文字
         drawer
           .append("text")
           .text((d) => d[1].ingredient)
@@ -67,6 +74,7 @@
           .attr("font-size", 10)
           .attr("fill", "#F4DC00");
 
+        // 右侧文字
         drawer
           .append("text")
           .text((d) => d[2].ingredient)
@@ -77,6 +85,7 @@
           .attr("font-size", 10)
           .attr("fill", "#F4DC00");
 
+        // 拉环
         drawer
           .append("circle")
           .attr("cx", (e, i) => (i % 5) * 88 + 40 + shelf_offset.x)
