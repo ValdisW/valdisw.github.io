@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
+    <title>自然生态数据可视化_江山如画</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/jquery.js"></script>
+  </head>
+  <body>
+    <div id="teamcont"></div>
+    <audio src="img/bgm.mp3" id="bgMusic" preload="auto" loop autoplay preload></audio>
+
+    <div class="container">
+      <div class="box">
+        <img src="img/pic.jpg" alt="" class="bg" />
+
+        <div class="part">
+          <span>沈阳<br />2013-2019 空气质量指数（AQI）</span>
+        </div>
+
+        <div class="part">
+          <span>长春<br />2013-2019 空气质量指数（AQI）</span>
+        </div>
+        <div class="part">
+          <span>哈尔滨<br />2013-2019 空气质量指数（AQI）</span>
+        </div>
+        <div class="part">
+          <span>西宁<br />2013-2019 空气质量指数（AQI）</span>
+        </div>
+        <div class="part">
+          <span>兰州<br />2013-2019 空气质量指数（AQI）</span>
+        </div>
+        <div class="part">
+          <span>银川<br />2013-2019 空气质量指数（AQI）</span>
+        </div>
+        <div class="part">
+          <span>西安<br />2013-2019 空气质量指数（AQI）</span>
+        </div>
+        <div class="part">
+          <span>呼和浩特<br />2013-2019 空气质量指数（AQI）</span>
+        </div>
+        <div class="part">
+          <span>太原<br />2013-2019 空气质量指数（AQI）</span>
+        </div>
+        <div class="part">
+          <span>郑州<br />2013-2019 空气质量指数（AQI）</span>
+        </div>
+        <div class="part">
+          <span>石家庄<br />2013-2019 空气质量指数（AQI）</span>
+        </div>
+        <div class="part">
+          <span>济南<br />2013-2019 空气质量指数（AQI）</span>
+        </div>
+        <div class="part">
+          <span>拉萨<br />2013-2019 空气质量指数（AQI）</span>
+        </div>
+        <div class="part">
+          <span>昆明<br />2013-2019 空气质量指数（AQI）</span>
+        </div>
+        <div class="part">
+          <span>成都<br />2013-2019 空气质量指数（AQI）</span>
+        </div>
+        <div class="part">
+          <span>贵阳<br />2013-2019 空气质量指数（AQI）</span>
+        </div>
+        <div class="part">
+          <span>重庆<br />2013-2019 空气质量指数（AQI）</span>
+        </div>
+        <div class="part">
+          <span>长沙<br />2013-2019 空气质量指数（AQI）</span>
+        </div>
+        <div class="part">
+          <span>武汉<br />2013-2019 空气质量指数（AQI）</span>
+        </div>
+        <div class="part">
+          <span>南昌<br />2013-2019 空气质量指数（AQI）</span>
+        </div>
+        <div class="part">
+          <span>合肥<br />2013-2019 空气质量指数（AQI）</span>
+        </div>
+        <div class="part">
+          <span>南京<br />2013-2019 空气质量指数（AQI）</span>
+        </div>
+        <div class="part">
+          <span>杭州<br />2013-2019 空气质量指数（AQI）</span>
+        </div>
+        <div class="part">
+          <span>上海<br />2013-2019 空气质量指数（AQI）</span>
+        </div>
+        <div class="part">
+          <span>南宁<br />2013-2019 空气质量指数（AQI）</span>
+        </div>
+        <div class="part">
+          <span>广州<br />2013-2019 空气质量指数（AQI）</span>
+        </div>
+        <div class="part">
+          <span>乌鲁木齐<br />2013-2019 空气质量指数（AQI）</span>
+        </div>
+        <div class="part">
+          <span>北京<br />2013-2019 空气质量指数（AQI）</span>
+        </div>
+        <div class="part">
+          <span>天津<br />2013-2019 空气质量指数（AQI）</span>
+        </div>
+        <div class="part">
+          <span>海口<br />2013-2019 空气质量指数（AQI）</span>
+        </div>
+        <div class="part">
+          <span>福州<br />2013-2019 空气质量指数（AQI）</span>
+        </div>
+        <div class="part">
+          <span>香港<br />2013-2019 空气质量指数（AQI）</span>
+        </div>
+        <div class="part">
+          <span>澳门<br />2013-2019 空气质量指数（AQI）</span>
+        </div>
+        <div class="part">
+          <span>台北<br />2013-2019 空气质量指数（AQI）</span>
+        </div>
+        <div class="part">
+          <span>沈阳<br />2013-2017 绿化率</span>
+        </div>
+        <div class="part">
+          <span>郑州<br />2013-2017 绿化率</span>
+        </div>
+        <div class="part">
+          <span>济南<br />2013-2017 绿化率</span>
+        </div>
+        <div class="part">
+          <span>拉萨<br />2013-2017 绿化率</span>
+        </div>
+        <div class="part">
+          <span>长沙<br />2013-2017 绿化率</span>
+        </div>
+        <div class="part">
+          <span>北方<br />2013 平均气温</span>
+        </div>
+        <div class="part">
+          <span>北方<br />2014 平均气温</span>
+        </div>
+        <div class="part">
+          <span>北方<br />2015 平均气温</span>
+        </div>
+        <div class="part">
+          <span>北方<br />2016 平均气温</span>
+        </div>
+        <div class="part">
+          <span>北方<br />2017 平均气温</span>
+        </div>
+        <div class="part">
+          <span>北方<br />2018 平均气温</span>
+        </div>
+        <div class="part">
+          <span>南方<br />2013 平均气温</span>
+        </div>
+        <div class="part">
+          <span>南方<br />2014 平均气温</span>
+        </div>
+        <div class="part">
+          <span>南方<br />2015 平均气温</span>
+        </div>
+        <div class="part">
+          <span>南方<br />2016 平均气温</span>
+        </div>
+        <div class="part">
+          <span>南方<br />2017 平均气温</span>
+        </div>
+        <div class="part">
+          <span>南方<br />2018 平均气温</span>
+        </div>
+
+        <div id="labels"></div>
+        <div id="highlights">
+          <!-- <div class="highlight">
+            <div class="ring"></div>
+            <div class="center"></div>
+          </div> -->
+        </div>
+      </div>
+
+      <div class="control">
+        <span class="info" style="cursor: pointer;"></span>
+        <span class="music" style="cursor: pointer;"></span>
+        <span class="big" style="cursor: pointer;"></span>
+        <span class="small" style="cursor: pointer;"></span>
+        <span class="ctl" style="cursor: pointer;"></span>
+      </div>
+    </div>
+
+    <div id="event-frame">
+      <div id="line-outer">
+        <div id="line-inner">
+          <p id="event-en"></p>
+          <p id="event-cn"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cover"></div>
+
+    <script>
+      const labels = $("#labels"),
+        highlights = $("#highlights");
+      let cities = [
+        {
+          name: "沈阳",
+          style: {
+            left: "0.6%",
+            top: "50%",
+            width: "4.8%",
+            height: "24%",
+          },
+          event: {
+            cn: "中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,",
+            en: "Engligh content, Engligh content, Engligh content, Engligh content, Engligh content, Engligh content, Engligh content, Engligh content, Engligh content, ",
+          },
+        },
+        {
+          name: "长春",
+          style: {
+            left: "2.1%",
+            top: "35%",
+            width: "4.1%",
+            height: "16%",
+          },
+        },
+        {
+          name: "哈尔滨",
+          style: {
+            left: "6%",
+            top: "25%",
+            width: "3%",
+            height: "17%",
+          },
+        },
+        {
+          name: "西宁",
+          style: {
+            left: "14.6%",
+            top: "44%",
+            width: "3.7%",
+            height: "26%",
+          },
+        },
+        {
+          name: "兰州",
+          style: {
+            left: "18.3%",
+            top: "48%",
+            width: "4.6%",
+            height: "26%",
+          },
+        },
+        {
+          name: "银川",
+          style: {
+            left: "23%",
+            top: "34%",
+            width: "4.1%",
+            height: "23%",
+          },
+        },
+        {
+          name: "西安",
+          style: {
+            left: "26.6%",
+            top: "70%",
+            width: "6%",
+            height: "31%",
+          },
+        },
+        {
+          name: "呼和浩特",
+          style: {
+            left: "30.5%",
+            top: "23%",
+            width: "3.5%",
+            height: "19%",
+          },
+        },
+        {
+          name: "太原",
+          style: {
+            left: "32.6%",
+            top: "37%",
+            width: "4.2%",
+            height: "22%",
+          },
+          event: {
+            cn: "中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,",
+            en: "Engligh content, Engligh content, Engligh content, Engligh content, Engligh content, Engligh content, Engligh content, Engligh content, Engligh content, ",
+          },
+        },
+        {
+          name: "郑州",
+          style: {
+            left: "33.2%",
+            top: "66%",
+            width: "6%",
+            height: "29%",
+          },
+          event: {
+            cn: "中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,",
+            en: "Engligh content, Engligh content, Engligh content, Engligh content, Engligh content, Engligh content, Engligh content, Engligh content, Engligh content, ",
+          },
+        },
+        {
+          name: "石家庄",
+          style: {
+            left: "36.8%",
+            top: "33%",
+            width: "4.4%",
+            height: "22%",
+          },
+        },
+        {
+          name: "济南",
+          style: {
+            left: "39.5%",
+            top: "52%",
+            width: "4.8%",
+            height: "22%",
+          },
+        },
+        {
+          name: "拉萨",
+          style: {
+            left: "47.3%",
+            top: "35%",
+            width: "4.6%",
+            height: "28%",
+          },
+        },
+        {
+          name: "昆明",
+          style: {
+            left: "49%",
+            bottom: "0",
+            width: "5.7%",
+            height: "35%",
+          },
+        },
+        {
+          name: "成都",
+          style: {
+            left: "54.7%",
+            top: "29%",
+            width: "4.1%",
+            height: "19%",
+          },
+        },
+        {
+          name: "贵阳",
+          style: {
+            left: "55.1%",
+            top: "65%",
+            width: "5.5%",
+            height: "30%",
+          },
+        },
+        {
+          name: "重庆",
+          style: {
+            left: "56.5%",
+            top: "41%",
+            width: "4.8%",
+            height: "22%",
+          },
+        },
+        {
+          name: "长沙",
+          style: {
+            left: "61.7%",
+            top: "50%",
+            width: "4.5%",
+            height: "24.5%",
+          },
+        },
+        {
+          name: "武汉",
+          style: {
+            left: "63.6%",
+            top: "29%",
+            width: "4.1%",
+            height: "16%",
+          },
+        },
+        {
+          name: "南昌",
+          style: {
+            left: "66.3%",
+            top: "42%",
+            width: "3.6%",
+            height: "30%",
+          },
+        },
+        {
+          name: "合肥",
+          style: {
+            left: "69.5%",
+            top: "22%",
+            width: "3.6%",
+            height: "22%",
+          },
+        },
+        {
+          name: "南京",
+          style: {
+            left: "72.7%",
+            top: "18%",
+            width: "1.9%",
+            height: "21%",
+          },
+        },
+        {
+          name: "杭州",
+          style: {
+            left: "73.5%",
+            top: "32%",
+            width: "3.9%",
+            height: "24%",
+          },
+        },
+        {
+          name: "上海",
+          style: {
+            left: "77.2%",
+            top: "27%",
+            width: "2.1%",
+            height: "22%",
+          },
+          event: {
+            cn: "中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,",
+            en: "Engligh content, Engligh content, Engligh content, Engligh content, Engligh content, Engligh content, Engligh content, Engligh content, Engligh content, ",
+          },
+        },
+        {
+          name: "南宁",
+          style: {
+            left: "76%",
+            top: "56%",
+            width: "5.6%",
+            height: "30%",
+          },
+        },
+        {
+          name: "广州",
+          style: {
+            left: "81.5%",
+            top: "52%",
+            width: "5.6%",
+            height: "34%",
+          },
+        },
+        {
+          name: "乌鲁木齐",
+          style: {
+            left: "12.9%",
+            top: "23%",
+            width: "3.4%",
+            height: "21%",
+          },
+        },
+        {
+          name: "北京",
+          style: {
+            left: "41.6%",
+            top: "26%",
+            width: "3.5%",
+            height: "12%",
+          },
+        },
+        {
+          name: "天津",
+          style: {
+            left: "42.5%",
+            top: "33%",
+            width: "3.9%",
+            height: "18%",
+          },
+        },
+        {
+          name: "海口",
+          style: {
+            left: "77.5%",
+            top: "70%",
+            width: "6.7%",
+            height: "30%",
+          },
+        },
+        {
+          name: "福州",
+          style: {
+            left: "85%",
+            top: "37%",
+            width: "4.8%",
+            height: "28%",
+          },
+        },
+        {
+          name: "香港",
+          style: {
+            left: "88.3%",
+            top: "59%",
+            width: "4%",
+            height: "20%",
+          },
+        },
+        {
+          name: "澳门",
+          style: {
+            left: "87.8%",
+            top: "69%",
+            width: "3.8%",
+            height: "31%",
+          },
+          event: {
+            cn: "中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,中文内容,",
+            en: "Engligh content, Engligh content, Engligh content, Engligh content, Engligh content, Engligh content, Engligh content, Engligh content, Engligh content, ",
+          },
+        },
+        {
+          name: "台北",
+          style: {
+            left: "92.5%",
+            top: "57%",
+            width: "3.6%",
+            height: "28%",
+          },
+        },
+        {
+          name: "沈阳",
+          style: {
+            left: "0.6%",
+            top: "76%",
+            width: "4.8%",
+            height: "24%",
+          },
+        },
+        {
+          name: "郑州",
+          style: {
+            left: "18.3%",
+            top: "69%",
+            width: "4.6%",
+            height: "25%",
+          },
+        },
+        {
+          name: "济南",
+          style: {
+            left: "39.4%",
+            top: "68%",
+            width: "4.7%",
+            height: "18%",
+          },
+        },
+        {
+          name: "拉萨",
+          style: {
+            left: "47.3%",
+            top: "60%",
+            width: "1.8%",
+            height: "19%",
+          },
+        },
+        {
+          name: "长沙",
+          style: {
+            left: "61.7%",
+            top: "65%",
+            width: "4.5%",
+            height: "24.5%",
+          },
+        },
+      ];
+
+      for (let i in cities) {
+        let label = $(
+          `<div class="label"><div class="label-up"><div class="outer"></div><div class="inner"></div><div class="triangle"></div></div><p>${cities[i].name}</p><div class="label-down"><div class="triangle"></div><div class="inner"></div><div class="outer"></div></div></div>`
+        );
+        label.css("left", parseFloat(cities[i].style.left) + parseFloat(cities[i].style.width) + "%");
+        if (cities[i].style.bottom) label.css("bottom", cities[i].style.bottom);
+        else label.css("top", cities[i].style.top);
+        labels.append(label);
+
+        if (cities[i].event) {
+          let highlight = $(`<div class="highlight ${i}"><div class="ring"></div><div class="center"></div></div>`);
+          highlight.css("left", parseFloat(cities[i].style.left) + parseFloat(cities[i].style.width) / 2 + "%");
+          if (cities[i].style.bottom) highlight.css("bottom", cities[i].style.bottom);
+          else highlight.css("top", parseFloat(cities[i].style.top) + parseFloat(cities[i].style.height) / 3 + "%");
+          highlight.click(function (e) {
+            $("#event-en").text(cities[i].event.en);
+            $("#event-cn").text(cities[i].event.cn);
+            $("#event-frame").fadeIn(0);
+          });
+          highlights.append(highlight);
+        }
+      }
+      $("body")[0].addEventListener("wheel", function (e) {
+        let d = e.deltaY > 0 ? 1 : -1;
+        let l = parseInt($(".box").css("left"));
+        $(".box").css("left", l - 20 * d + "px");
+      });
+    </script>
+
+    <script src="js/layer/layer.js"></script>
+    <script>
+      $(function () {
+        $(".cover").fadeIn(500);
+
+        setTimeout(function () {
+          $(".cover").fadeOut(500);
+          $(".box").show();
+          start();
+        }, 6000);
+
+        var flag = true;
+
+        $(".part").on("touchstart", function () {
+          $(".part").css("opacity", 0);
+          $(this).css("opacity", 1);
+        });
+
+        function autoplay() {
+          if ($(".box").position().left > $(window).width() - $(".box").width()) {
+            $(".box").css({
+              left: $(".box").position().left - 4 + "px",
+            });
+          } else stop();
+        }
+
+        $(".ctl").click(function () {
+          if (flag) stop();
+          else start();
+        });
+
+        var timer;
+
+        var start = function () {
+          $(".box").css({ transform: "scale(1)" });
+          $(".ctl").css("background-image", "url(img/stop.png)");
+
+          flag = true;
+          timer = setInterval(function () {
+            autoplay();
+          }, 60);
+        };
+
+        var stop = function () {
+          clearInterval(timer);
+          $(".ctl").css("background-image", "url(img/start.png)");
+          flag = false;
+        };
+
+        var yan = function () {
+          setTimeout(function () {
+            $(".box").css({ top: 0 });
+            start();
+          }, 6000);
+        };
+
+        //start();
+
+        $(".big").click(function () {
+          stop();
+          if ($(".box").height() < 2 * $(window).height()) {
+            $(".box").css({
+              //transform:'scale('+(getZoomLeve('.box')+0.1)+')'
+              height: $(".box").height() * 1.1 + "px",
+            });
+          } else alert("最大能放大2倍");
+
+          console.log($(".box").css("left"));
+
+          //yan();
+        });
+
+        $(".small").click(function () {
+          stop();
+          //if($('.box').height()>($(window).height())){
+          $(".box").css({
+            //transform:'scale('+(getZoomLeve('.box')-0.1)+')'
+            height: $(".box").height() * 0.9 + "px",
+          });
+          // }else{
+          // 	$('.box').css({
+          // 		//transform:'scale(1)'
+          // 		height:$(window).height()+"px",
+          // 		top:0,
+          // 	});
+          // 	alert('缩小倍数不能小于1倍');
+          // }
+
+          //yan();
+        });
+
+        $(".box").mousedown(function (e) {
+          e.preventDefault();
+          stop();
+
+          var e = e || window.event;
+          var that = this;
+          var diffX = e.clientX - that.offsetLeft;
+          var diffY = e.clientY - that.offsetTop;
+
+          // document.onmousemove = function (e) {
+          //   var e = e || window.event;
+          //   var lft = e.clientX - diffX;
+          //   var tp = e.clientY - diffY;
+          //   if (lft > 0) {
+          //     lft = 0;
+          //   } else if (lft < $(window).width() - $(that).width()) {
+          //     lft = $(window).width() - $(that).width();
+          //   }
+          //   // if(tp>0){
+          //   // 	tp=0;
+          //   // }else if(tp<($(window).height()-$(that).height())){
+          //   // 	tp=$(window).height()-$(that).height();
+          //   // }
+          //   //console.log(lft);
+          //   $(that).css({
+          //     left: lft + "px",
+          //     top: tp + "px",
+          //   });
+
+          //   stop();
+          // };
+
+          document.onmouseup = function () {
+            document.onmouseup = null;
+            document.onmousemove = null;
+            //start();
+          };
+        });
+
+        $(".box").on("touchstart", function (e) {
+          e.preventDefault();
+          stop();
+          var that = this;
+          var diffX = e.originalEvent.changedTouches[0].pageX - that.offsetLeft;
+          var diffY = e.originalEvent.changedTouches[0].pageY - that.offsetTop;
+
+          $(".box").on("touchmove", function (e) {
+            var e = e || window.event;
+
+            var lft = e.originalEvent.changedTouches[0].pageX - diffX;
+            var tp = e.originalEvent.changedTouches[0].pageY - diffY;
+
+            if (lft > 0) lft = 0;
+            else if (lft < $(window).width() - $(that).width()) lft = $(window).width() - $(that).width();
+
+            // if(tp>0){
+            // 	tp=0;
+            // }else if(tp<($(window).height()-$(that).height())){
+            // 	tp=$(window).height()-$(that).height();
+            // }
+
+            $(that).css({
+              left: lft + "px",
+              top: tp + "px",
+            });
+
+            stop();
+          });
+        });
+
+        $(".music").click(function () {
+          var bgm = $("#bgMusic")[0];
+          if (bgm.paused) {
+            bgm.play();
+            $(this).removeClass("on");
+          } else {
+            bgm.pause();
+            $(this).addClass("on");
+          }
+        });
+
+        setTimeout(function () {
+          var bgm = $("#bgMusic")[0];
+          if (bgm.played.length == 0) {
+            $(".music").addClass("on");
+            var tishi = layer.confirm(
+              "您的浏览器不支持背景音乐自动播放",
+              {
+                btn: ["确定播放"], //按钮
+                title: "背景音乐提示",
+                closeBtn: 0,
+              },
+              function () {
+                // $(".music").trigger("click");
+                bgm.pause();
+                layer.close(tishi);
+              }
+            );
+          }
+        }, 100);
+
+        function getZoomLeve(el) {
+          var sys = getBrowserInfo();
+          function getBrowserInfo() {
+            var Sys = {};
+            var ua = navigator.userAgent.toLowerCase();
+            var re = /(msie|firefox|chrome|opera|version).*?([\d.]+)/;
+            var m = ua.match(re);
+            Sys.browser = m[1].replace(/version/, "'safari");
+            Sys.ver = m[2];
+            return Sys;
+          } //sys.browser得到浏览器的类型 sys.ver得到浏览器的版本 // 标示缩放的css属性
+          var zoomPer,
+            undefinedPer = "none";
+          if (sys.browser.indexOf("firefox") != -1) {
+            zoomPer = "-moz-transform";
+          } else if (sys.browser.indexOf("ie") != -1) {
+            if (sys.ver == "9") {
+              zoomPer = "-ms-transform";
+            } else {
+              zoomPer = "zoom";
+              undefinedPer = "normal";
+            }
+          } else {
+            zoomPer = "-webkit-transform";
+          }
+          var ret = 1;
+          ret *= getZoom(el);
+          function getZoom(htmlEl) {
+            var ret = 1; // 这里的add将el的缩放也计算在内
+            if ($(el).css(zoomPer) && $(el).css(zoomPer) != undefinedPer) {
+              sys.ver == parseInt(sys.ver);
+              if (sys.browser.indexOf("ie") != -1 && sys.ver < 9) {
+                ret *= el.style.zoom;
+              } else {
+                var temp = $(el).css(zoomPer),
+                  start = temp.indexOf("(") + 1,
+                  end = temp.indexOf(",");
+                ret *= temp.substring(start, end);
+              }
+            }
+            return ret;
+          }
+          return ret;
+        }
+      });
+
+      $(".info").click(function () {
+        layer.open({
+          type: 1,
+          title: "作品阐述",
+          skin: "layui-layer-rim", //加上边框
+          area: ["50%", "50%"], //宽高
+          content:
+            '<p style="padding:10px;">【创作背景】人类赖以生存的环境日益恶化，监测数据已证明这一切，然而如何运用可视化直观有效的将这些抽象数据进行表达，让受众能感受这个事实从而反思？<br>【创作意义】本创作借助中国传统青绿山水绘画语言讲述数据背后的故事，用艺术唤起受众对生态现状的反思，以及对美好景象的向往。<br>【数据来源】天气后报”网站；中国生态环境报告；中国环境统计年鉴<br>【内容结构】本创作选择了中华大地34个代表城市作为数据采样点，从自然生态的空气质量、气温、城市绿化率和地表水质4个数据纬度进行统计分析，并结合宋代青绿山水画中的视觉元素对应生成近山、远山、倒影、水纹等可视化形态。题跋是从5000首宋代诗词中智能筛选出的描绘山水壮丽的诗句，合成一首藏头诗“绿水青山就是金山银山”，并用米芾行草书写。</p>',
+        });
+      });
+
+      var listArr = [
+        '<p><img src="img/shenyang01.jpg" style="float:left;width:33%;"><img src="img/shenyang02.jpg" style="float:left;width:33%;"><img src="img/shenyang03.jpg" style="float:left;width:33%;">', //沈阳
+        '<p><img src="img/changchun01.jpg" style="float:left;width:33%;"><img src="img/changchun02.jpg" style="float:left;width:33%;"><img src="img/changchun03.jpg" style="float:left;width:33%;">', //长春
+        '<p><img src="img/haerbin01.jpg" style="float:left;width:33%;"><img src="img/haerbin02.jpg" style="float:left;width:33%;"><img src="img/haerbin03.jpg" style="float:left;width:33%;">', //哈尔滨
+        '<p><img src="img/xining01.jpg" style="float:left;width:33%;"><img src="img/xining02.jpg" style="float:left;width:33%;"><img src="img/xining03.jpg" style="float:left;width:33%;">', //西宁
+        '<p><img src="img/lanzhou01.jpg" style="float:left;width:33%;"><img src="img/lanzhou02.jpg" style="float:left;width:33%;"><img src="img/lanzhou03.jpg" style="float:left;width:33%;">', //兰州
+        '<p><img src="img/yinchuan01.jpg" style="float:left;width:33%;"><img src="img/yinchuan02.jpg" style="float:left;width:33%;"><img src="img/yinchuan03.jpg" style="float:left;width:33%;">', //银川
+        '<p><img src="img/xian01.jpg" style="float:left;width:33%;"><img src="img/yinchuan02.jpg" style="float:left;width:33%;"><img src="img/yinchuan03.jpg" style="float:left;width:33%;">', //西安
+        '<p><img src="img/huhehaote01.jpg" style="float:left;width:33%;"><img src="img/huhehaote02.jpg" style="float:left;width:33%;"><img src="img/huhehaote03.jpg" style="float:left;width:33%;">', //呼和浩特
+        '<p><img src="img/taiyuan01.jpg" style="float:left;width:33%;"><img src="img/taiyuan02.jpg" style="float:left;width:33%;"><img src="img/taiyuan03.jpg" style="float:left;width:33%;">', //太原
+        '<p><img src="img/zhengzhou01.jpg" style="float:left;width:33%;"><img src="img/zhengzhou02.jpg" style="float:left;width:33%;"><img src="img/zhengzhou03.jpg" style="float:left;width:33%;">', //郑州
+        '<p><img src="img/shijiazhuang01.jpg" style="float:left;width:33%;"><img src="img/shijiazhuang02.jpg" style="float:left;width:33%;"><img src="img/shijiazhuang03.jpg" style="float:left;width:33%;">', //石家庄
+        '<p><img src="img/jinan01.jpg" style="float:left;width:33%;"><img src="img/jinan02.jpg" style="float:left;width:33%;"><img src="img/jinan03.jpg" style="float:left;width:33%;">', //济南
+        '<p><img src="img/lasa01.jpg" style="float:left;width:33%;"><img src="img/lasa02.jpg" style="float:left;width:33%;"><img src="img/lasa03.jpg" style="float:left;width:33%;">', //拉萨
+        '<p><img src="img/kunming01.jpg" style="float:left;width:33%;"><img src="img/kunming02.jpg" style="float:left;width:33%;"><img src="img/kunming03.jpg" style="float:left;width:33%;">', //昆明
+        '<p><img src="img/chengdu01.jpg" style="float:left;width:33%;"><img src="img/chengdu02.jpg" style="float:left;width:33%;"><img src="img/chengdu03.jpg" style="float:left;width:33%;">', //成都
+        '<p><img src="img/guiyang01.jpg" style="float:left;width:33%;"><img src="img/guiyang02.jpg" style="float:left;width:33%;"><img src="img/guiyang03.jpg" style="float:left;width:33%;">', //贵阳
+        '<p><img src="img/chongqing01.jpg" style="float:left;width:33%;"><img src="img/chongqing02.jpg" style="float:left;width:33%;"><img src="img/chongqing03.jpg" style="float:left;width:33%;">', //重庆
+        '<p><img src="img/changsha01.jpg" style="float:left;width:33%;"><img src="img/changsha02.jpg" style="float:left;width:33%;"><img src="img/changsha03.jpg" style="float:left;width:33%;">', //长沙
+        '<p><img src="img/wuhan01.jpg" style="float:left;width:33%;"><img src="img/wuhan02.jpg" style="float:left;width:33%;"><img src="img/wuhan03.jpg" style="float:left;width:33%;">', //武汉
+        '<p><img src="img/nanchang01.jpg" style="float:left;width:33%;"><img src="img/nanchang02.jpg" style="float:left;width:33%;"><img src="img/nanchang03.jpg" style="float:left;width:33%;">', //南昌
+        '<p><img src="img/hefei01.jpg" style="float:left;width:33%;"><img src="img/hefei02.jpg" style="float:left;width:33%;"><img src="img/hefei03.jpg" style="float:left;width:33%;">', //合肥
+        '<p><img src="img/nanjing01.jpg" style="float:left;width:33%;"><img src="img/nanjing02.jpg" style="float:left;width:33%;"><img src="img/nanjing03.jpg" style="float:left;width:33%;">', //南京
+        '<p><img src="img/hangzhou01.jpg" style="float:left;width:33%;"><img src="img/hangzhou02.jpg" style="float:left;width:33%;"><img src="img/hangzhou03.jpg" style="float:left;width:33%;">', //杭州
+        '<p><img src="img/shanghai01.jpg" style="float:left;width:33%;"><img src="img/shanghai02.jpg" style="float:left;width:33%;"><img src="img/shanghai03.jpg" style="float:left;width:33%;">', //上海
+        '<p><img src="img/nanning01.jpg" style="float:left;width:33%;"><img src="img/nanning02.jpg" style="float:left;width:33%;"><img src="img/nanning03.jpg" style="float:left;width:33%;">', //南宁
+        '<p><img src="img/guangzhou01.jpg" style="float:left;width:33%;"><img src="img/guangzhou02.jpg" style="float:left;width:33%;"><img src="img/guangzhou03.jpg" style="float:left;width:33%;">', //广州
+        '<p><img src="img/wulumuqi01.jpg" style="float:left;width:33%;"><img src="img/wulumuqi02.jpg" style="float:left;width:33%;"><img src="img/wulumuqi03.jpg" style="float:left;width:33%;">', //乌鲁木齐
+        '<p><img src="img/beijing01.jpg" style="float:left;width:33%;"><img src="img/beijing02.jpg" style="float:left;width:33%;"><img src="img/beijing03.jpg" style="float:left;width:33%;">', //北京
+        '<p><img src="img/tianjin01.jpg" style="float:left;width:33%;"><img src="img/tianjin02.jpg" style="float:left;width:33%;"><img src="img/tianjin03.jpg" style="float:left;width:33%;">', //天津
+        '<p><img src="img/haikou01.jpg" style="float:left;width:33%;"><img src="img/haikou02.jpg" style="float:left;width:33%;"><img src="img/haikou03.jpg" style="float:left;width:33%;">', //海口
+        '<p><img src="img/fuzhou01.jpg" style="float:left;width:33%;"><img src="img/fuzhou02.jpg" style="float:left;width:33%;"><img src="img/fuzhou03.jpg" style="float:left;width:33%;">', //福州
+        '<p><img src="img/xianggang01.jpg" style="float:left;width:33%;"><img src="img/xianggang02.jpg" style="float:left;width:33%;"><img src="img/xianggang03.jpg" style="float:left;width:33%;">', //香港
+
+        '<p><img src="img/aomen01.jpg" style="float:left;width:33%;"><img src="img/aomen02.jpg" style="float:left;width:33%;"><img src="img/aomen03.jpg" style="float:left;width:33%;">', //澳门
+        '<p><img src="img/taibei01.jpg" style="float:left;width:33%;"><img src="img/taibei02.jpg" style="float:left;width:33%;"><img src="img/taibei03.jpg" style="float:left;width:33%;">', //台北
+
+        '<p><img src="img/shenyangl.jpg" style="float:left;width:99%;">', //沈阳绿
+        '<p><img src="img/lanzhoul.jpg" style="float:left;width:99%;">', //兰州绿
+        '<p><img src="img/jinanl.jpg" style="float:left;width:99%;">', //济南绿
+        '<p><img src="img/lasal.jpg" style="float:left;width:99%;">', //拉萨绿
+        '<p><img src="img/changshal.jpg" style="float:left;width:99%;">', //长沙绿
+
+        '<p><img src="img/n2013.jpg" style="float:left;width:99%;">', //n2013
+        '<p><img src="img/n2014.jpg" style="float:left;width:99%;">', //n2014
+        '<p><img src="img/n2015.jpg" style="float:left;width:99%;">', //n2015
+        '<p><img src="img/n2016.jpg" style="float:left;width:99%;">', //n2016
+        '<p><img src="img/n2017.jpg" style="float:left;width:99%;">', //n2017
+        '<p><img src="img/n2018.jpg" style="float:left;width:99%;">', //n2018
+
+        '<p><img src="img/s2013.jpg" style="float:left;width:99%;">', //s2013
+        '<p><img src="img/s2014.jpg" style="float:left;width:99%;">', //s2014
+        '<p><img src="img/s2015.jpg" style="float:left;width:99%;">', //ns2015
+        '<p><img src="img/s2016.jpg" style="float:left;width:99%;">', //s2016
+        '<p><img src="img/s2017.jpg" style="float:left;width:99%;">', //s2017
+        '<p><img src="img/s2018.jpg" style="float:left;width:99%;">', //s2018
+      ];
+
+      $(".box .part").click(function () {
+        var index = $(this).index();
+        layer.open({
+          type: 1,
+          title: "原始数据",
+          skin: "layui-layer-rim", //加上边框
+          area: ["50%", "50%"], //宽高
+          content: listArr[index - 1],
+        });
+      });
+    </script>
+  </body>
+</html>

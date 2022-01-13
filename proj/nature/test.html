@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Examples</title>
+    <style>
+      @keyframes ring {
+        0% {
+          height: 16px;
+          width: 16px;
+        }
+        50% {
+          width: 30px;
+          height: 30px;
+          opacity: 0;
+        }
+
+        100% {
+          opacity: 0;
+        }
+      }
+
+      @keyframes center {
+        50% {
+          width: 16px;
+          height: 16px;
+          opacity: 0.8;
+        }
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        user-select: none;
+      }
+
+      body {
+        background-color: #333;
+      }
+
+      .highlight {
+        position: absolute;
+        top: 300px;
+        left: 300px;
+      }
+
+      .ring {
+        position: relative;
+      }
+      .ring:after {
+        position: absolute;
+        height: 18px;
+        width: 18px;
+        transform: translate(-50%, -50%);
+        content: "";
+        border-radius: 50%;
+        border: 0.1vmax solid #fff;
+        animation: ring 2s linear infinite;
+      }
+
+      .center {
+        width: 11px;
+        height: 11px;
+        background-color: #fff;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0.3;
+        cursor: pointer;
+        animation: center 2s linear infinite;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="highlight">
+      <div class="ring"></div>
+      <div class="center"></div>
+    </div>
+  </body>
+</html>
