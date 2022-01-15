@@ -9,29 +9,41 @@
         margin: 0;
         padding: 0;
       }
+      header {
+        text-align: center;
+      }
       main {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      a {
+        text-decoration: none;
       }
       figure {
         width: 40%;
         border: 1px solid #000;
-      }
-      figure > a {
-        text-decoration: none;
-        color: #000;
+        height: 10rem;
+        width: 20rem;
+        line-height: 10rem;
+        text-align: center;
+        background: #000;
+        color: #fff;
+        font-weight: lighter;
+        margin: 1rem;
       }
     </style>
   </head>
   <body>
-    <header></header>
+    <header><h1>Homepage of Valdis</h1></header>
     <main>
-      <figure><a href="./proj/flowing-bundary/index.html">flowing bundary</a></figure>
-      <figure><a href="./proj/guide-to-hunan-musical-relics/index.html">guide-to-hunan-musical-relics</a></figure>
-      <figure><a href="http://zeelab.cn/WuhanCircleGraph/">The Flow: Cases and Places</a></figure>
-      <figure><a href="./proj/nature/index.html">nature</a></figure>
-      <figure><a href="./proj/pipe/index.html">pipe</a></figure>
-      <figure><a href="./proj/monitor/index.html">monitor</a></figure>
+      <a href="./proj/flowing-bundary/index.html"><figure>flowing bundary</figure></a>
+      <a href="./proj/guide-to-hunan-musical-relics/index.html"><figure>guide to hunan musical relics</figure></a>
+      <a href="http://zeelab.cn/WuhanCircleGraph/"><figure>The Flow: Cases and Places</figure></a>
+      <a href="./proj/nature/index.html"><figure>nature</figure></a>
+      <a href="./proj/pipe/index.html"><figure>pipe</figure></a>
+      <a href="./proj/monitor/index.html"><figure>monitor</figure></a>
     </main>
     <footer></footer>
   </body>
