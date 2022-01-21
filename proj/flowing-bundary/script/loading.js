@@ -19,7 +19,6 @@ load_list = [
   "./audio/bgm.mp3",
   "./image/svg/title-text.svg",
   "./image/svg/down-arrow.svg",
-  "../../../images/texture/point_texture.png",
   "./fonts/方正粗黑宋简体.TTF",
   "./fonts/方正盛世楷书简体_纤.TTF",
   // "./image/head/丁铁刚.jpg",

@@ -280,7 +280,6 @@ function casesStartup() {
 
       function callback() {
         particles.material.uniforms.val.value = this.val;
-        console.log(pos);
       }
 
       $("#cases")[0].onmousemove = function () {
