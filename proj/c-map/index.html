@@ -13,11 +13,18 @@
       #map {
         border-radius: 10px;
         border: 1px dashed rgb(15, 95, 148);
-        width: 50vmax;
+        height: 96vh;
+        width: 50vw;
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+      }
+      #map > svg {
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+        margin: 1vmax;
       }
       #data,
       #layout {
@@ -27,7 +34,7 @@
         border-radius: 10px;
         border: 1px dashed rgb(15, 95, 148);
         padding: 1vh;
-        width: 200px;
+        width: 20vw;
       }
       #data {
         left: 2vh;
@@ -71,7 +78,7 @@
   <body>
     <div id="map">
       <svg
-        viewBox="0 0 780 780"
+        viewBox="0 0 780 670"
         xmlns="http://www.w3.org/2000/svg"
         xmlns:amcharts="http://amcharts.com/ammap"
         xmlns:xlink="http://www.w3.org/1999/xlink"
