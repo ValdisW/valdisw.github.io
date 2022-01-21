@@ -552,9 +552,48 @@ function startBGCanvas() {
   (function animateBGCanvas() {
     bg_animation = requestAnimationFrame(animateBGCanvas);
 
-    ctx_bg.drawImage(video, 0, offsetY, 1920, (window.innerWidth / 1920) * 1080 - offsetY, 0, 0, window.innerWidth, window.innerHeight - offsetY);
-    ctx_bg.drawImage(video, 0, 0, 1920, offsetY, 0, (window.innerWidth / 1920) * 1080 - offsetY, window.innerWidth, offsetY);
-    offsetY = (offsetY + 12) % 1080;
+    let screenAspectRatio = window.innerWidth / window.innerHeight,
+      videoAspectRatio = video.width / video.height;
+    let videoOffsetY = (offsetY * video.height) / window.innerHeight;
+    if (screenAspectRatio < videoAspectRatio) {
+      let newWidth = video.height * screenAspectRatio;
+      // 绘制上半部分——对应视频下半部分
+      ctx_bg.drawImage(video, (video.width - newWidth) / 2, video.height - videoOffsetY, newWidth, videoOffsetY, 0, 0, window.innerWidth, offsetY);
+
+      // 绘制下半部分——对应视频上半部分
+      ctx_bg.drawImage(
+        video,
+        (video.width - newWidth) / 2,
+        0,
+        newWidth,
+        video.height - videoOffsetY,
+        0,
+        offsetY,
+        window.innerWidth,
+        window.innerHeight - offsetY
+      );
+    } else {
+      let newHeight = video.width / screenAspectRatio;
+      // 绘制上半部分——对应视频下半部分
+      ctx_bg.drawImage(video, 0, (video.height + newHeight) / 2 - videoOffsetY, video.width, videoOffsetY, 0, 0, window.innerWidth, offsetY);
+
+      // 绘制下半部分——对应视频上半部分
+      ctx_bg.drawImage(
+        video,
+        0,
+        (video.height - newHeight) / 2,
+        video.width,
+        newHeight - videoOffsetY,
+        0,
+        offsetY,
+        window.innerWidth,
+        window.innerHeight - offsetY
+      );
+    }
+
+    // 分割线向下扫描
+    offsetY = (offsetY + 12) % window.innerHeight;
+
     let img_data = ctx_bg.getImageData(0, 0, window.innerWidth, window.innerHeight),
       img_data_length = img_data.data.length / 4;
     for (var i = 0; i < img_data_length; i++) {
