@@ -374,7 +374,7 @@
         data: function () {
           return {
             segments: 5,
-            legendName: "value",
+            legendName: "图例名称",
             data: [],
             provinceMap: PROVINCE_MAP,
           };
@@ -570,7 +570,8 @@
               .attr("y", marginTop + marginBottom - height - 6)
               .attr("fill", "currentColor")
               .attr("text-anchor", "start")
-              .attr("font-weight", "bold")
+              .attr("font-weight", "normal")
+              .attr("font-size", "14px")
               .attr("class", "title")
               .text(title)
           );
