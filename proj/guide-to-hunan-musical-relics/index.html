@@ -1,42 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>HOME | Guide to Hunan Musical Relics</title>
-    <link rel="icon" href="./images/icons/icon.png" sizes="1446x2413" />
-  <script defer src="manifest.js"></script><script defer src="vendor.js"></script><script defer src="common.js"></script><script defer src="home.js"></script></head>
-
-  <body>
-    <audio id="bell-audio" src="./audio/bell.wav"></audio>
-    <div id="content">
-      <div id="title">
-        <h3>An Interactive Storytelling about Chinese Traditional Music Culture in Hunan</h3>
-        <h1>Guide to Hunan Musical Relics</h1>
-      </div>
-      <div id="dir">
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-      <a id="explore-button" href="./shangzhou.html">
-        <img id="bell-light" src="./images/svg/bell-light.svg" alt="" />
-        <img id="bell" src="./images/svg/bell.svg" alt="" />
-      </a>
-      <p>Click to Explore</p>
-    </div>
-
-    <!-- <script src="https://cdn.bootcss.com/jquery/3.5.0/jquery.min.js"></script> -->
-    <script>
-      document.querySelector("#explore-button").onmouseover = function () {
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="X-UA-Compatible" content="ie=edge"><title>HOME | Guide to Hunan Musical Relics</title><link rel="icon" href="./images/icons/icon.png" sizes="1446x2413"><script defer="defer" src="js/manifest.js"></script><script defer="defer" src="js/vendor.js"></script><script defer="defer" src="js/common.js"></script><script defer="defer" src="js/home.js"></script></head><body><audio id="bell-audio" src="./audio/bell.wav"></audio><div id="content"><div id="title"><h3>An Interactive Storytelling about Chinese Traditional Music Culture in Hunan</h3><h1>Guide to Hunan Musical Relics</h1></div><div id="dir"><div></div><div></div><div></div></div><a id="explore-button" href="./shangzhou.html"><img id="bell-light" src="./images/svg/bell-light.svg" alt=""> <img id="bell" src="./images/svg/bell.svg" alt=""></a><p>Click to Explore</p></div><script>document.querySelector("#explore-button").onmouseover = function () {
         $("#bell-light").fadeIn(500);
         document.querySelector("#bell-audio").play();
       };
       document.querySelector("#explore-button").onmouseout = function () {
         $("#bell-light").fadeOut(500);
       };
-      $("#bell-light").fadeOut(0);
-    </script>
-  </body>
-</html>
+      $("#bell-light").fadeOut(0);</script></body></html>
