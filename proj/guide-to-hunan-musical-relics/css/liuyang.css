@@ -1,0 +1,1177 @@
+#nav{position:fixed;top:35vh;right:2vmax;width:6vmax;z-index:10}#nav-icon{z-index:10;cursor:pointer;border-radius:50%;background-image:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2Ni4wOCA2Ni4wOCI+PGRlZnM+PHN0eWxlPi5jbHMtMXtmaWxsOiNmZmQyNDQ7fS5jbHMtMntmaWxsOiNmY2YyZTI7fS5jbHMtM3tmaWxsOm5vbmU7c3Ryb2tlOiMxMzExMTE7c3Ryb2tlLW1pdGVybGltaXQ6MTA7c3Ryb2tlLXdpZHRoOjAuODhweDt9LmNscy00e2ZpbGw6IzEzMTExMTt9LmNscy01e2ZpbGw6I2RlYmQ2NTt9PC9zdHlsZT48L2RlZnM+PHRpdGxlPm5hdl9pY29uPC90aXRsZT48ZyBpZD0i5Zu+5bGCXzIiIGRhdGEtbmFtZT0i5Zu+5bGCIDIiPjxnIGlkPSLlm77lsYJfMS0yIiBkYXRhLW5hbWU9IuWbvuWxgiAxIj48ZyBpZD0iRWxsaXBzZV80IiBkYXRhLW5hbWU9IkVsbGlwc2UgNCI+PGNpcmNsZSBjbGFzcz0iY2xzLTEiIGN4PSIzMy4wNCIgY3k9IjMzLjA0IiByPSIzMy4wNCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEwLjEzIDUwLjkyKSByb3RhdGUoLTY3LjUpIi8+PC9nPjxwYXRoIGNsYXNzPSJjbHMtMiIgZD0iTTI3Ljc5LDMwLjU2LDI2LjI3LDQyLjIxYTI0LjM5LDI0LjM5LDAsMCwxLDUuMjktMWwuNjktMTEuNTNBMjYuMTEsMjYuMTEsMCwwLDAsMjcuNzksMzAuNTZaIi8+PHBhdGggY2xhc3M9ImNscy0yIiBkPSJNMzYuMDcsNDAuNThsLS43Mi05LjY2LjE3LDEwLjE4YTM4LjY5LDM4LjY5LDAsMCwxLDYuNjcuNzNMNDAuNjcsMzAuNTZhMTQuMTQsMTQuMTQsMCwwLDAtMy0uNzhMMzguOTIsNDFaIi8+PHBhdGggY2xhc3M9ImNscy0yIiBkPSJNMzUuMzUsMzAuOTJsLjcyLDkuNjYsMi44NS40TDM3LjcsMjkuNzhsLS4xNywwLTEuNDItLjE1LS43OCwwWiIvPjxwYXRoIGNsYXNzPSJjbHMtMiIgZD0iTTM1LjI1LDI5LjU3bC4xLDEuMzUsMC0xLjM1WiIvPjxwYXRoIGNsYXNzPSJjbHMtMiIgZD0iTTI4LjM0LDQ2LjM4bC4zOC0zLjMyczMuMDYtMS42MSw5Ljc5LS40bC44MiwzLjYzUzMwLjgyLDQ1LjI2LDI4LjM0LDQ2LjM4WiIvPjxwYXRoIGNsYXNzPSJjbHMtMyIgZD0iTTMwLjU0LDEwLjc2VjIzLjQyYS45My45MywwLDAsMCwuOTMuOTNoMy44N2EuOTMuOTMsMCwwLDAsLjkzLS45M1YxMC43NkE0LjMxLDQuMzEsMCwwLDAsMzAuNTQsMTAuNzZaIi8+PHBhdGggY2xhc3M9ImNscy00IiBkPSJNMzAuMDksMjIuNTlhLjMxLjMxLDAsMCwwLC4zMy4wOCw5LjI3LDkuMjcsMCwwLDEsMi45My0uNCw5LjE0LDkuMTQsMCwwLDEsMywuNDMuMjkuMjksMCwwLDAsLjMzLS4wOCwyLjU2LDIuNTYsMCwwLDAsLjY4LTEuN2MwLTEuNjgtMS43Ny0zLjA1LTQtMy4wNXMtMy45NSwxLjM3LTMuOTUsMy4wNUEyLjYyLDIuNjIsMCwwLDAsMzAuMDksMjIuNTlaIi8+PHBhdGggY2xhc3M9ImNscy0zIiBkPSJNNDMsMjUuODVhLjQ1LjQ1LDAsMCwwLS4zMi0uMzgsMzMuNjMsMzMuNjMsMCwwLDAtMTguMiwwLC40My40MywwLDAsMC0uMzEuMzdMMjAuNDcsNTIuNjFhLjQ1LjQ1LDAsMCwwLC42LjQ4LDM4LjIxLDM4LjIxLDAsMCwxLDI0LjY4LjM0LjQ1LjQ1LDAsMCwwLC41OS0uNDhaIi8+PGNpcmNsZSBjbGFzcz0iY2xzLTQiIGN4PSIyNy4yMiIgY3k9IjM0LjU5IiByPSIwLjU0Ii8+PGNpcmNsZSBjbGFzcz0iY2xzLTQiIGN4PSIyOC44NSIgY3k9IjM0LjE4IiByPSIwLjU0Ii8+PGNpcmNsZSBjbGFzcz0iY2xzLTQiIGN4PSIzOS44NiIgY3k9IjM0LjU5IiByPSIwLjU0Ii8+PGNpcmNsZSBjbGFzcz0iY2xzLTQiIGN4PSIzOC4yMyIgY3k9IjM0LjE4IiByPSIwLjU0Ii8+PHBvbHlnb24gY2xhc3M9ImNscy0yIiBwb2ludHM9IjM1Ljc1IDE5LjI2IDM1Ljc1IDIxLjgzIDM0LjkgMjEuNjEgMzQuOSAxOS4wNSAzNS43NSAxOS4yNiIvPjxsaW5lIGNsYXNzPSJjbHMtMyIgeDE9IjMwLjc2IiB5MT0iMjguODUiIHgyPSIyOS41NCIgeTI9IjQwLjk4Ii8+PGxpbmUgY2xhc3M9ImNscy0zIiB4MT0iMzcuNyIgeTE9IjQwLjk4IiB4Mj0iMzYuNDciIHkyPSIyOC43NCIvPjxwYXRoIGNsYXNzPSJjbHMtMyIgZD0iTTI2LjM0LDMyLjI1YTExLjkyLDExLjkyLDAsMCwxLDQtLjY1Ii8+PHBhdGggY2xhc3M9ImNscy0zIiBkPSJNNDAuNjYsMzEuODRhMTAuMjIsMTAuMjIsMCwwLDAtMy43OC0uNjUiLz48cGF0aCBjbGFzcz0iY2xzLTMiIGQ9Ik0yNS44NywzNy43MmExMC41NSwxMC41NSwwLDAsMSwzLjc4LS42Ii8+PHBhdGggY2xhc3M9ImNscy0zIiBkPSJNNDEuNDMsMzcuMTZhMTIuNTgsMTIuNTgsMCwwLDAtNC4xNC0uNjYiLz48cGF0aCBjbGFzcz0iY2xzLTMiIGQ9Ik0yNy4wOSw0MS44bC0uNDEsNC45YTMzLjM2LDMzLjM2LDAsMCwxLDEzLjg3LDBsLS44MS00LjkiLz48cGF0aCBjbGFzcz0iY2xzLTIiIGQ9Ik0zNi4xMSwyOS42bDEuNDIuMTVDMzcuMDUsMjkuNjgsMzYuNTgsMjkuNjMsMzYuMTEsMjkuNloiLz48cGF0aCBjbGFzcz0iY2xzLTIiIGQ9Ik0zNi4xMSwyOS42bC0uNzgsMGgwWiIvPjxwYXRoIGNsYXNzPSJjbHMtMiIgZD0iTTM3LjcsMjkuNzdsLS4xNywwLC4xNywwWiIvPjxwYXRoIGNsYXNzPSJjbHMtNSIgZD0iTTM1LjI1LDI5LjU3aDBaIi8+PHBhdGggY2xhc3M9ImNscy0zIiBkPSJNNDIuMTksNDEuOGMtMTAuMi0yLTE3LjE0LjQxLTE3LjE0LjQxbDEuNjMtMTIuNjVzNy43NS0yLjQ1LDEzLjg3LDBaIi8+PC9nPjwvZz48L3N2Zz4=);width:6vmax;height:6vmax}#nav ul{opacity:0;z-index:1;padding-top:.5vmax;list-style-type:none;border:2px solid #ffd244;border-radius:7px;background-color:#fff;overflow:hidden;height:0}.split-line hr{width:80%;margin:1vmax auto;border:.7px solid #ffd244}#nav ul li a{padding:5px 0;top:-100px;display:block;height:auto;width:83%;margin:10px auto;font-size:10px;text-align:center;text-decoration:none;font-family:"方正粗金陵";border-radius:7px;color:#000;background-color:#f4e7bd}#nav ul li a:hover{filter:brightness(0.7)}#down-triangle{width:0px;height:0px;border-top:.4vmax solid #3d3838;border-left:.4vmax solid rgba(0,0,0,0);border-right:.4vmax solid rgba(0,0,0,0);border-bottom:.4vmax solid rgba(0,0,0,0);margin:0 auto;position:relative;top:5.2vmax}.add_transform{transform:translateY(-0.4vmax) rotate(180deg);-ms-transform:translateY(-0.4vmax) rotate(180deg);-moz-transform:translateY(-0.4vmax) rotate(180deg);-webkit-transform:translateY(-0.4vmax) rotate(180deg);-o-transform:translateY(-0.4vmax) rotate(180deg);transition:all .3s ease-in-out;-moz-transition:all .3s ease-in-out;-webkit-transition:all .3s ease-in-out;-o-transition:all .3s ease-in-out}
+@font-face {
+  font-family: "MinionPro-regular";
+  src: url(../assets/font/c87c1916.otf);
+  font-weight: lighter;
+}
+
+@font-face {
+  font-family: "MinionPro-semibold";
+  src: url(../assets/font/2db644c5.otf);
+  font-weight: normal;
+}
+
+/* @font-face {
+  font-family: "北师大说文小篆";
+  src: url(./fonts/北师大说文小篆_0.TTF);
+} */
+
+@font-face {
+  font-family: "方正粗金陵";
+  src: url(../assets/font/0d735143.TTF);
+}
+
+/* @font-face {
+  font-family: "方正小篆体";
+  src: url(./fonts/方正小篆体.TTF);
+} */
+
+@font-face {
+  font-family: "苹方字体";
+  src: url(../assets/font/1d4e13dc.TTF);
+}
+
+/* @font-face {
+  font-family: "青羊字体";
+  src: url(./fonts/青羊字体.TTF);
+} */
+
+/* #part5 {
+  height: 38.6vmax;
+} */
+
+#material p {
+  width: 61.6vmax;
+  margin: 2vmax auto;
+  font-family: "MinionPro-regular";
+}
+
+#material-list {
+  margin-top: 2vmax;
+  margin-left: 17.1vmax;
+  width: 27.6vmax;
+  float: left;
+}
+
+#material-chart {
+  width: 28.6vmax;
+  height: 28.6vmax;
+  margin: -5vmax 0 0 53vmax;
+}
+
+/* Employment - 如何成为礼乐局的一员 */
+#part3 {
+  position: relative;
+  height: 53.6vmax;
+}
+
+#temp-table{
+  position: absolute;
+  top: 15vmax;
+  left: 8vmax;
+  width: 55vmax;
+}
+
+#steps {
+  position: absolute;
+  top: 4.3vmax;
+  width: 42.9vmax;
+}
+
+#step-line {
+  position: absolute;
+  background-color: #c42c2c;
+  height: 0.15vmax;
+  width: 46.2vmax;
+  top: 10.7vmax;
+  left: 12.5vmax;
+}
+
+.step-circle {
+  position: absolute;
+  top: 10.7vmax;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  width: 1.4vmax;
+  height: 1.4vmax;
+  color: #000;
+  background-color: #e9c026;
+  text-align: center;
+  line-height: 1.4vmax;
+  font-size: 1.2vmax;
+}
+
+/* reco */
+#step-circle-reco {
+  left: 12.5vmax;
+}
+
+#step-text-reco {
+  left: 12.5vmax;
+}
+
+#reco-icon {
+  left: 9.6vmax;
+  width: 6.1vmax;
+}
+
+#reco-block {
+  left: 9.6vmax;
+  width: 10.4vmax;
+}
+
+#reco-detail {
+  left: 9.6vmax;
+  width: 10.4vmax;
+}
+
+/* test */
+#step-circle-test {
+  left: 24.3vmax;
+}
+
+#step-text-test {
+  left: 24.3vmax;
+}
+
+#test-icon {
+  left: 22.1vmax;
+  width: 14.7vmax;
+}
+
+#test-block {
+  left: 24.3vmax;
+  width: 15vmax;
+}
+
+#test-detail {
+  left: 24.3vmax;
+  width: 15vmax;
+}
+
+/* review */
+#step-circle-review {
+  left: 44.3vmax;
+}
+
+#step-text-review {
+  left: 44.3vmax;
+}
+
+#review-icon {
+  left: 42.4vmax;
+  width: 3.75vmax;
+}
+
+#review-icon-false {
+  opacity: 0.4;
+  left: 47.4vmax;
+  width: 3.75vmax;
+}
+
+#review-block {
+  left: 41.6vmax;
+  width: 14.3vmax;
+}
+
+#review-detail {
+  left: 41.6vmax;
+  width: 14.3vmax;
+}
+
+/* admit */
+#step-circle-admit {
+  left: 58.7vmax;
+}
+
+#step-text-admit {
+  left: 58.7vmax;
+}
+
+#admit-icon {
+  left: 56.8vmax;
+  width: 3.85vmax;
+}
+
+#admit-block {
+  left: 56.8vmax;
+  width: 7.4vmax;
+}
+
+#admit-detail {
+  left: 56.8vmax;
+  width: 7.4vmax;
+}
+
+.step-text {
+  position: absolute;
+  top: 12.1vmax;
+  transform: translateX(-50%);
+  font-size: 1.4vmax;
+}
+
+.icons {
+  position: absolute;
+  top: 15.7vmax;
+}
+
+.block {
+  position: absolute;
+  top: 38.2vmax;
+  background-color: #c42c2c;
+  opacity: 0.19;
+  height: 0.6vmax;
+  width: 90%;
+}
+
+.detail {
+  position: absolute;
+  top: 40.7vmax;
+  font-size: 0.9vmax;
+  font-family: "MinionPro-regular";
+}
+
+#clothing-figure img:nth-of-type(1) {
+  position: absolute;
+  display: block;
+  height: 31.3vmax;
+  right: 17.8vmax;
+  top: 17.1vmax;
+}
+
+#clothing-figure-label {
+  position: absolute;
+  /* display: block; */
+  width: 7.7vmax;
+  height: 2vmax;
+  line-height: 2vmax;
+  right: 20.5vmax;
+  top: 50vmax;
+  background-color: #c42c2c;
+  font-size: 0.8vmax;
+  color: #fff;
+  text-align: center;
+  font-family: "MinionPro-regular";
+}
+
+/* 音符 */
+#note {
+  position: absolute;
+  right: 18.6vmax;
+  top: 19.3vmax;
+  width: 2.7vmax;
+}
+
+/* pin */
+.clothes-pin {
+  position: absolute;
+  height: 0.8vmax;
+  padding-bottom: 10vmax;
+}
+
+#clothes-pin-hat {
+  height: 1.08vmax;
+  top: 18vmax;
+  left: 77vmax;
+}
+
+#clothes-pin-shirt {
+  top: 27vmax;
+  left: 80vmax;
+}
+
+#clothes-pin-trousers {
+  top: 40vmax;
+  left: 78.3vmax;
+}
+
+#clothes-pin-shoes {
+  top: 46.5vmax;
+  left: 77vmax;
+}
+
+/* Group */
+#group {
+  height: 71.4vmax;
+}
+
+/* 阵型 */
+#ranking-figure {
+  background-color: #fff9f0;
+  border: 0.1vmax solid #c42c2c;
+  margin: 4vmax auto 0;
+}
+
+#ranking-label {
+  font-size: 1vmax;
+  color: #c42c2c;
+  font-family: "方正粗金陵";
+  text-align: center;
+  width: 10vmax;
+  height: 2.14vmax;
+  line-height: 2.14vmax;
+  border: 1px solid #c42c2c;
+  margin: 2vmax auto 0;
+}
+
+#mp {
+  display: block;
+  width: 56.9vmax;
+  margin: 5vmax auto;
+}
+
+#group-intro {
+  margin: 2vmax auto 0;
+  width: 56.9vmax;
+  line-height: 1.9vmax;
+}
+
+/* 种类统计 */
+#queues {
+  top: 56.9vmax;
+  width: 56.9vmax;
+  margin: 2px auto;
+}
+
+#queues tr td:nth-child(2) {
+  /* width: 33%; */
+  padding: 0 2vmax;
+}
+
+#singer > .queue-type > span:nth-child(2) {
+  color: #e9c026;
+}
+#player > .queue-type > span:nth-child(2) {
+  color: #006156;
+}
+#dancer > .queue-type > span:nth-child(2) {
+  color: #c42c2c;
+}
+
+.queue-type {
+  position: relative;
+  bottom: 2.7vmax;
+  left: 4.5vmax;
+  font-size: 1.2vmax;
+}
+
+.queue-type > span:nth-child(2) {
+  font-size: 1.8vmax;
+}
+
+.icon {
+  width: 3.6vmax;
+  margin-top: 1.8vmax;
+}
+
+/* 统计的小点点 */
+#temp-singer-queue {
+  width: 11.9vmax;
+  position: relative;
+  left: 4.5vmax;
+  top: -4.2vmax;
+}
+
+#temp-musician-queue {
+  width: 12vmax;
+  position: relative;
+  left: 5vmax;
+  top: -2.8vmax;
+}
+
+#temp-dancer-queue {
+  width: 12vmax;
+  position: relative;
+  left: 4.5vmax;
+}
+
+#queue-singer span,
+#queue-musician span,
+#queue-dancer span {
+  position: absolute;
+  width: 0.7vmax;
+  height: 0.7vmax;
+  background-color: #666;
+  border-radius: 50%;
+}
+
+#queue-singer span:nth-of-type(1) {
+  top: 6vmax;
+  left: 4vmax;
+}
+
+#queue-singer span:nth-of-type(2) {
+  top: 6vmax;
+  left: 5vmax;
+}
+
+#queue-singer span:nth-of-type(3) {
+  top: 6vmax;
+  left: 6vmax;
+}
+
+#queue-singer span:nth-of-type(4) {
+  top: 6vmax;
+  left: 7vmax;
+}
+
+#queue-singer span:nth-of-type(5) {
+  top: 6vmax;
+  left: 8vmax;
+}
+
+#queue-singer span:nth-of-type(6) {
+  top: 6vmax;
+  left: 9vmax;
+}
+
+#queue-singer span:nth-of-type(7) {
+  top: 6vmax;
+  left: 10vmax;
+}
+
+#queue-singer span:nth-of-type(8) {
+  top: 6vmax;
+  left: 11vmax;
+}
+
+#queue-singer span:nth-of-type(9) {
+  top: 7vmax;
+  left: 4vmax;
+}
+
+#queue-singer span:nth-of-type(10) {
+  top: 7vmax;
+  left: 5vmax;
+}
+
+#queue-singer span:nth-of-type(11) {
+  top: 7vmax;
+  left: 6vmax;
+}
+
+#queue-singer span:nth-of-type(12) {
+  top: 7vmax;
+  left: 7vmax;
+}
+
+#queue-singer span:nth-of-type(13) {
+  top: 7vmax;
+  left: 8vmax;
+}
+
+#queue-singer span:nth-of-type(14) {
+  top: 7vmax;
+  left: 9vmax;
+}
+
+#queue-singer span:nth-of-type(15) {
+  top: 7vmax;
+  left: 10vmax;
+}
+
+#queue-singer span:nth-of-type(16) {
+  top: 7vmax;
+  left: 11vmax;
+}
+
+#queue-singer span:nth-of-type(17) {
+  top: 8vmax;
+  left: 4vmax;
+}
+
+#queue-singer span:nth-of-type(18) {
+  top: 8vmax;
+  left: 5vmax;
+}
+
+#queue-singer span:nth-of-type(19) {
+  top: 8vmax;
+  left: 6vmax;
+}
+
+#queue-singer span:nth-of-type(20) {
+  top: 8vmax;
+  left: 7vmax;
+}
+
+/* part4 */
+#part4 {
+  height: 105vmax;
+}
+
+#instruments > p {
+  /* position: absolute;
+  top: 11.4vmax;
+  left: 50%;
+  transform: translateX(-50%); */
+  margin: 2vmax auto 0;
+  width: 56.9vmax;
+}
+
+#two-circles {
+  margin: 2vmax auto 0;
+  display: inline-block;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.circle {
+  border-radius: 50%;
+  margin: 0 1.4vmax;
+}
+
+#yq-circle {
+  background-color: #f9e9e5;
+  width: 17.9vmax;
+  /* position: absolute;
+  left: 31.4vmax;
+  top: 18.6vmax; */
+}
+
+#yq-circle-inner {
+  border: 0.2vmax solid #c42c2c;
+  width: 15.7vmax;
+  height: 5.7vmax;
+  margin: 0 auto;
+  text-align: center;
+}
+
+#wq-circle {
+  background-color: #f9e9e5;
+  border-radius: 50%;
+  width: 10.7vmax;
+  height: 10.7vmax;
+  transform: translateY(-3.6vmax);
+  /* position: absolute;
+  left: 52.1vmax;
+  top: 22vmax; */
+}
+
+#wq-circle-inner {
+  background-color: #c42c2c;
+  color: #fff;
+  border-radius: 50%;
+  width: 8.6vmax;
+  height: 8.6vmax;
+  margin: 0 auto;
+  text-align: center;
+}
+
+#remarks {
+  list-style-type: disc;
+  color: #000;
+  font-size: 1.2vmax;
+  width: 55vmax;
+  position: relative;
+  margin: 2vmax auto 0;
+}
+
+#instruments-circle-wrapper {
+  width: 56vmax;
+  margin: 2vmax 0 0 36vmax;
+}
+
+#remarks li {
+  line-height: 1.1vmax;
+  margin-bottom: 1.4vmax;
+}
+
+#instruments-info {
+  width: 18vmax;
+  margin: 6.6vmax 0 0 14.5vmax;
+  float: left;
+}
+
+/* #chart-instruction {
+} */
+
+#current {
+  margin-top: 13vmax;
+  position: relative;
+}
+
+/* #current-frame {
+  position: absolute;
+  top: 64vmax;
+  left: 10vmax;
+  width: 21.4vmax;
+} */
+
+#current-material {
+  position: absolute;
+  top: 0vmax;
+  margin-left: 1.5vmax;
+  width: 2.4vmax;
+}
+
+#current-name {
+  width: 18vmax;
+  color: #c42c2c;
+  font-size: 2.1vmax;
+  font-family: "方正粗金陵";
+  text-align: center;
+  letter-spacing: 0.85vmax;
+}
+
+#current-info {
+  width: 18vmax;
+  font-size: 1.2vmax;
+  line-height: 1.6vmax;
+  margin-top: 2vmax;
+}
+
+@keyframes blink{
+  50% {
+    opacity: 0.5;
+  }
+}
+
+
+/* Introduction */
+#introduction {
+  position: relative;
+  height: 158.6vmax;
+  background-image: linear-gradient(30deg, #c42c2c, #c42c2c, #c42c2c, #e2aaa9);
+  color: #f2f7d9;
+}
+
+#white {
+  background-color: #fff;
+  width: 100%;
+  height: 11.6vmax;
+}
+
+/* 本小节标题 */
+#introduction h1 {
+  width: 100%;
+  padding-bottom: 1.4vmax;
+}
+
+/* 右边的白色花花 */
+#flower1 {
+  position: absolute;
+  right: 0;
+  width: 27.7vmax;
+  top: 40vmax;
+}
+
+/* 时间轴线 */
+.timeLine {
+  position: absolute;
+  left: 21.7vmax;
+  width: 0.15vmax;
+  background-color: #f2f7d9;
+}
+
+/* 时间点 */
+.timePoint {
+  position: absolute;
+  left: 21.45vmax;
+  width: 0.7vmax;
+  height: 0.7vmax;
+  background-color: #f2f7d9;
+  border-radius: 50%;
+}
+
+/* 时间标签 */
+.timeLabel {
+  position: absolute;
+  left: 14.3vmax;
+}
+
+/* 事件标签 */
+.eventLabel {
+  position: absolute;
+  left: 25.7vmax;
+}
+
+/* 1829 */
+.timeLabel:nth-of-type(1),
+.eventLabel:nth-of-type(1) {
+  top: 17.8vmax;
+}
+
+.timePoint:nth-of-type(1) {
+  top: 17.8vmax;
+}
+
+.timeLine:nth-of-type(1) {
+  top: 17.8vmax;
+  height: 16vmax;
+}
+
+/* 1948 */
+.timeLabel:nth-of-type(2),
+.eventLabel:nth-of-type(2) {
+  top: 33.8vmax;
+}
+
+.timePoint:nth-of-type(2) {
+  top: 33.8vmax;
+}
+
+.timeLine:nth-of-type(2) {
+  top: 33.8vmax;
+  height: 8vmax;
+}
+
+/* 2007 */
+.timeLabel:nth-of-type(3),
+.eventLabel:nth-of-type(3) {
+  top: 41.8vmax;
+}
+
+.timePoint:nth-of-type(3) {
+  top: 41.8vmax;
+}
+
+.timeLine:nth-of-type(3) {
+  top: 41.8vmax;
+  height: 5vmax;
+}
+
+/* 太阳和云 */
+#startTime {
+  position: absolute;
+  top: 50vmax;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #f2f7d9;
+  height: 21.4vmax;
+}
+
+#clock {
+  position: absolute;
+  left: 17.4vmax;
+  top: 48vmax;
+  width: 8.7vmax;
+  height: 8.7vmax;
+  border-radius: 50%;
+  background-color: #f9a262;
+}
+
+#cloud1 {
+  position: absolute;
+  top: 68.6vmax;
+  left: 63.6vmax;
+  width: 17.3vmax;
+  padding-bottom: 21.4vmax;
+}
+
+/* #cloud2 {
+  transform: scaleX(-1);
+  position: absolute;
+  top: 69.2vmax;
+  right: 8.6vmax;
+  width: 17.3vmax;
+  padding-bottom: 21.4vmax;
+} */
+
+/*--------------------
+ * 孔庙建筑 
+ *--------------------*/
+.archi-img {
+  display: block;
+  position: absolute;
+}
+
+/* 居中 */
+#main-archi,
+#stair {
+  left: 50%;
+  transform: translate(-50%);
+}
+
+/* 大成殿 */
+#main-archi {
+  top: 63vmax;
+  width: 59.1vmax;
+}
+
+/* 台阶 */
+#stair {
+  top: 89vmax;
+  width: 80vmax;
+}
+
+/* 左亭 */
+#pavilion-left {
+  width: 21.8vmax;
+  top: 65.3vmax;
+  left: 13.3vmax;
+}
+
+/* 右亭 */
+#pavilion-right {
+  width: 21.8vmax;
+  top: 65.3vmax;
+  right: 13.3vmax;
+}
+
+/* 左鼓 */
+#drum-left {
+  width: 16.7vmax;
+  top: 75.87vmax;
+  left: 26.6vmax;
+}
+
+/* 右鼓 */
+#drum-right {
+  width: 16.7vmax;
+  top: 75.87vmax;
+  right: 26.6vmax;
+}
+
+.label {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12vmax;
+  padding: 0.7vmax;
+  text-align: center;
+}
+
+#archi-label {
+  top: 104.7vmax;
+  background-color: #fff;
+  color: #c42c2c;
+  font-size: 1vmax;
+}
+
+/* 建筑pin */
+.archi-pin-top,
+.archi-pin-bottom {
+  position: absolute;
+  width: 17.1vmax;
+  padding-bottom: 5vmax;
+}
+
+.pin-text {
+  text-align: center;
+}
+
+.pin-line {
+  width: 0.06vmax;
+  height: 2.4vmax;
+  background-color: #f2f7d9;
+}
+
+.archi-pin-top .pin-line {
+  margin: 1vmax auto 0;
+}
+
+.archi-pin-bottom .pin-line {
+  margin: 0 auto 1vmax;
+}
+
+#dachengdian-pin {
+  left: 41.4vmax;
+  top: 58.6vmax;
+}
+
+#left-pavilion-pin {
+  left: 15.7vmax;
+  top: 60vmax;
+}
+
+#right-pavilion-pin {
+  right: 15.7vmax;
+  top: 60vmax;
+}
+
+#stair-pin {
+  left: 40.3vmax;
+  top: 95.6vmax;
+}
+
+#left-drum-pin {
+  left: 22.9vmax;
+  top: 95.6vmax;
+}
+
+#right-drum-pin {
+  right: 22.9vmax;
+  top: 95.6vmax;
+}
+
+/* 分隔线 */
+#introduction .divide-line {
+  top: 113vmax;
+}
+
+/*--------------------
+ * 空间布局图 
+ *--------------------*/
+#plane-figure {
+  position: absolute;
+  width: 80%;
+  left: 50%;
+  top: 120vmax;
+  transform: translateX(-50%);
+}
+
+#highlight {
+  position: absolute;
+  left: 16.9%;
+  top: 126.8vmax;
+  background-color: #f2f7d9;
+  width: 18.2vmax;
+  height: 12.3vmax;
+  opacity: 0.64;
+}
+
+#layout-label {
+  top: 150vmax;
+  background-color: #fff;
+  color: #c42c2c;
+  font-size: 1vmax;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  user-select: text;
+  font-family: "MinionPro-semibold";
+}
+
+::selection {
+  color: #fff;
+  background: #c42c2c;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+
+.normal-font-size {
+  font-size: 1.2vmax;
+}
+
+/* Main parts */
+.parts {
+  position: relative;
+  padding-bottom: 5vmax;
+}
+
+.subtitle {
+  /* position: absolute;
+    left: 50%;
+    transform: translateX(-50%); */
+  font-family: "方正粗金陵";
+  color: #c42c2c;
+  font-weight: lighter;
+  font-size: 2.5vmax;
+  text-align: center;
+  line-height: 2vmax;
+  padding-top: 5.7vmax;
+}
+
+.subtitle span {
+  font-size: 1.7vmax;
+}
+
+/* 分割线 */
+.divide-line {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: block;
+  width: 80vw;
+}
+
+.divide-line .ball {
+  width: 0.61vw;
+  height: 0.61vw;
+  border-radius: 50%;
+  background-color: #c42c2c;
+  bottom: 0.22vw;
+}
+
+.divide-line .ball:nth-child(1) {
+  float: left;
+  position: relative;
+  right: 4px;
+}
+
+.divide-line .ball:nth-child(2) {
+  float: right;
+  position: relative;
+  left: 4px;
+}
+
+.divide-line .line {
+  width: 43.5%;
+  height: 0.13vw;
+  background-color: #c42c2c;
+}
+
+.divide-line .line:nth-child(1) {
+  float: left;
+}
+.divide-line .line:nth-child(2) {
+  float: right;
+}
+
+#part6 {
+  height: 48.6vmax;
+  padding-bottom: 10vmax;
+}
+
+#temp-pattern {
+  position: absolute;
+  top: 11.4vmax;
+  width: 80.3vmax;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#part6 .divide-line {
+  top: 52.9vmax;
+}
+
+/* 标题 */
+#title {
+  background-color: #fff9f0;
+}
+
+#title h1 {
+  color: #c42c2b;
+  font-size: 3.3vmax;
+  font-family: "方正粗金陵";
+  font-weight: lighter;
+}
+
+#title h1 span {
+  font-size: 2.2vmax;
+}
+
+.deco-string {
+  background-color: #ffd244;
+}
+
+.emblem {
+  background-color: #c42c2c;
+}
+
+.cloud-title {
+  position: absolute;
+  width: 18vmax;
+}
+.cloud-title:nth-of-type(1) {
+  left: 12vmax;
+  top: 14vmax;
+}
+.cloud-title:nth-of-type(2) {
+  transform: scaleX(-1);
+  right: 11vmax;
+  bottom: 13vmax;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+/* title */
+#title {
+  height: 100%;
+}
+
+#title h1 {
+  text-align: center;
+  position: absolute;
+  width: 100%;
+  top: 28vh;
+  line-height: 2.7vmax;
+}
+
+#title p {
+  position: absolute;
+  width: 37%;
+  left: 51%;
+  transform: translateX(-50%);
+  top: 45%;
+  font-size: 1.2vmax;
+}
+
+/* 琴弦 */
+.deco-string {
+  position: absolute;
+  width: 150vw;
+  height: 0.1vmax;
+}
+
+.deco-string:nth-of-type(1) {
+  transform: rotateZ(-5.3deg) translateX(-25%);
+  top: 12%;
+}
+.deco-string:nth-of-type(2) {
+  transform: rotateZ(-6.2deg) translateX(-25%);
+  top: 13.5%;
+}
+.deco-string:nth-of-type(3) {
+  transform: rotateZ(-7.1deg) translateX(-25%);
+  top: 15%;
+}
+.deco-string:nth-of-type(4) {
+  transform: rotateZ(-8deg) translateX(-25%);
+  top: 16.5%;
+}
+.deco-string:nth-of-type(5) {
+  transform: rotateZ(-8.9deg) translateX(-25%);
+  top: 18%;
+}
+.deco-string:nth-of-type(6) {
+  transform: rotateZ(-9.8deg) translateX(-25%);
+  top: 19.5%;
+}
+.deco-string:nth-of-type(7) {
+  transform: rotateZ(-10.7deg) translateX(-25%);
+  top: 21%;
+}
+
+/* 琴徽 */
+.emblem {
+  position: absolute;
+  border-radius: 50%;
+  width: 0.85vmax;
+  height: 0.85vmax;
+  bottom: 15%;
+}
+
+.emblem:nth-of-type(1) {
+  right: 48%;
+}
+
+.emblem:nth-of-type(2) {
+  right: 34%;
+}
+
+.emblem:nth-of-type(3) {
+  right: 30%;
+}
+
+.emblem:nth-of-type(4) {
+  right: 26%;
+}
+
+.emblem:nth-of-type(5) {
+  right: 22%;
+}
+
+.emblem:nth-of-type(6) {
+  right: 18%;
+}
+
+.emblem:nth-of-type(7) {
+  right: 14%;
+}
+
+.emblem:nth-of-type(8) {
+  right: 10%;
+}
+
