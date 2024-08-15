@@ -9,29 +9,70 @@
         margin: 0;
         padding: 0;
       }
-      header {
+
+      #title {
+        font-size: 5rem;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+      #title > span {
+        display: block;
         text-align: center;
       }
-      main {
+      #title > .sub {
+        font-size: 1.2rem;
+        font-weight: normal;
+        margin: -0.5rem 0.45rem 0 0;
+      }
+      nav {
+        position: absolute;
+      }
+      .work-list {
         display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
+        flex-direction: column;
         justify-content: center;
+        height: 100vh;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        width: 20rem;
+
+        position: absolute;
+        right: 0;
       }
       a {
         text-decoration: none;
-      }
-      figure {
-        width: 40%;
-        border: 1px solid #000;
-        height: 10rem;
         width: 20rem;
         line-height: 10rem;
         text-align: center;
         background: #000;
         color: #fff;
-        font-weight: lighter;
-        margin: 1rem;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        /* margin: 0 0 0.5rem; */
+      }
+      a.rarebib {
+        background-image: url(./images/rarebib.png);
+      }
+      a.flowing-boundary {
+        background-image: url(./images/flowing_boundary.png);
+      }
+      a.relics {
+        background-image: url(./images/relics.png);
+      }
+      a.case-flow {
+        background-image: url(./images/case_flow.png);
+      }
+      a.nature {
+        background-image: url(./images/nature.png);
+      }
+      a.pipe {
+        background-image: url(./images/pipe.png);
+      }
+      a.monitor {
+        background-image: url(./images/monitor.png);
       }
     </style>
     <script>
@@ -45,15 +86,26 @@
     </script>
   </head>
   <body>
-    <header><h1>Homepage of Valdis</h1></header>
-    <main>
-      <a href="./proj/flowing-bundary/index.html"><figure>flowing bundary</figure></a>
-      <a href="./proj/guide-to-hunan-musical-relics/index.html"><figure>guide to hunan musical relics</figure></a>
-      <a href="http://zeelab.cn/WuhanCircleGraph/"><figure>The Flow: Cases and Places</figure></a>
-      <a href="./proj/nature/index.html"><figure>nature</figure></a>
-      <a href="./proj/pipe/index.html"><figure>pipe</figure></a>
-      <a href="./proj/monitor/index.html"><figure>monitor</figure></a>
-    </main>
-    <footer></footer>
+    <h1 id="title">
+      <span class="name">Vald.</span>
+      <span class="sub">Development & Design</span>
+    </h1>
+    <nav>
+      <ul>
+        <li>Home</li>
+        <li>Works</li>
+        <li>Playground</li>
+        <li>About</li>
+      </ul>
+    </nav>
+    <div class="work-list">
+      <a class="rarebib" target="_blank" href="./proj/flowing-bundary/index.html">《国家珍贵古籍名录》知识库</a>
+      <a class="flowing-boundary" target="_blank" href="./proj/flowing-bundary/index.html">流动的边界 Flowing Boundary</a>
+      <a class="relics" target="_blank" href="./proj/guide-to-hunan-musical-relics/index.html">guide to hunan musical relics</a>
+      <a class="case-flow" target="_blank" href="http://zeelab.cn/WuhanCircleGraph/">The Flow: Cases and Places</a>
+      <a class="nature" target="_blank" href="./proj/nature/index.html">nature</a>
+      <a class="pipe" target="_blank" href="./proj/pipe/index.html">pipe</a>
+      <a class="monitor" target="_blank" href="./proj/monitor/index.html">monitor</a>
+    </div>
   </body>
 </html>
